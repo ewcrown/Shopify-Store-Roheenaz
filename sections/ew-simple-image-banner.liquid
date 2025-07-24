@@ -1,0 +1,98 @@
+{% schema %}
+{
+  "name": "<> Image Banner with Link",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Desktop Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_banner_image",
+      "label": "Mobile Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "text",
+      "id": "alt_text",
+      "label": "Image Alt Text",
+      "default": "Promotional banner"
+    }
+  ],
+  "presets": [
+    {
+      "name": "<> Image Banner with Link"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="custom-banner" id="custom-banner-{{ section.id }}">
+  <div class="container">
+    {% if section.settings.banner_image %}
+      <a href="{{ section.settings.link_url }}" class="banner-link">
+        <div class="banner-content">
+          <picture>
+            {% if section.settings.mobile_banner_image %}
+              <source 
+                media="(max-width: 767px)" 
+                srcset="{{ section.settings.mobile_banner_image | image_url: width: 800 }}">
+            {% endif %}
+            <img 
+              src="{{ section.settings.banner_image | image_url: width: 1600 }}" 
+              alt="{{ section.settings.alt_text }}" 
+              class="banner-image" 
+              loading="lazy"
+            />
+          </picture>
+          {% if section.settings.heading != blank %}
+            <h2 class="banner-heading">{{ section.settings.heading }}</h2>
+          {% endif %}
+        </div>
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+#custom-banner-{{ section.id }} .custom-banner {
+  position: relative;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#custom-banner-{{ section.id }} .banner-link {
+  display: block;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+}
+
+#custom-banner-{{ section.id }} .banner-content {
+  position: relative;
+}
+
+#custom-banner-{{ section.id }} .banner-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#custom-banner-{{ section.id }} .banner-heading {
+     font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+  margin-top:20px;
+}
+</style>

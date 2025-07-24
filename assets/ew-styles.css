@@ -1,0 +1,14 @@
+.sf__footer-bottom-inner {  
+    justify-content: center;
+}
+@media (max-width: 600px) {
+  footer.sf-footer .sf__accordion-item .sf__accordion-content {
+    max-height: max-content;
+  }
+  footer.sf-footer {
+    padding-bottom: 0;
+  }
+  footer.sf-footer .payment-icons ul {
+    justify-content: center;
+  }
+}

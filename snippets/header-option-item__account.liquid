@@ -1,0 +1,17 @@
+{% if shop.customer_accounts_enabled or shop.customer_accounts_optional %}
+    {% if display_by == 'icon' %}
+        <a href="{{ routes.account_url }}" class="{{ box_size | default: 'px-2 py-3.5' }}">
+            <span class="sf__tooltip-item block sf__tooltip-bottom sf__tooltip-style-2">
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" width="18.644" height="18.493" viewBox="0 0 18.644 18.493">
+  <path id="ico_user_dark.42631dc5" d="M16.7,13.781l-3.874-1.244a1.866,1.866,0,0,1-1.244-1.8V9.645A6.76,6.76,0,0,0,13.955,4.72a4.627,4.627,0,0,0-9.247,0A6.729,6.729,0,0,0,7.077,9.645v1.026a1.9,1.9,0,0,1-1.244,1.81L1.959,13.725A2.848,2.848,0,0,0,0,16.43V18.3a.473.473,0,0,0,.473.46h17.7a.473.473,0,0,0,.473-.473V16.467A2.842,2.842,0,0,0,16.7,13.781ZM5.6,4.67a3.675,3.675,0,0,1,7.351,0c0,2.152-1.723,4.863-3.675,4.863S5.6,6.822,5.6,4.67ZM17.7,17.842H.852V16.467A1.909,1.909,0,0,1,2.1,14.67L5.97,13.426a2.848,2.848,0,0,0,2.052-2.755v-.479a3.066,3.066,0,0,0,2.6,0v.479a2.842,2.842,0,0,0,1.952,2.7l3.875,1.244a1.9,1.9,0,0,1,1.244,1.8Z" transform="translate(0 -0.263)"/>
+</svg>
+
+                <span class="sf__tooltip-content">{{ 'layout.customer.account' | t }}</span>
+            </span>
+        </a>
+    {% else %}
+        <a href="{{ routes.account_url }}" class="{{ box_size }} px-4 py-5">
+            {{ 'layout.customer.account' | t }}
+        </a>
+    {% endif %}
+{% endif %}

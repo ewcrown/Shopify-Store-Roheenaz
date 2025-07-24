@@ -1,0 +1,209 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_liquid_HnNEAF": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'breadcrumbs' %}",
+        "custom_class": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "custom_liquid_R6gkwP": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "{% render 'breadcrumbs' %}"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "custom_liquid_G6hCLe": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<p>SKU: {{ product.selected_or_first_available_variant.sku }}</p>"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_saving": true
+          }
+        },
+        "a1b866c1-2e7a-4cb2-b8de-5f28009457e1": {
+          "type": "description",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "size_title": "Size"
+          }
+        },
+        "custom_liquid_pdkCNU": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div id=\"ai-order-note\" style=\"display:none\">\n<strong>Note:</strong> All unstitched to stitched orders will require advance payment\n</div>"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity_selector": true,
+            "show_atc_button": true,
+            "show_dynamic_checkout": false
+          }
+        },
+        "custom_liquid_NPWJCR": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% assign image_url = product.metafields.custom.size_guide_image %}\n{% if image_url != blank %} \n <div class=\"sizebtn\">SIZE CHART</div>\n{% endif %}"
+          }
+        },
+        "addons": {
+          "type": "addons",
+          "settings": {
+            "show_atcp": false,
+            "show_ask_a_question": true,
+            "show_social": true
+          }
+        },
+        "custom_liquid_6mgDeD": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "{% for tag in product.tags %}\n        {% if tag contains 'TDT' %}\n            {% assign TDT = tag | split: '--' %}\n            {% assign TDT = TDT[1] | strip %}\n        {% endif %}\n        {% endfor %}\n        {% if TDT %}\n            <div class=\"dinfo\"> \n<h2 style=\"font-size: 18px;\">DELIVERY & RETURNS</h2>\n{{ TDT }}\n</div>\n        {% endif %}"
+          }
+        },
+        "custom_liquid_Jajggt": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<h2 class=\"acc_trigger\">DELIVERY & RETURNS</h2>\n    <div id=\"tab1\" class=\"acc_container\" style=\"display: block;\"> {% for tag in product.tags %}\n      {% if tag contains 'TDT' %}\n      {% assign TDT = tag | split: '--' %}\n      {% assign TDT = TDT[1] | strip %}\n      {% endif %}\n      {% endfor %}\n      {% if TDT %}\n      <div class=\"dinfo\"> {{ TDT }}</div>\n      {% endif %} </div>\n\t  \n\t<h2 class=\"acc_trigger\">CARE INSTRUCTIONS</h2>  \n    <div id=\"tab2\" class=\"acc_container\">\n      <div class=\"dinfo\">\n        <p>-Do not use any kind of bleach or stain removing chemicals<br>\n          -Do not over expose damp fabric to strong sunlight<br>\n          -Iron at moderate temperature<br>\n          -Do not wash at home</p>\n      </div>\n    </div>\n\t  \n\t<h2 class=\"acc_trigger\">DISCLAIMER</h2>  \n    <div id=\"tab3\" class=\"acc_container\"> {% for tag in product.tags %}\n      {% if tag contains 'DIS' %}\n      {% assign DIS = tag | split: '--' %}\n      {% assign DIS = DIS[1] | strip %}\n      {% endif %}\n      {% endfor %}\n      {% if DIS %}\n      <div class=\"dinfo\"> {{ DIS }}</div>\n      {% else %}\n      <div class=\"dinfo\">\n        <p>The fabric pattern/laces, patchwork, and handmade details may vary.<br>\n          Actual colors of the outfit may also vary from the colors being displayed on your device.</p>\n        <p>All laces used for finishing of the stitched outfit especially the dupatta or trousers may vary from the shoot.&nbsp;</p>\n      </div>\n      {% endif %} </div>\n  </div>\n\n<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js\"></script>\n<script>\n$(document).ready(function () {\n        //Add Inactive Class To All Accordion Headers\n        $('.acc_trigger').toggleClass('inactive-header');\n        $('.acc_trigger:first').addClass('active-header').next().show();\n        // The Accordion Effect\n        $('.acc_trigger').click(function () {\n            if ($(this).next().is(':hidden')) {\n                $('.active-header').toggleClass('active-header').toggleClass('inactive-header').next().slideToggle().toggleClass('open-content');\n                $(this).toggleClass('active-header').toggleClass('inactive-header');\n                $(this).next().slideToggle().toggleClass('open-content');\n            }\n\n            else {\n                $(this).toggleClass('active-header').toggleClass('inactive-header');\n                $(this).next().slideToggle().toggleClass('open-content');\n            }\n        });\n        return false;\n    });    </script>"
+          }
+        },
+        "quoli_reviews_ugc_product_review_teRhTU": {
+          "type": "shopify://apps/quoli-reviews-ugc/blocks/product-review/baf7b241-e443-4879-b3d4-360440b03895",
+          "settings": {
+            "stylerating": "standard",
+            "text_reviews": "[count] Reviews",
+            "align_widget": "default",
+            "font_size": 18,
+            "text_color": "#121212",
+            "star_color": "rgba(0,0,0,0)",
+            "show_review_title": false
+          }
+        }
+      },
+      "block_order": [
+        "custom_liquid_R6gkwP",
+        "title",
+        "custom_liquid_G6hCLe",
+        "price",
+        "a1b866c1-2e7a-4cb2-b8de-5f28009457e1",
+        "variant_picker",
+        "custom_liquid_pdkCNU",
+        "buy_buttons",
+        "custom_liquid_NPWJCR",
+        "addons",
+        "custom_liquid_6mgDeD",
+        "custom_liquid_Jajggt",
+        "quoli_reviews_ugc_product_review_teRhTU"
+      ],
+      "settings": {
+        "container": "container",
+        "layout": "layout-6",
+        "show_atwl": false,
+        "enable_history_state": true,
+        "enable_variant_group_images": false,
+        "show_featured_media": true,
+        "show_zoom_button": true,
+        "enable_video_autoplay": false,
+        "show_nav_media_mobile": true,
+        "show_pagination_mobile": false,
+        "use_sticky_atc": true,
+        "use_sticky_atc_on_mobile": true,
+        "enable_dynamic_checkout": true,
+        "sticky_atc_wishtlist": false,
+        "sticky_atc_compare": false
+      }
+    },
+    "custom_liquid_PXKPT9": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% assign image_url = product.metafields.custom.size_guide_image %}\n{% if image_url != blank %} \n <div class=\"size-wrapper\">\n     <div class=\"innerwrapper\">\n         <div class=\"rmsizebtn\">X</div>\n         <img src=\"{{ image_url.value | image_url }}\">\n      </div>\n </div>\n{% endif %}",
+        "custom_class": ""
+      }
+    },
+    "product-details-tabs": {
+      "type": "product-details-tabs",
+      "disabled": true,
+      "settings": {
+        "container": "container",
+        "bg_color": "",
+        "default_open": true
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "container": "container",
+        "heading": "You May Also Like",
+        "text_align": "center",
+        "limit": 4,
+        "columns": 4,
+        "column_gap": 30,
+        "enable_slider": true
+      }
+    },
+    "custom_liquid_W6JqNF": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<script>\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n  const orderNote = document.getElementById('ai-order-note');\n  const variantField = document.querySelector('.variant-picker__field');\n\n  // Show/hide on page load based on selected value\n  if (variantField && variantField.getAttribute('data-selected-value') === 'Unstitched') {\n    orderNote.style.display = 'block';\n  } else {\n    orderNote.style.display = 'none';\n  }\n\n  // Handle future clicks/changes\n  document.querySelectorAll('.variant-picker__option').forEach(option => {\n    option.addEventListener('click', function () {\n      const value = this.getAttribute('data-value');\n\n      if (value === 'Unstitched') {\n        orderNote.style.display = 'block';\n        variantField.setAttribute('data-selected-value', 'Unstitched'); // Optional: Update attribute\n      } else {\n        orderNote.style.display = 'none';\n        variantField.setAttribute('data-selected-value', value); // Optional\n      }\n    });\n  });\n});\n</script>",
+        "custom_class": ""
+      }
+    },
+    "17485351910b2ae90d": {
+      "type": "apps",
+      "blocks": {
+        "quoli_reviews_ugc_product_review_widgets_kkAJrc": {
+          "type": "shopify://apps/quoli-reviews-ugc/blocks/product-review-widgets/baf7b241-e443-4879-b3d4-360440b03895",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "quoli_reviews_ugc_product_review_widgets_kkAJrc"
+      ],
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "header_alignment": "center",
+        "container": "container",
+        "background_color": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    }
+  },
+  "order": [
+    "custom_liquid_HnNEAF",
+    "main",
+    "custom_liquid_PXKPT9",
+    "product-details-tabs",
+    "product-recommendations",
+    "custom_liquid_W6JqNF",
+    "17485351910b2ae90d"
+  ]
+}

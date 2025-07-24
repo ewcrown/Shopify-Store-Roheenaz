@@ -1,0 +1,54 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-contact",
+      "settings": {
+        "container": "container"
+      }
+    },
+    "contact-form": {
+      "type": "contact-form",
+      "blocks": {
+        "85aad79c-b021-4ea6-91d5-c8d1fcfbcc24": {
+          "type": "textblock",
+          "settings": {
+            "title": "Office Address",
+            "content": "<p>Plaza no 3, CCA1, Phase 6 Commercial, Defence Phase 6, Lahore, Pakistan<br/>Phone: +92 300 4926663</p>"
+          }
+        },
+        "textblock_wqDUYt": {
+          "type": "textblock",
+          "settings": {
+            "title": "Customer Services",
+            "content": "<p>Phone: +92 300 4926663<br/>WhatsApp: +92 300 4926663<br/>Email: info@roheenaz.com</p>"
+          }
+        }
+      },
+      "block_order": [
+        "85aad79c-b021-4ea6-91d5-c8d1fcfbcc24",
+        "textblock_wqDUYt"
+      ],
+      "settings": {
+        "container": "container",
+        "title": "We would love to hear from you.",
+        "description": "",
+        "show_name": true,
+        "show_phone": true,
+        "show_signup_email": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "contact-form"
+  ]
+}

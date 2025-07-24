@@ -1,0 +1,211 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_liquid_Hj3jw3": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'breadcrumbs' %}",
+        "custom_class": ""
+      }
+    },
+    "collection-header": {
+      "type": "collection-page-header",
+      "settings": {
+        "container": "container",
+        "layout": "without_breadcrumb",
+        "header_height": "small",
+        "text_alignment": "center",
+        "vertical_alignment": "center",
+        "text_color": "dark",
+        "bg_color": "#ffffff",
+        "enable_parallax": false,
+        "upper_title": true,
+        "show_desc": true,
+        "collection_all_desc": ""
+      }
+    },
+    "countdown_timer_p3jXTW": {
+      "type": "countdown-timer",
+      "custom_css": [
+        "h1,h2 {text-align: center;}",
+        ".sf__cdt-inner {height: 20vh;}",
+        ".container.sf__cdt.section-py {border-bottom: 1px solid #ddd !important; padding-bottom: 2rem;}",
+        ".lg\\:pb-16 {padding-bottom: 0rem;}",
+        "@media only screen and (max-width: 750px) {.pt-16 {padding-top: 0rem; } .block {display: none; }}"
+      ],
+      "name": "Countdown timer",
+      "settings": {
+        "body_text": "#ffffff",
+        "container": "container",
+        "section_height": "small",
+        "align": "center",
+        "background_color": "#ffffff",
+        "background_image": "shopify://shop_images/sale_page_banner1.jpg",
+        "mb_image": "shopify://shop_images/sale_page_banner_mobile.jpg",
+        "heading": "",
+        "time": "2025-07-25 17:00:00",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "sf__btn-primary",
+        "button_size": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    },
+    "main": {
+      "type": "main-collection-product-grid",
+      "blocks": {
+        "26ef6509-772d-4c44-bd90-efc089bd9355": {
+          "type": "filter",
+          "settings": {
+            "design_filtergroup": "button",
+            "title": "Size",
+            "filtergroup": "XS,S,M,L,XL",
+            "show_label": false,
+            "use_accordion": true,
+            "open_filtergroup": true
+          }
+        },
+        "e12de6da-eab8-4abe-967c-06d0d959a18a": {
+          "type": "filter",
+          "settings": {
+            "design_filtergroup": "color",
+            "title": "Colors",
+            "filtergroup": "Blue, Red, White ,Black ,Pink ,Silver,Purple,Brown,Yellow,Grey,Green,Tan,Violet,Dark Grey,Beige,Light Blue, Dark Blue, Light Grey, Light Pink, Mint, Rose Gold, Night Blue, Copper, Coral, Rosy Brown",
+            "show_label": true,
+            "use_accordion": false,
+            "open_filtergroup": true
+          }
+        },
+        "fa31a837-9c99-4c92-8cfe-0527ffbe7b15": {
+          "type": "filter",
+          "settings": {
+            "design_filtergroup": "default",
+            "title": "Prices",
+            "filtergroup": "$0-$50,$50-$100,$100-$150,$150-$200,$200-$300,$300-$400",
+            "show_label": false,
+            "use_accordion": false,
+            "open_filtergroup": true
+          }
+        },
+        "4903963a-90f0-4fe1-be23-ee4f8749e483": {
+          "type": "filter",
+          "settings": {
+            "design_filtergroup": "inrow",
+            "title": "Brands",
+            "filtergroup": "Minimog,Retrolie,Abby,Brook,Learts,Vagabond",
+            "show_label": false,
+            "use_accordion": false,
+            "open_filtergroup": true
+          }
+        },
+        "00b3badd-1613-4230-85d8-f87f04306aaa": {
+          "type": "filter",
+          "settings": {
+            "design_filtergroup": "inrow",
+            "title": "Tags",
+            "filtergroup": "Dress,Tops,Shirts,Fashion,Hats,Sandal,Belt,Bags,Snacker,Denim,Minimog,Vagabond,Sunglasses, Beachwear,Vintage",
+            "show_label": false,
+            "use_accordion": true,
+            "open_filtergroup": true
+          }
+        }
+      },
+      "block_order": [
+        "26ef6509-772d-4c44-bd90-efc089bd9355",
+        "e12de6da-eab8-4abe-967c-06d0d959a18a",
+        "fa31a837-9c99-4c92-8cfe-0527ffbe7b15",
+        "4903963a-90f0-4fe1-be23-ee4f8749e483",
+        "00b3badd-1613-4230-85d8-f87f04306aaa"
+      ],
+      "settings": {
+        "container": "container-fluid",
+        "grid_layout": "grid",
+        "grid_columns": "3",
+        "show_columns_switcher": true,
+        "pagination_limit": 24,
+        "paginate_type": "infinite",
+        "show_sorting": true,
+        "show_filter": true,
+        "filters_type": "storefront_filters",
+        "sidebar": "leftColumn",
+        "sidebar_title": "Filters",
+        "limit_height_widget": false,
+        "limit_height": 300,
+        "change_product_variant_on_fitlering": true,
+        "show_product_count": true,
+        "collapsed_groups": "Brand, Vendor, Size",
+        "color_swatches": "color,colour,couleur,farbe"
+      }
+    },
+    "1733137255884954ec": {
+      "type": "apps",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "header_alignment": "center",
+        "container": "container",
+        "background_color": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    },
+    "custom_liquid_cBR4ab": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<script>\n// Set the date we're counting down to\nvar countDownDate = new Date(\"Dec 19, 2024 17:00:00\").getTime();\n\n// Update the count down every 1 second\nvar x = setInterval(function() {\n\n  // Get today's date and time\n  var now = new Date().getTime();\n    \n  // Find the distance between now and the count down date\n  var distance = countDownDate - now;\n    \n  // Time calculations for days, hours, minutes and seconds\n  var days = Math.floor(distance / (1000 * 60 * 60 * 24));\n  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));\n  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));\n  var seconds = Math.floor((distance % (1000 * 60)) / 1000);\n    \n  // Output the result in an element with id=\"demo\"\n  document.getElementById(\"demo\").innerHTML = days + \" <span>days</span> \" + hours + \" <span>hours</span> \"\n  + minutes + \" <span>minutes</span> \" + seconds + \" <span>sec</span> \";\n    \n  // If the count down is over, write some text \n  if (distance < 0) {\n    clearInterval(x);\n    document.getElementById(\"demo\").innerHTML = \"EXPIRED\";\n  }\n}, 1000);\n</script>\n\n<style>\n.prebooking {\n    margin: 0;\n    font-size: 30px;\n    text-align: center;\n    padding: 10px 10px 15px;\n    color: #fff;\n    text-transform:uppercase;\n    background: #111;\n    font-weight: 600;\n}\n#demo {\n  margin: 0;\n  font-weight: 400;\n}\n#demo span {\n  font-size: 18px;\n}\n.container.text-center {\n    max-width: none;\n}\n</style>",
+        "custom_class": ""
+      }
+    },
+    "1733137012ce28c08e": {
+      "type": "apps",
+      "blocks": {
+        "quoli_reviews_ugc_homepage_widgets_wA8KhL": {
+          "type": "shopify://apps/quoli-reviews-ugc/blocks/homepage-widgets/baf7b241-e443-4879-b3d4-360440b03895",
+          "settings": {
+            "carousel_title": "Happy customers",
+            "sub_heading": "",
+            "home-page-slider": "7",
+            "total-reviews": "all",
+            "no-of-lines": "100",
+            "carousel_auto_scroll": true,
+            "carousel_auto_scroll_speed": "5",
+            "slider_font": "helvetica_n4"
+          }
+        }
+      },
+      "block_order": [
+        "quoli_reviews_ugc_homepage_widgets_wA8KhL"
+      ],
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "header_alignment": "center",
+        "container": "container",
+        "background_color": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": ""
+      }
+    }
+  },
+  "order": [
+    "custom_liquid_Hj3jw3",
+    "collection-header",
+    "countdown_timer_p3jXTW",
+    "main",
+    "1733137255884954ec",
+    "custom_liquid_cBR4ab",
+    "1733137012ce28c08e"
+  ]
+}
