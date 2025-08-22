@@ -34,6 +34,7 @@
     },
     "countdown_timer_p3jXTW": {
       "type": "countdown-timer",
+      "disabled": true,
       "custom_css": [
         "h1,h2 {text-align: center;}",
         ".sf__cdt-inner {height: 20vh;}",
@@ -108,6 +109,17 @@
             "open_filtergroup": true
           }
         },
+        "filter_nedcFc": {
+          "type": "filter",
+          "settings": {
+            "design_filtergroup": "default",
+            "title": "Type",
+            "filtergroup": "printed,Embroidered",
+            "show_label": false,
+            "use_accordion": true,
+            "open_filtergroup": true
+          }
+        },
         "00b3badd-1613-4230-85d8-f87f04306aaa": {
           "type": "filter",
           "settings": {
@@ -125,6 +137,7 @@
         "e12de6da-eab8-4abe-967c-06d0d959a18a",
         "fa31a837-9c99-4c92-8cfe-0527ffbe7b15",
         "4903963a-90f0-4fe1-be23-ee4f8749e483",
+        "filter_nedcFc",
         "00b3badd-1613-4230-85d8-f87f04306aaa"
       ],
       "settings": {

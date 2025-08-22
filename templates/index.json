@@ -11,10 +11,10 @@
   "sections": {
     "countdown_timer_p3jXTW": {
       "type": "countdown-timer",
+      "disabled": true,
       "custom_css": [
         "h1,h2 {text-align: center;}",
-        ".container {height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}",
-        ".sf__cdt-inner {height: 200px;}",
+        ".sf__cdt-inner {height: 20vh;}",
         ".container.sf__cdt.section-py {border-bottom: 1px solid #ddd !important; padding-bottom: 2rem;}",
         ".lg\\:pb-16 {padding-bottom: 0rem;}",
         "@media only screen and (max-width: 750px) {.pt-16 {padding-top: 0rem; } .block {display: none; }}"
@@ -42,11 +42,11 @@
     "1621243260e1af0c20": {
       "type": "slider",
       "blocks": {
-        "slider_item_L6a7XF": {
+        "slider_item_FXnt7G": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/1920x900_cc6b8412-cc00-4437-ac95-fe779a7e7fd8.jpg",
-            "mb_background": "shopify://shop_images/760_x_606_5fa9decc-19cd-4835-b088-cb6c4b53c65d.jpg",
+            "background": "shopify://shop_images/222.jpg",
+            "mb_background": "shopify://shop_images/111.jpg",
             "content_in_container": false,
             "content_position": "center middle",
             "text_alignment": "center",
@@ -55,7 +55,57 @@
             "subheading": "",
             "title": "",
             "description": "",
-            "image_link": "",
+            "image_link": "#",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "show_footer": false,
+            "footer_alignment": "end",
+            "footer_text": "New Collection",
+            "footer_button": "Shop Now",
+            "footer_link": ""
+          }
+        },
+        "slider_item_L6a7XF": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/Main_banner-1920x900.png",
+            "mb_background": "shopify://shop_images/Mobile_760x606_22e1dffa-ecc4-497f-b4fe-35b9ccf8c9ec.jpg",
+            "content_in_container": false,
+            "content_position": "center middle",
+            "text_alignment": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "subheading": "",
+            "title": "",
+            "description": "",
+            "image_link": "shopify://collections/pareesa-printed-cambric",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "show_footer": false,
+            "footer_alignment": "end",
+            "footer_text": "New Collection",
+            "footer_button": "Shop Now",
+            "footer_link": ""
+          }
+        },
+        "slider_item_LzXrby": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/1920X900.png",
+            "mb_background": "shopify://shop_images/760X606.png",
+            "content_in_container": false,
+            "content_position": "center middle",
+            "text_alignment": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "subheading": "",
+            "title": "",
+            "description": "",
+            "image_link": "shopify://collections/trending-festive",
             "button_text": "",
             "button_link": "",
             "button_style": "sf__btn-primary",
@@ -70,8 +120,8 @@
         "slider_item_btQ9Cb": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/1920x900_4cd6af25-71d7-4b5f-9fb9-e6602c20bbfe.jpg",
-            "mb_background": "shopify://shop_images/760_x_606_2c4cf62c-d26e-46ff-9e30-622855c80905.jpg",
+            "background": "shopify://shop_images/1920x900_2_3c923ab1-b6c0-4bf8-be59-aa771691a9c4.jpg",
+            "mb_background": "shopify://shop_images/760_x_606_2.jpg",
             "content_in_container": false,
             "content_position": "center middle",
             "text_alignment": "center",
@@ -94,9 +144,10 @@
         },
         "slider_item_rgWc4R": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/new_main.jpg",
-            "mb_background": "shopify://shop_images/Mobile_760_x_606_e387f4bb-2db6-44d2-aafb-499436d0cc64.jpg",
+            "background": "shopify://shop_images/1920x900_2_3460d983-7730-40dd-8655-e41768af067e.jpg",
+            "mb_background": "shopify://shop_images/new_4607be18-7b2c-4c2a-8a57-127154ac0068.jpg",
             "content_in_container": false,
             "content_position": "center top",
             "text_alignment": "center",
@@ -117,36 +168,12 @@
             "footer_link": ""
           }
         },
-        "slider_item_4jEQRG": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/1920x900_d5c02ead-8672-4242-a659-5cc6e5b5d67d.jpg",
-            "mb_background": "shopify://shop_images/mobile_banner_385x420_d809d93b-a6df-4687-bf17-3242331a3801.jpg",
-            "content_in_container": false,
-            "content_position": "center top",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/aleira-luxury-pret",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
         "slider_item_egAjFP": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/Web-Banner-2_2e07fb66-ef8e-4132-b058-1c2496ddb12f.jpg",
-            "mb_background": "shopify://shop_images/Mobile-Banner_2f97bb6e-68d4-4739-9cb9-5d453ca3d089.jpg",
+            "background": "shopify://shop_images/1920X900_a33f9896-9279-4299-895a-d73eee08484c.png",
+            "mb_background": "shopify://shop_images/760X606_df9976a6-6b4f-4b59-95e8-7e0be97e98e6.png",
             "content_in_container": false,
             "content_position": "center top",
             "text_alignment": "center",
@@ -155,7 +182,7 @@
             "subheading": "",
             "title": "",
             "description": "",
-            "image_link": "https://roheenaz.com/collections/aashiyana-lawn",
+            "image_link": "shopify://collections/aashiyana-lawn",
             "button_text": "",
             "button_link": "",
             "button_style": "sf__btn-primary",
@@ -169,9 +196,10 @@
         },
         "slider_item_BQ4zUj": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/web_banner_4942bcd3-c011-4f53-afa9-6b9dd25453c9.jpg",
-            "mb_background": "shopify://shop_images/Mobile-Banner_3be5556a-cb0f-4431-83de-30d39b1b231a.jpg",
+            "background": "shopify://shop_images/1920X900_8727f306-9592-4099-9ae3-3c86f99f8a12.png",
+            "mb_background": "shopify://shop_images/760X606_588d1f61-56c7-4578-a224-a1082b793420.png",
             "content_in_container": false,
             "content_position": "center middle",
             "text_alignment": "center",
@@ -192,8 +220,35 @@
             "footer_link": ""
           }
         },
+        "slider_item_4jEQRG": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
+            "background": "shopify://shop_images/1920X900_2a3c470d-1552-4220-b32a-476f9eefe692.png",
+            "mb_background": "shopify://shop_images/760X606_b676b25c-7907-4756-8b95-8b9302b89059.png",
+            "content_in_container": false,
+            "content_position": "center top",
+            "text_alignment": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "subheading": "",
+            "title": "",
+            "description": "",
+            "image_link": "shopify://collections/aleira-luxury-pret",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "show_footer": false,
+            "footer_alignment": "end",
+            "footer_text": "",
+            "footer_button": "",
+            "footer_link": ""
+          }
+        },
         "slider_item_LPVcrV": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Desktop_copy_3_84558de1-84cc-4570-a6d8-037516e44890.jpg",
             "mb_background": "shopify://shop_images/Mobile_copy_3_c5c84299-59e9-4c9a-9f44-841ca4d3f885.jpg",
@@ -219,6 +274,7 @@
         },
         "slider_item_mXFPTQ": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/2_3.jpg",
             "mb_background": "shopify://shop_images/2_1_f5bc8b73-e773-47ff-a7a8-f773485269c9.jpg",
@@ -244,16 +300,17 @@
         }
       },
       "block_order": [
+        "slider_item_FXnt7G",
         "slider_item_L6a7XF",
+        "slider_item_LzXrby",
         "slider_item_btQ9Cb",
         "slider_item_rgWc4R",
-        "slider_item_4jEQRG",
         "slider_item_egAjFP",
         "slider_item_BQ4zUj",
+        "slider_item_4jEQRG",
         "slider_item_LPVcrV",
         "slider_item_mXFPTQ"
       ],
-      "disabled": true,
       "settings": {
         "container": "container-fluid",
         "slideshow_height": "fullscreen",
@@ -317,9 +374,9 @@
       "type": "ew-simple-image-banner",
       "name": "<> Image Banner with Link",
       "settings": {
-        "banner_image": "shopify://shop_images/new_pret_area.jpg",
-        "heading": "Summer Reverie Luxury Lawn",
-        "link_url": "shopify://collections/summer-reverie-luxury-lawn",
+        "banner_image": "shopify://shop_images/CATEGORIES_1200x476_cc462e77-e4d0-453c-9494-1d91fa653e60.png",
+        "heading": "Pareesa Printed Cambric",
+        "link_url": "shopify://collections/pareesa-printed-cambric",
         "alt_text": "Promotional banner"
       }
     },
@@ -329,15 +386,16 @@
         ".container-fluid.section-my {max-width: 1500px; margin: 0 auto; font-size: 0; border-bottom: 1px solid #8d8d8d; padding-bottom: 3%;}"
       ],
       "settings": {
-        "img": "shopify://shop_images/665_x_901_4e076663-15df-49c9-8c15-1eeea61b8227.jpg",
-        "link": "shopify://collections/summer-reverie-luxury-lawn",
-        "heading": "NEW ARRIVALS",
-        "subheading": "Update your wardrobe with our latest pieces crafted\nto blend comfort and sophistication\n<a class=\"VIEWbtn\" href=\"/collections/summer-reverie-luxury-lawn\">VIEW ALL</a>",
+        "img": "shopify://shop_images/New_Arrivals_655x901_d8112b28-1b6f-4d0c-b311-606a245361e6.png",
+        "video_thumbnail": "shopify://shop_images/New_Arrivals_655x901_d8112b28-1b6f-4d0c-b311-606a245361e6.png",
+        "link": "shopify://collections/pareesa-printed-cambric",
+        "heading": "New Arrival",
+        "subheading": "Update your wardrobe with our latest pieces crafted\nto blend comfort and sophistication\n<a class=\"VIEWbtn\" href=\"/collections/pareesa-printed-cambric\">VIEW ALL</a>",
         "description": "",
         "header_alignment": "center",
         "container": "container-fluid",
         "background_color": "rgba(0,0,0,0)",
-        "collection": "summer-reverie-luxury-lawn",
+        "collection": "pareesa-printed-cambric",
         "enable_flashsale": false,
         "show_countdown": false,
         "product_to_show": 12,
@@ -376,7 +434,7 @@
         "header_alignment": "center",
         "container": "container-fluid",
         "background_color": "rgba(0,0,0,0)",
-        "collection": "top-seller",
+        "collection": "trending-festive",
         "enable_flashsale": false,
         "show_countdown": false,
         "product_to_show": 8,
@@ -398,7 +456,7 @@
         "use_scroll_mobile": false,
         "item_gap_mobile": 14,
         "padding_top": 0,
-        "padding_bottom": 0,
+        "padding_bottom": 30,
         "custom_class": ""
       }
     },
@@ -408,9 +466,9 @@
         "select_BMENih": {
           "type": "select",
           "settings": {
-            "link": "https://roheenaz.com/collections/summer-reverie-luxury-lawn",
-            "img": "shopify://shop_images/640_x_920_2_da30b593-169e-40d7-9117-87c532ffd250.jpg",
-            "img_mobile": "shopify://shop_images/640_x_920_2_da30b593-169e-40d7-9117-87c532ffd250.jpg",
+            "link": "shopify://collections/pareesa-printed-cambric",
+            "img": "shopify://shop_images/Footer_left_640x920_d0f0c976-0766-4eb1-bbc7-364ecce22c0d.png",
+            "img_mobile": "shopify://shop_images/Footer_left_640x920_d0f0c976-0766-4eb1-bbc7-364ecce22c0d.png",
             "title": ""
           }
         },
@@ -418,17 +476,17 @@
           "type": "select",
           "settings": {
             "link": "#.",
-            "img": "shopify://shop_images/640_x_920_Thumbnail_3497222c-b48e-48fe-83cc-c1c0d3446578.jpg",
-            "img_mobile": "shopify://shop_images/640_x_920_Thumbnail_3497222c-b48e-48fe-83cc-c1c0d3446578.jpg",
-            "title": "<video id=\"\" controls=\"\" poster=\"//roheenaz.com/ cdn.shopify.com/s/files/1/0572/5401/9233/files/640_x_920_Thumbnail_3497222c-b48e-48fe-83cc-c1c0d3446578.jpg?v=1752408020\">\n              <source src=\"https://cdn.shopify.com/videos/c/o/v/8ce649a4a790418aa8334d72ca324410.mp4\">\n              <source src=\"\" type=\"video/webm\">\n\n            </source></source></video>"
+            "img": "shopify://shop_images/640x920_footer_thumbnail.png",
+            "img_mobile": "shopify://shop_images/640x920_footer_thumbnail.png",
+            "title": "<video id=\"\" controls=\"\" poster=\"//roheenaz.com/ cdn.shopify.com/s/files/1/0572/5401/9233/files/640_x_920_Thumbnail_3497222c-b48e-48fe-83cc-c1c0d3446578.jpg?v=1752408020\" loop autoplay muted>\n              <source src=\"https://cdn.shopify.com/videos/c/o/v/04a37ff8e0374c9898c4566ed3dec575.mp4\">\n              <source src=\"\" type=\"video/webm\">\n\n            </source></source></video>"
           }
         },
         "select_99q8yJ": {
           "type": "select",
           "settings": {
-            "link": "https://roheenaz.com/collections/summer-reverie-luxury-lawn",
-            "img": "shopify://shop_images/640_x_920_0de9269e-45c3-40ee-a99d-3dbeb5e88e77.jpg",
-            "img_mobile": "shopify://shop_images/640_x_920_0de9269e-45c3-40ee-a99d-3dbeb5e88e77.jpg",
+            "link": "shopify://collections/pareesa-printed-cambric",
+            "img": "shopify://shop_images/Footer_right_640x920_f67e0aac-4055-405c-9605-55082e5e6426.png",
+            "img_mobile": "shopify://shop_images/Footer_right_640x920_f67e0aac-4055-405c-9605-55082e5e6426.png",
             "title": ""
           }
         }
@@ -437,6 +495,11 @@
         "select_BMENih",
         "select_7wdeHm",
         "select_99q8yJ"
+      ],
+      "custom_css": [
+        ".threeboxss {display: flex;}",
+        ".threeboxss .items {display: flex; margin: auto; align-items: center; justify-content: center;}",
+        "@media only screen and (max-width: 767px) {.threeboxss .items:first-of-type, .threeboxss .items:last-of-type {display: none !important; }}"
       ],
       "settings": {
         "heading": "",

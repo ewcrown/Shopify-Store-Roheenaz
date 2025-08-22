@@ -94,8 +94,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% render 'custom-code-body' %}
   {% render 'foxkit-messenger' %}
   {% render 'script-tags' %}
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('.trigger-product-form');
 
-  <script src="{{ 'app.min.js' | asset_url }}" defer="defer"></script>
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const productId = button.dataset.productId;
+
+      // Find the matching <product-form> for this product
+      const formWrapper = document.querySelector(`product-form[data-product-id="${productId}"]`);
+
+      if (!formWrapper) {
+        console.warn(`No <product-form> found for product ID ${productId}`);
+        return;
+      }
+
+      // Click the native hidden submit button
+      const submitBtn = formWrapper.querySelector('form button[name="add"]');
+      if (submitBtn) {
+        submitBtn.click(); // This will trigger the Web Component's AJAX logic
+      } else {
+        console.warn(`No submit button found inside <product-form> for product ID ${productId}`);
+      }
+    });
+  });
+});
+
+  </script>
+ <script src="{{ 'app.min.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'foxkit-app.min.js' | asset_url }}" defer="defer"></script>
 
   <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>

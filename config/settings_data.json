@@ -196,11 +196,14 @@
       },
       "annoucement": {
         "type": "annoucement",
+        "custom_css": [
+          ".announcement-bar__content,.sf-topbar__close {color: #ffffff; background: #000000;}"
+        ],
         "settings": {
           "show_announcement": false,
-          "homepage_only": true,
-          "show_close": true,
-          "message": "<span class=\"font-medium text-[14px]\">Any stitched order placed now will be delivered after EID\n</span>",
+          "homepage_only": false,
+          "show_close": false,
+          "message": "<span class=\"font-medium text-[14px]\">All sale orders will be dispatched the same day. Please note that returns and exchanges are not applicable on sale items.\n</span>",
           "message_link": "",
           "show_divider": false
         }
@@ -247,16 +250,6 @@
           "show_helpful_button": true,
           "attributes": true
         }
-      },
-      "2567389343055140935": {
-        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
-        "disabled": false,
-        "settings": {}
-      },
-      "6610233760104865948": {
-        "type": "shopify://apps/pushowl-brevo-email-push-sms/blocks/pushowl-app-embed-3d2ff2b5/fa20c3ba-38bf-43e0-ba5c-431f6ae07d95",
-        "disabled": false,
-        "settings": {}
       }
     }
   },

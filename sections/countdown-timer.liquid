@@ -76,7 +76,7 @@
   style="--section-padding-top: {{ settings.padding_top }}px; --section-padding-bottom: {{ settings.padding_bottom }}px;"
 >
     <div id="countdown-timer-{{ section.id }}" class="{{ settings.container | strip }} sf__cdt{% if has_bg == false %} section-my{% else %} section-py{% endif %}">
-       <h1>THE LAST CALL - UP TO 50% OFF  </h1> 
+       <h1>is Launching in  </h1> 
       {% if settings.mb_image != blank %}
           <div class="block sm:hidden -mx-4">
             {% render 'responsive-image', image: settings.mb_image %}
@@ -85,7 +85,7 @@
         <div class="sf__cdt-inner flex items-center md:py-0 pb-10 md:pb-12 lg:pb-16{% if settings.mb_image != blank %} pt-8 hide-bg{% else %} pt-16{% endif %} {% if settings.container != 'w-full' %} md:px-28{% endif %}">
           {% render 'countdown-timer', settings: settings, containerId: section.id, content_class: content_class %}
         </div>
-      <h2>The Countdown Begins</h2>
+      <h2>The wait is almost over!</h2>
     </div>
 </section>
 {% elsif template == 'index' %}
@@ -100,8 +100,7 @@
   style="--section-padding-top: {{ settings.padding_top }}px; --section-padding-bottom: {{ settings.padding_bottom }}px;"
 >
     <div id="countdown-timer-{{ section.id }}" class="{{ settings.container | strip }} sf__cdt{% if has_bg == false %} section-my{% else %} section-py{% endif %}">
-       <h1>THE LAST CALL - UP TO 50% OFF  </h1> 
-      
+       <h1>Sale is Launching in  </h1> 
       {% if settings.mb_image != blank %}
           <div class="block sm:hidden -mx-4">
             {% render 'responsive-image', image: settings.mb_image %}
@@ -110,7 +109,7 @@
         <div class="sf__cdt-inner flex items-center md:py-0 pb-10 md:pb-12 lg:pb-16{% if settings.mb_image != blank %} pt-8 hide-bg{% else %} pt-16{% endif %} {% if settings.container != 'w-full' %} md:px-28{% endif %}">
           {% render 'countdown-timer', settings: settings, containerId: section.id, content_class: content_class %}
         </div>
-      <h2>The Countdown Begins</h2>
+      <h2>The wait is almost over!</h2>
     </div>
 
 </section>

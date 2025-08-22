@@ -9,7 +9,22 @@
   Theme Store optional settings
   - Heading: title of the featured collection section
 {%- endcomment -%}
+<style>
 
+.stsicimg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+  .stsicimg video {
+  position: static !important;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  background: #000;
+}
+</style>
 {% liquid
   assign bg_color = section.settings.background_color
   assign has_bg = false
@@ -118,11 +133,34 @@
       {% endif %}
 
 
-<div class="stsicimg">
- <a href="{{ section.settings.link }}">
-            <img class="lazyload lazypreload" src="{{ section.settings.img | img_url: 'master' }}" alt=""/>
-        </a>
+<div class="stsicimg" >
+  <a href="{{ section.settings.link }}">
+    {% if section.settings.video != blank %}
+      <video
+        class="w-full h-full object-cover"
+        controls
+        autoplay
+  muted
+  playsinline
+  loop
+        poster="{{ section.settings.video_thumbnail | img_url: 'master' }}"
+        preload="metadata"
+      >
+        <source src="https://cdn.shopify.com/videos/c/o/v/ecab7c412bbd462f91571f1085bd17ea.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    {% elsif section.settings.img != blank %}
+      <img 
+        class="w-full h-full object-cover lazyload lazypreload"
+        src="{{ section.settings.img | img_url: 'master' }}" 
+        alt=""
+      />
+    {% endif %}
+  </a>
 </div>
+
+
+
 
 
 
@@ -226,6 +264,17 @@
                 "label": "Image"
                 
               },
+    {
+  "type": "video",
+  "id": "video",
+  "label": "Video file"
+},
+{
+  "type": "image_picker",
+  "id": "video_thumbnail",
+  "label": "Video thumbnail fallback"
+},
+
     {
                 "id": "link",
                 "type": "url",

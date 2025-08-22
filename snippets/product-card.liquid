@@ -1,5 +1,20 @@
 {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+<style>/* Hide on desktop, visible on tablet and mobile */
+  .sf__pcard-price-action {
+    flex-direction: column;
+    align-items: baseline;
+}
 
+.hide-desktop,.f-price--sold-out {
+  display: none !important;
+}
+
+@media screen and (max-width: 991px) {
+  .hide-desktop {
+    display: block !important;
+  }
+}
+</style>
 {% liquid
   if card_style == nil or card_style == blank
     assign card_style = settings.pcard_layout
@@ -259,11 +274,20 @@
               {% endif %}
             </div>
           {%- endif -%}
-          {% unless product.tags contains 'coming-soon' %}
+            <div class="badges-ai">
           {%- if settings.show_badge_soldout -%}
             <span class="prod__tag prod__tag--soldout" style="display: none;">{{ 'products.product.sold_out' | t }}</span>
+            
+            {% if on_sale and product.available %}
+              <span class="prod__tag prod__tag--flash-right" style="display: none; display: flex
+;
+    background: #ad0000;
+    color: #fff;
+    font-weight: bold;">{{ compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | floor | append: "% OFF" }}</span>
+              {% endif %}
           {%- endif -%}
-          {% endunless %}
+            
+            </div>
           {%- case card_style -%}
             {%- when '2' -%}
               {%- if settings.show_cart_button or settings.show_quickview_button or settings.show_wishlist_button or settings.show_compare_button -%}
@@ -491,9 +515,73 @@
               </div>
             {% endif %}
           </div>
-          <div class="sf__pcard-price leading-normal">
-            {% render 'product-prices', product: product, is_product_card: true %}
-          </div>
+          <div class="sf__pcard-price-action flex items-center justify-between gap-3">
+            
+  <div class="sf__pcard-price leading-normal {% if product.available == false %}
+hide-price{% endif %}">
+    {% render 'product-prices', product: product, is_product_card: true %}
+  </div>
+
+{% if product.variants.size == 1 and sold_out == false %}
+  <product-form data-notification-type="toast" class="hide-desktop" data-product-id="{{ product.id }}">
+    <form method="post" action="/cart/add" class="product-form">
+      <input type="hidden" name="form_type" value="product">
+      <input type="hidden" name="utf8" value="✓">
+      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <!-- Add more hidden fields if needed -->
+      <button type="submit" name="add" class="hidden">Add to Cart {% render 'cart-svg' %}</button> <!-- hidden button used by JS -->
+    </form>
+  </product-form>
+
+  <!-- Custom visible button -->
+  <button
+    type="button"
+    class="hide-desktop sf__btn-primary trigger-product-form custom-cart-form" style="
+    padding: 5px 0rem;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    text-decoration: none;
+    color: #ffffff;
+    width: 100%;
+    margin-top: 0;
+    background:#000000;
+    text-transform: uppercase;
+    "
+    data-product-id="{{ product.id }}"
+  >
+    Add to Cart
+  </button>
+{% else %}
+  {% if settings.select_option_button_action == 'popup' %}
+        <input hidden name="id" required value="{{ variant_id }}" data-selected-variant="{{ selected_variant_id }}">
+      <button class="hide-desktop f-product-form sf-pqv__button sf__btn sf__btn-secondary sf__btn-white flex-grow" data-product-url="{{ product.url }}" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}" style="
+    padding: 5px 0rem;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    text-decoration: none;
+    color: #ffffff;
+    width: 100%;
+    margin-top: 0;
+    background:#000000;
+    text-transform: uppercase;
+    ">
+        <span>{{ quick_add_text }}</span>
+      </button>
+      {% else %}
+      <input hidden name="id" required value="{{ variant_id }}" data-selected-variant="{{ selected_variant_id }}">
+        <a class="f-product-form sf__btn sf__btn-secondary sf__btn-white flex-grow" href="{{ product.url }}" data-product-id="{{ product.id }}">
+          <span>{{ quick_add_text }}</span>
+        </a>
+      {% endif %}
+{% endif %}
+
+
+</div>
+
+
           <div class="quoil-product-star" data-id="{{ product.id }}" data-product-handle=""></div>
           {% render 'product-card-option', product: product, show_variant_options: show_variant_options %}
         </div>
