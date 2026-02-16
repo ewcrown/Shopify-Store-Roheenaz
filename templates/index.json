@@ -9,520 +9,621 @@
  */
 {
   "sections": {
-    "countdown_timer_p3jXTW": {
-      "type": "countdown-timer",
+    "hero_jVaWmY": {
+      "type": "hero",
+      "blocks": {
+        "text_YLPk4p": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<p>Browse our latest products</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_H9gpTf": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Shop all",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button-secondary",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_YLPk4p",
+        "button_H9gpTf"
+      ],
       "disabled": true,
-      "custom_css": [
-        "h1,h2 {text-align: center;}",
-        ".container {height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}",
-        ".sf__cdt-inner {height: 200px;}",
-        ".container.sf__cdt.section-py {border-bottom: 1px solid #ddd !important; padding-bottom: 2rem;}",
-        ".lg\\:pb-16 {padding-bottom: 0rem;}",
-        "@media only screen and (max-width: 750px) {.pt-16 {padding-top: 0rem; } .block {display: none; }}"
-      ],
-      "name": "Countdown timer",
+      "name": "t:names.hero",
       "settings": {
-        "body_text": "#ffffff",
-        "container": "container",
-        "section_height": "small",
-        "align": "center",
-        "background_color": "#ffffff",
-        "background_image": "shopify://shop_images/sale_page_banner1.jpg",
-        "mb_image": "shopify://shop_images/sale_page_banner_mobile.jpg",
-        "heading": "",
-        "time": "2025-11-27 17:00:00",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "sf__btn-primary",
-        "button_size": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "custom_class": ""
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/Hero.png",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "space-between",
+        "vertical_alignment": "flex-end",
+        "align_baseline": true,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 24,
+        "section_width": "page-width",
+        "section_height": "full-screen",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-6",
+        "toggle_overlay": true,
+        "overlay_color": "#12121266",
+        "overlay_style": "solid",
+        "gradient_direction": "to bottom",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 100,
+        "padding-block-end": 72
       }
     },
-    "1621243260e1af0c20": {
-      "type": "slider",
+    "custom_hero_banner_section_X9etXV": {
+      "type": "custom-hero-banner-section",
       "blocks": {
-        "slider_item_BQ4zUj": {
-          "type": "slider_item",
+        "slide_TWxcTT": {
+          "type": "slide",
           "settings": {
-            "background": "shopify://shop_images/desktop_shopnow.jpg",
-            "mb_background": "shopify://shop_images/mobile_shopnow.jpg",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/summer-reveire-luxury-lawn",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
+            "image": "shopify://shop_images/Hero.png"
           }
         },
-        "slider_item_egAjFP": {
-          "type": "slider_item",
+        "slide_DHPdid": {
+          "type": "slide",
           "settings": {
-            "background": "shopify://shop_images/1920x900-copy_jpg_191efd15-d7f0-4cf7-a9e9-b72907ea735d.jpg",
-            "mb_background": "shopify://shop_images/760x606_jpg.jpg",
-            "content_in_container": false,
-            "content_position": "center top",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "https://roheenaz.com/collections/whispered-florals",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
+            "image": "shopify://shop_images/Hero.png"
           }
         },
-        "slider_item_rgWc4R": {
-          "type": "slider_item",
+        "slide_J9bPi9": {
+          "type": "slide",
           "settings": {
-            "background": "shopify://shop_images/Deskop_banner.png",
-            "mb_background": "shopify://shop_images/760x606_67f6198a-2d75-44b3-8ded-9fba305eb188.png",
-            "content_in_container": false,
-            "content_position": "center top",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/rosette",
-            "button_text": "",
-            "button_link": "#",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
-        "slider_item_6Ek76k": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/aangan.jpg",
-            "mb_background": "shopify://shop_images/angan.jpg",
-            "content_in_container": false,
-            "content_position": "center top",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/aangan-chiffon-collection25",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
-        "slider_item_FXnt7G": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/aezal.jpg",
-            "mb_background": "shopify://shop_images/aezel.jpg",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/aezel-unstitched-emb-cambric",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "New Collection",
-            "footer_button": "Shop Now",
-            "footer_link": ""
-          }
-        },
-        "slider_item_L6a7XF": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/pareesa_9b2eb6b4-40d8-414b-a728-4e2d71256bab.jpg",
-            "mb_background": "shopify://shop_images/Mobile-760-x-606-_pareesa.jpg",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/pareesa-printed-cambric",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "New Collection",
-            "footer_button": "Shop Now",
-            "footer_link": ""
-          }
-        },
-        "slider_item_LzXrby": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/1920X900.png",
-            "mb_background": "shopify://shop_images/760X606.png",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/trending-festive",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "New Collection",
-            "footer_button": "Shop Now",
-            "footer_link": ""
-          }
-        },
-        "slider_item_btQ9Cb": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/1920x900_2_3c923ab1-b6c0-4bf8-be59-aa771691a9c4.jpg",
-            "mb_background": "shopify://shop_images/760_x_606_2.jpg",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/summer-reverie-luxury-lawn",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
-        "slider_item_4jEQRG": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/1920X900_2a3c470d-1552-4220-b32a-476f9eefe692.png",
-            "mb_background": "shopify://shop_images/760X606_b676b25c-7907-4756-8b95-8b9302b89059.png",
-            "content_in_container": false,
-            "content_position": "center top",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/aleira-luxury-pret",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
-        "slider_item_LPVcrV": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/Desktop_copy_3_84558de1-84cc-4570-a6d8-037516e44890.jpg",
-            "mb_background": "shopify://shop_images/Mobile_copy_3_c5c84299-59e9-4c9a-9f44-841ca4d3f885.jpg",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/flanerie-lawn25",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
+            "image": "shopify://shop_images/Hero.png"
           }
         }
       },
       "block_order": [
-        "slider_item_BQ4zUj",
-        "slider_item_egAjFP",
-        "slider_item_rgWc4R",
-        "slider_item_6Ek76k",
-        "slider_item_FXnt7G",
-        "slider_item_L6a7XF",
-        "slider_item_LzXrby",
-        "slider_item_btQ9Cb",
-        "slider_item_4jEQRG",
-        "slider_item_LPVcrV"
+        "slide_TWxcTT",
+        "slide_DHPdid",
+        "slide_J9bPi9"
       ],
+      "name": "Hero Banner",
+      "settings": {}
+    },
+    "rohe_feature_product_gWwVVE": {
+      "type": "rohe-feature-product",
+      "name": "Roheenaz Slider",
       "settings": {
-        "container": "container-fluid",
-        "slideshow_height": "fullscreen",
-        "show_overlay": false,
-        "dots_position": "right",
-        "dots_color": "dark",
-        "show_dots": true,
-        "show_arrows": false,
-        "autorotate": true,
-        "autorotate_speed": 3,
-        "use_content_above": false,
-        "custom_class": ""
+        "header_title": "New in",
+        "collection": "aangan-chiffon",
+        "products_to_show": 8
       }
     },
-    "home_static_blocks_cQcC3K": {
-      "type": "HOME-STATIC-BLOCKS",
+    "media_grid_section_fFgGQH": {
+      "type": "media-grid-section",
+      "name": "Media Triple Grid",
+      "settings": {
+        "left_image": "shopify://shop_images/Image-2.png",
+        "center_video": "shopify://files/videos/get (2).mp4",
+        "right_image": "shopify://shop_images/Image-1.png"
+      }
+    },
+    "collection_list_Xt9NLe": {
+      "type": "collection-list",
       "blocks": {
-        "select_qNTG3P": {
-          "type": "select",
-          "disabled": true,
+        "group_pUENjM": {
+          "type": "group",
+          "name": "t:names.header",
           "settings": {
-            "link": "shopify://collections/flanerie-lawn25",
-            "img": "shopify://shop_images/RUNSE240108A-2_0209ca62-1956-4a2a-bffd-ce9d42274fc3.jpg",
-            "img_mobile": "shopify://shop_images/FB-BANNER.png",
-            "title": "LAWN",
-            "btntxt": ""
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 40,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_CCEF64": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<h3>CURATED THIS SEASON</h3>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_CbPtz6": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<p>A blend of classic silhouettes and our signature shine, embodied by enigmatic sequins.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_CCEF64",
+            "text_CbPtz6"
+          ]
+        },
+        "static-collection-card": {
+          "type": "_collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
+          "settings": {
+            "placement": "on_image",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "flex-end",
+            "collection_card_gap": 0,
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0
+          },
+          "blocks": {
+            "collection_title_MDxBET": {
+              "type": "collection-title",
+              "name": "t:names.collection_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "name": "t:names.collection_card_image",
+              "static": true,
+              "settings": {
+                "image_ratio": "adapt",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection_title_MDxBET"
+          ]
+        }
+      },
+      "block_order": [
+        "group_pUENjM"
+      ],
+      "name": "t:names.collections_grid",
+      "settings": {
+        "collection_list": [
+          "printed",
+          "luxury-lawn",
+          "festive"
+        ],
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 3,
+        "mobile_columns": "1",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 10,
+        "bento_gap": 8,
+        "rows_gap": 0,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 0,
+        "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+        "padding-block-start": 80,
+        "padding-block-end": 30
+      }
+    },
+    "collection_list_4nz77g": {
+      "type": "collection-list",
+      "blocks": {
+        "group_CLkMw6": {
+          "type": "group",
+          "name": "t:names.header",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 30,
+            "padding-block-end": 30,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_gcMi7D": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<h4>Shop by collection</h4>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_HJD3HL": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h4>A blend of classic silhouettes and our signature shine, embodied by enigmatic sequins.</h4>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h6",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_gcMi7D",
+            "text_HJD3HL"
+          ]
+        },
+        "static-collection-card": {
+          "type": "_collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
+          "settings": {
+            "placement": "on_image",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "flex-end",
+            "collection_card_gap": 0,
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0
+          },
+          "blocks": {
+            "text_AqF4mJ": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_rHpQUc": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>{{ closest.collection.title }}</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "name": "t:names.collection_card_image",
+              "static": true,
+              "settings": {
+                "image_ratio": "square",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_AqF4mJ",
+            "text_rHpQUc"
+          ]
+        }
+      },
+      "block_order": [
+        "group_CLkMw6"
+      ],
+      "name": "t:names.collections_grid",
+      "settings": {
+        "collection_list": [
+          "printed",
+          "luxury-lawn",
+          "festive"
+        ],
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 3,
+        "mobile_columns": "1",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 10,
+        "bento_gap": 8,
+        "rows_gap": 8,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "full-width",
+        "gap": 0,
+        "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+        "padding-block-start": 0,
+        "padding-block-end": 30
+      }
+    },
+    "rohe_feature_product_cVLPkr": {
+      "type": "rohe-feature-product",
+      "name": "Roheenaz Slider",
+      "settings": {
+        "header_title": "New in",
+        "collection": "aangan-chiffon",
+        "products_to_show": 8
+      }
+    },
+    "new_collection_ByQ6tY": {
+      "type": "new-collection",
+      "blocks": {
+        "product_TaWRUY": {
+          "type": "product",
+          "settings": {
+            "featured_product": "wafa-copy-copy-copy",
+            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "external_video_url": ""
           }
         },
-        "select_hL7UAR": {
-          "type": "select",
+        "product_4TdViD": {
+          "type": "product",
           "settings": {
-            "link": "shopify://collections/summer-reveire-luxury-lawn",
-            "img": "shopify://shop_images/960x770-2.jpg",
-            "img_mobile": "shopify://shop_images/960x770-2.jpg",
-            "title": "Luxury lawn",
-            "btntxt": ""
+            "featured_product": "wafa-copy-copy-copy-copy-copy",
+            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "external_video_url": ""
           }
         },
-        "select_EeMVnE": {
-          "type": "select",
+        "product_EcMyBc": {
+          "type": "product",
           "settings": {
-            "link": "shopify://collections/luxury-chiffon",
-            "img": "shopify://shop_images/festive.webp",
-            "img_mobile": "shopify://shop_images/festive.webp",
-            "title": "LUXURY FESTIVE",
-            "btntxt": ""
+            "featured_product": "wafa",
+            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "external_video_url": ""
+          }
+        },
+        "product_ELx49f": {
+          "type": "product",
+          "settings": {
+            "featured_product": "wafa-copy-copy",
+            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "external_video_url": ""
           }
         }
       },
       "block_order": [
-        "select_qNTG3P",
-        "select_hL7UAR",
-        "select_EeMVnE"
+        "product_TaWRUY",
+        "product_4TdViD",
+        "product_EcMyBc",
+        "product_ELx49f"
       ],
+      "name": "New Collection Slider",
       "settings": {
-        "heading": "CATEGORIES",
-        "addclassnew": "towboxs withtxt"
-      }
-    },
-    "ew_simple_image_banner_JfcUmA": {
-      "type": "ew-simple-image-banner",
-      "name": "<> Image Banner with Link",
-      "settings": {
-        "banner_image": "shopify://shop_images/CATEGORY_-_middle.jpg",
-        "heading": "Summer reverie | luxury lawn",
-        "link_url": "shopify://collections/summer-reveire-luxury-lawn",
-        "alt_text": "Promotional banner"
-      }
-    },
-    "home_collection_yJj4d7": {
-      "type": "home-collection",
-      "custom_css": [
-        ".container-fluid.section-my {max-width: 1500px; margin: 0 auto; font-size: 0; border-bottom: 1px solid #8d8d8d; padding-bottom: 3%;}"
-      ],
-      "settings": {
-        "img": "shopify://shop_images/NEW-ARRIVAL_cc164f76-9a1b-4756-9cd1-cf90399a7fb4.jpg",
-        "video_thumbnail": "shopify://shop_images/NEW-ARRIVAL_cc164f76-9a1b-4756-9cd1-cf90399a7fb4.jpg",
-        "link": "shopify://collections/summer-reveire-luxury-lawn",
-        "heading": "New Arrivals",
-        "subheading": "Update your wardrobe with our latest pieces crafted\nto blend comfort and sophistication\n<a class=\"VIEWbtn\" href=\"/collections/summer-reveire-luxury-lawn\">VIEW ALL</a>",
-        "description": "",
-        "header_alignment": "center",
-        "container": "container-fluid",
-        "background_color": "rgba(0,0,0,0)",
-        "collection": "summer-reveire-luxury-lawn",
-        "enable_flashsale": false,
-        "show_countdown": false,
-        "product_to_show": 12,
-        "items_per_row": 2,
-        "item_gap": 30,
-        "pcard_layout": "",
-        "pcard_image_ratio": "",
-        "show_vendor": false,
-        "hide_title": false,
-        "enable_slider": true,
-        "show_pagination": false,
-        "show_navigation": true,
-        "button_type": "link",
-        "button_text": "Shop more",
-        "button_style": "sf__btn-primary",
-        "button_size": "",
-        "infinite_load": false,
-        "max_page_load": 3,
-        "use_scroll_mobile": false,
-        "item_gap_mobile": 14,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "custom_class": ""
-      }
-    },
-    "featured_collection_kwQiLY": {
-      "type": "featured-collection",
-      "custom_css": [
-        ".container-fluid.section-my {max-width: 100%; margin: 0 auto;}",
-        "button.sf-slider__controls-button.swiper-button-prev.sf-slider__controls-prev.border.sm\\:hover\\:border-black.rounded-full.cursor-pointer.mx-2 {display: none;}"
-      ],
-      "settings": {
-        "heading": "TOP SELLERS",
-        "subheading": "",
-        "description": "",
-        "header_alignment": "center",
-        "container": "container-fluid",
-        "background_color": "rgba(0,0,0,0)",
-        "collection": "trending-festive",
-        "enable_flashsale": false,
-        "show_countdown": false,
-        "product_to_show": 8,
-        "items_per_row": 4,
-        "item_gap": 12,
-        "pcard_layout": "",
-        "pcard_image_ratio": "",
-        "show_vendor": false,
-        "hide_title": false,
-        "enable_slider": false,
-        "show_pagination": false,
-        "show_navigation": true,
-        "button_type": "link",
-        "button_text": "Shop more",
-        "button_style": "sf__btn-primary",
-        "button_size": "",
-        "infinite_load": false,
-        "max_page_load": 3,
-        "use_scroll_mobile": false,
-        "item_gap_mobile": 14,
-        "padding_top": 0,
-        "padding_bottom": 30,
-        "custom_class": ""
-      }
-    },
-    "home_video_block_bzJjat": {
-      "type": "HOME-VIDEO-BLOCK",
-      "blocks": {
-        "select_BMENih": {
-          "type": "select",
-          "settings": {
-            "link": "shopify://collections/summer-reveire-luxury-lawn",
-            "img": "shopify://shop_images/thumbnail-left_2fe42893-0a8d-44e6-968c-c823ef2a18d1.jpg",
-            "img_mobile": "shopify://shop_images/thumbnail-left_2fe42893-0a8d-44e6-968c-c823ef2a18d1.jpg",
-            "title": ""
-          }
-        },
-        "select_7wdeHm": {
-          "type": "select",
-          "settings": {
-            "link": "#.",
-            "img": "shopify://shop_images/new_640_x_920_Thumbnail.jpg",
-            "img_mobile": "shopify://shop_images/new_640_x_920_Thumbnail.jpg",
-            "title": "<video id=\"\" controls=\"\" poster=\"//roheenaz.com/ cdn.shopify.com/s/files/1/0572/5401/9233/files/640_x_920_Thumbnail_f461806a-3869-41cf-9563-1d4ec3aa8d89.jpg?v=1756194579?v=1752408020\" loop autoplay muted>\n              <source src=\"https://cdn.shopify.com/videos/c/o/v/7c92a082adcd43779e3214fdd4f5b872.mp4\">\n              <source src=\"\" type=\"video/webm\">\n\n            </source></source></video>"
-          }
-        },
-        "select_99q8yJ": {
-          "type": "select",
-          "settings": {
-            "link": "shopify://collections/summer-reveire-luxury-lawn",
-            "img": "shopify://shop_images/thumbnail-right_3a930f9f-72d2-448c-b114-ad8269567e54.jpg",
-            "img_mobile": "shopify://shop_images/thumbnail-right_3a930f9f-72d2-448c-b114-ad8269567e54.jpg",
-            "title": ""
-          }
-        }
-      },
-      "block_order": [
-        "select_BMENih",
-        "select_7wdeHm",
-        "select_99q8yJ"
-      ],
-      "custom_css": [
-        ".threeboxss {display: flex;}",
-        ".threeboxss .items {display: flex; margin: auto; align-items: center; justify-content: center;}",
-        "@media only screen and (max-width: 767px) {.threeboxss .items:first-of-type, .threeboxss .items:last-of-type {display: none !important; }}"
-      ],
-      "settings": {
-        "heading": "",
-        "addclassnew": "threeboxss"
-      }
-    },
-    "custom_liquid_U6F9AL": {
-      "type": "custom-liquid",
-      "name": "Custom liquid",
-      "settings": {
-        "custom_liquid": "<style > \n.prod__tag--soldout, span.prod__tag--flash-left {\n    align-items: center;\n    background: #fff;\n    border-radius: 0;\n    color: #202223;\n    font-size: 8px;\n    height: 24px;\n    justify-content: center;\n    line-height: 12px;\n    padding: 0 5px;\n    position: absolute;\n    text-align: center;\n    top: 5px;\n    white-space: normal;\n    width: 80px;\n    left: 5px;\n    font-weight: 200;\n}\n\n@media (max-width: 480px) {\n    .prod__tag--soldout,\n    span.prod__tag--flash-left {\n        font-size: 5px;\n        height: 20px;\n        line-height: 10px;\n        width: 65px;\n        padding: 0 4px;\n        top: 4px;\n        left: 4px;\n    }\n}\n\n\n\n</style>",
-        "custom_class": ""
+        "heading": "Trending Festive",
+        "subheading": "Styles selected with you in mind. Explore the latest trends.",
+        "enable_videos": true,
+        "show_mute_button": true
       }
     }
   },
   "order": [
-    "countdown_timer_p3jXTW",
-    "1621243260e1af0c20",
-    "home_static_blocks_cQcC3K",
-    "ew_simple_image_banner_JfcUmA",
-    "home_collection_yJj4d7",
-    "featured_collection_kwQiLY",
-    "home_video_block_bzJjat",
-    "custom_liquid_U6F9AL"
+    "hero_jVaWmY",
+    "custom_hero_banner_section_X9etXV",
+    "rohe_feature_product_gWwVVE",
+    "media_grid_section_fFgGQH",
+    "collection_list_Xt9NLe",
+    "collection_list_4nz77g",
+    "rohe_feature_product_cVLPkr",
+    "new_collection_ByQ6tY"
   ]
 }

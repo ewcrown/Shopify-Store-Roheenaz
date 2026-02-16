@@ -1,59 +1,162 @@
-{{ 'component-collection-card.css' | asset_url | stylesheet_tag }}
+{%- doc -%}
+  This snippet is used to render a collection card.
+  To be used inside a block to inherit the block object settings.
 
-<div class="sf-column{% if enable_slider %} swiper-slide{% endif %}">
-    <div class="collection-card collection-card--{{ card_style }}{% if hover_effect != 'none' %} collection-card--hover-{{ hover_effect }}{% endif %}">
-        <div class="collection-card__inner{% if card_style == 'boxed' %} h-full bg-white py-6 md:py-8 px-4 md:px-9{% endif %}">
-            {% if card_style == 'boxed' %}
-                <h3 class="hover:underline mb-4 block text-{{ text_alignment }}">
-                    <a class="text-sm md:text-xl font-medium text-black not-change" href="{{ collection.url }}">
-                      {{ title | default: collection.title | upcase }}
-                    </a>
-                </h3>
-            {% endif %}
-            {% assign aspect_ratio = image.aspect_ratio %}
-            {% if image_rounded %}
-                {% assign aspect_ratio = 1 %}
-            {% endif %}
-            <a href="{{ collection.url | default: "#" }}" class="collection-card__image block overflow-hidden w-full{% if image_rounded %} collection-card__image-rounded rounded-full{% endif %}">
-                {% if image != blank %}
-                    {% render 'responsive-image',
-                            image: image,
-                            image_class: 'w-full',
-                            aspect_ratio: aspect_ratio
-                    %}
-                {% else %}
-                    <div style="--aspect-ratio: 1/1;">
-                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-                        {{ 'collection-' | append: current | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full w-full h-full object-cover' }}
-                    </div>
-                {% endif %}
-            </a>
-            <div class="collection-card__info md:mt-5 mt-2.5 text-{{ text_alignment }}">
-                {% if card_style == 'standard' or card_style == 'inside' %}
-                    <h3>
-                        <a class="{% if card_style == 'inside' %}text-black {% endif %}text-lg md:text-xl font-medium block" href="{{ collection.url | default: "#" }}">
-                            {{ title | default: collection.title }}
-                            {% if show_product_count == true and card_style == 'standard' and section.settings.count_inline_title == true %}
-                                <sup class="font-semibold text-xs">{{ collection.all_products_count }}</sup>
-                            {% endif %}
-                        </a>
-                    </h3>
-                    {% if show_product_count == true and card_style == 'standard' and section.settings.count_inline_title == false %}
-                        <p class="text-base not-change text-color-subtext">{{ 'collections.general.collection_items' | t : title: collection.all_products_count }}</p>
-                    {% endif %}
-                    {% if show_product_count == true and card_style == 'inside' %}
-                        <p class="mt-4 text-base not-change text-color-subtext">{{ 'collections.general.collection_items' | t : title: collection.all_products_count }}</p>
-                    {% endif %}
-                {% endif %}
-                {% if card_style == 'inside' %}
-                    <a class="sf__btn sf__btn-white btn w-[45px] h-[45px] justify-center items-center" href="{{ collection.url }}">
-                        <svg class="not-change" xmlns="http://www.w3.org/2000/svg" width="14" height="13" fill="none" viewBox="0 0 14 13"><path class="not-change" fill="currentColor" d="M6.78594.789062c.16406-.145833.31901-.145833.46484 0L12.9656 6.53125c.1641.14583.1641.29167 0 .4375L7.25078 12.7109c-.14583.1459-.30078.1459-.46484 0l-.54688-.5468c-.05469-.0547-.08203-.1276-.08203-.2188 0-.0911.02734-.1732.08203-.2461l4.23824-4.23826H1.15312c-.218745 0-.32812-.10938-.32812-.32813v-.76562c0-.21875.109375-.32813.32812-.32813h9.32418L6.23906 1.80078c-.14583-.16406-.14583-.31901 0-.46484l.54688-.546878z"/></svg>
-                    </a>
-                {% endif %}
-                {% if show_product_count == true and card_style == 'boxed' %}
-                    <p class="mt-4 text-base not-change text-color-subtext text-{{ text_alignment }}">{{ 'collections.general.collection_items' | t : title: collection.all_products_count }}</p>
-                {% endif %}
-            </div>
-        </div>
+  @param {string} card_image - The image to display in the collection card
+  @param {string} children - The content to render inside the collection card
+  @param {object} collection - The collection to render the card for
+  @param {object} block - The block object
+  @param {object} section - The section object
+
+  @example
+  {% render 'collection-card',
+    card_image: card_image,
+    children: children,
+    block: block,
+    collection: collection,
+    section: section
+  %}
+{%- enddoc -%}
+
+{% style %}
+  {% if request.visual_preview_mode %}
+    .collection-card {
+      min-width: 250px;
+    }
+  {% endif %}
+{% endstyle %}
+
+{% liquid
+  assign onboarding = false
+  assign block_settings = block.settings
+
+  if collection == blank
+    assign onboarding = true
+  endif
+%}
+
+<div
+  class="
+    collection-card
+    border-style
+    {% if block_settings.placement == 'on_image' %}collection-card--image-bg{% endif %}
+    {% if section.settings.layout_type == 'bento' %}collection-card--image-height-fixed{% endif %}
+    {% if section.settings.layout_type == 'editorial' %}collection-card--flexible-aspect-ratio{% endif %}
+    {% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}
+  "
+  data-block-id="{{ block.id }}"
+  {% if onboarding %}
+    data-placeholder="true"
+  {% endif %}
+  style="
+    {% render 'border-override', settings: block_settings %}
+    --horizontal-alignment: {{ block_settings.horizontal_alignment }};
+    --vertical-alignment: {{ block_settings.vertical_alignment }};
+    --background-overlay-color: {{ block_settings.overlay_color }};
+    --gap: {{ block_settings.collection_card_gap }}px;
+  "
+  {{- block.shopify_attributes -}}
+>
+  <a
+    class="collection-card__link"
+    {% unless onboarding %}
+      href="{{ collection.url }}"
+    {% endunless %}
+  >
+    <span class="visually-hidden">{{ collection.title }}</span>
+  </a>
+  <div class="collection-card__inner">
+    {{ card_image }}
+    <div class="collection-card__content layout-panel-flex--column">
+      {{ children }}
     </div>
+  </div>
 </div>
+
+{% stylesheet %}
+  .collection-card {
+    --fixed-card-height: var(--height-small);
+
+    flex: 1 1 var(--card-width-small);
+  }
+
+  .collection-card > svg {
+    height: 100%;
+    width: 100%;
+    aspect-ratio: var(--ratio);
+  }
+
+  .collection-card--image-bg .collection-card__inner {
+    height: 100%;
+  }
+
+  .collection-card__inner {
+    gap: var(--gap);
+
+    a,
+    button {
+      /* only allow interactive elements to be clickable separate from .collection-card__link */
+      pointer-events: auto;
+    }
+  }
+
+  /* allow all blocks to be selectable in editor preview */
+  .shopify-design-mode .collection-card__content * {
+    pointer-events: auto;
+  }
+
+  .collection-card__content {
+    max-width: 100%;
+    --flex-wrap: wrap;
+  }
+
+  /* Nested image block rules */
+
+  .collection-card.collection-card--image-bg {
+    aspect-ratio: var(--ratio);
+  }
+
+  .collection-card.collection-card--image-bg .collection-card__content {
+    padding: var(--padding-lg);
+  }
+
+  .collection-card--image-height-fixed {
+    height: 100%;
+  }
+
+  /* Bento layout rules */
+  .collection-card--image-height-fixed .collection-card__image {
+    height: var(--fixed-card-height);
+    width: 100%;
+  }
+
+  .collection-card--image-height-fixed.collection-card--image-bg {
+    height: var(--fixed-card-height);
+    aspect-ratio: unset;
+  }
+
+  .collection-card__image .image-block__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+  }
+
+  .collection-card--image-bg .collection-card__image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .collection-card__image svg {
+    height: 100%;
+    width: 100%;
+  }
+
+  .resource-list:not(.hidden--desktop) .collection-card--flexible-aspect-ratio {
+    &.collection-card.collection-card--image-bg,
+    &.collection-card .placeholder-svg {
+      aspect-ratio: 99;
+    }
+  }
+{% endstylesheet %}

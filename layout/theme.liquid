@@ -1,164 +1,136 @@
-{%- capture body_classes -%}
-template-{{ template.name | handle }} {{ template.name }}-{{ template.suffix }} {{ template.name | append: '-' | append: handle }} {% if cart.item_count == 0 %}cart-empty{% endif %}
-{%- endcapture -%}
-
-{% liquid
-  assign enable_rtl = settings.enable_rtl
-  assign language_support_rtl = settings.language_support_rtl
-  if enable_rtl and language_support_rtl != blank
-    assign shop_locale = localization.language.iso_code
-    assign language_support_rtl_list = language_support_rtl | split: ','
-    assign is_rtl = language_support_rtl_list | where: shop_locale
-    if is_rtl.size > 0
-      assign enable_rtl = true
-    else
-      assign enable_rtl = false
-    endif
-  endif
-%}
 <!doctype html>
 <html
-  class="no-js supports-no-cookies"
+  {% if request.design_mode %}
+    class="shopify-design-mode"
+  {% endif %}
   lang="{{ request.locale.iso_code }}"
-  data-template="{{ template.name }}"
-  {% if enable_rtl %}dir="rtl"{% endif %}
 >
-  <link href="
-https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
-" rel="stylesheet">
+  <head>
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
 
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
-	<meta name="theme-color" content="{{ settings.color_primary }}">
+    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
+    {% if settings.transition_to_main_product or settings.page_transition_enabled %}
+      <link
+        rel="expect"
+        href="#MainContent"
+        blocking="render"
+        id="view-transition-render-blocker"
+      >
+    {% endif %}
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css"
+      />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
 
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WK5C77V');</script>
-<!-- End Google Tag Manager -->
+      {%- render 'meta-tags' -%}
+      {%- render 'stylesheets' -%}
+      {%- render 'fonts' -%}
+      {%- render 'scripts' -%}
+      {%- render 'theme-styles-variables' -%}
+      {%- render 'color-schemes' -%}
 
-  {%- liquid
-    render 'preload'
-    render 'SEO'
-    render 'social-meta-tags'
-    render 'font-face'
-  -%}
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
 
-  {% render 'critical-css' %}
-  {% render 'critical-scripts' %}
-  {% render 'custom-code-head' %}
-
-  {{ 'theme.css' | asset_url | stylesheet_tag }}
-    {{ 'header.css' | asset_url | stylesheet_tag }}
-  {{ 'chunk.css' | asset_url | stylesheet_tag }}
-  {{ 'ew-styles.css' | asset_url | stylesheet_tag }}
-
-  {% render 'style-tags' %}
-
-  <script src="{{ 'theme-global.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'product-form.min.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'lazy-image.min.js' | asset_url }}" defer="defer"></script>
+    {{ content_for_header }}
+    
+    {{ 'ad-style.css' | asset_url | stylesheet_tag }}
+    
+    {% if template == "index" %}
+      {{ 'index-header.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+  </head>
   
-  {{ content_for_header }}
-</head>
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+    <div id="header-group">
+      {% sections 'header-group' %}
+    </div>
+    
+    <script>
+      // Inline header height calculation to prevent layout shift
+      // Note: Updates in calculateHeaderGroupHeight() and updateTransparentHeaderOffset()utilities.js should be kept in sync with this function
+      (function setHeaderHeighCustomProperties() {
+        /*
+        * Header calculation functions for maintaining CSS variables
+        * Mimic calculateHeaderGroupHeight() in utilities.js
+        */
+        const header = document.querySelector('header-component');
+        const headerGroup = document.querySelector('#header-group');
+        const hasHeaderSection = headerGroup?.querySelector('.header-section');
+        
+        if (!header || !headerGroup) return;
+        
+        const headerHeight = header.offsetHeight;
+        
+        // Calculate the total height of the header group
+        let headerGroupHeight = 0;
+        const children = headerGroup.children;
+        for (let i = 0; i < children.length; i++) {
+          const element = children[i];
+          if (element === header || !(element instanceof HTMLElement)) continue;
+          headerGroupHeight += element.offsetHeight;
+        }
+        
+        // Check for transparent header special case
+        if (header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+          headerGroupHeight += headerHeight;
+        }
+        
+        // Set CSS variables
+        document.body.style.setProperty('--header-height', `${headerHeight}px`);
+        document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
+        
+        /**
+        * Updates CSS custom properties for transparent header offset calculation
+        * Mimic updateTransparentHeaderOffset() in utilities.js
+        */
+        
+        if (!hasHeaderSection || !header?.hasAttribute('transparent')) {
+          document.body.style.setProperty('--transparent-header-offset-boolean', '0');
+          return;
+        }
+        
+        const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
+        
+        const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
+        document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
+      })();
+    </script>
+    
+    <main
+      id="MainContent"
+      class="content-for-layout"
+      role="main"
+      data-page-transition-enabled="{{ settings.page_transition_enabled }}"
+      data-product-transition="{{ settings.transition_to_main_product }}"
+      data-template="{{ template }}"
+    >
+      {{ content_for_layout }}
+    </main>
+    
+    {% sections 'footer-group' %}
+    
+    {% render 'search-modal' %}
+    
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% render 'quick-add-modal' %}
+    {% endif %}
+    
+    {% if template == 'index' %}
+      {{ 'ad-script.js' | asset_url | script_tag }}
+    {% endif %}
   
-<style>
-  {% render 'color-variables' %}
-  button.scd__checkout {
-    margin-bottom: 0.5rem;
-}
-</style>
-<body
-  id="sf-theme"
-  class="{{ body_classes }} relative min-h-screen{% if customer %} customer-logged-in{% endif %}"
-  {% if template.name == 'product' %}data-product-id="{{ product.id }}"{% endif %}
->
-<div class="mbwrapper">
-  
-  {% render 'theme-data' %}
-  {% section 'annoucement' %}
-  {% section 'header' %}
-  {% render 'scroll-top-button' %}
-
-  <main role="main" id="MainContent">
-    {{ content_for_layout }}
-    <div id="cart-drawer-container"></div>
-  </main>
-
-  {%- liquid
-    section 'footer'
-  -%}
-
-  {% section 'mobile-sticky-bar' %}
-
-  {% render 'custom-code-body' %}
-  {% render 'foxkit-messenger' %}
-  {% render 'script-tags' %}
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const buttons = document.querySelectorAll('.trigger-product-form');
-
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const productId = button.dataset.productId;
-
-      // Find the matching <product-form> for this product
-      const formWrapper = document.querySelector(`product-form[data-product-id="${productId}"]`);
-
-      if (!formWrapper) {
-        console.warn(`No <product-form> found for product ID ${productId}`);
-        return;
-      }
-
-      // Click the native hidden submit button
-      const submitBtn = formWrapper.querySelector('form button[name="add"]');
-      if (submitBtn) {
-        submitBtn.click(); // This will trigger the Web Component's AJAX logic
-      } else {
-        console.warn(`No submit button found inside <product-form> for product ID ${productId}`);
-      }
-    });
-  });
-});
-
-  </script>
- <script src="{{ 'app.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'foxkit-app.min.js' | asset_url }}" defer="defer"></script>
-
-  <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'product-card-swatch.min.js' | asset_url }}" defer="defer"></script>
-
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  function nukePredictiveCache() {
-    const ps = window.MinimogTheme?.Search?.predictiveSearch;
-    if (!ps) return;
-
-    // kill existing cache contents
-    if (ps.cache?.clear) {
-      ps.cache.clear();
-    }
-
-    // override methods so nothing ever sticks
-    ps.cache.get = () => undefined;
-    ps.cache.set = () => {};
-    console.info('[PredictiveSearch] cache disabled');
-  }
-
-  // run now and whenever predictive search is initialized
-  nukePredictiveCache();
-  document.addEventListener('click', nukePredictiveCache, { once: true });
-});
-</script>
-</div>
-<script src="
-https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js
-"></script>
-<script src="{{ 'splide.js' | asset_url }}" defer></script>
-
-</body>
+    
+    <!-- Splide JS (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+  </body>
 </html>

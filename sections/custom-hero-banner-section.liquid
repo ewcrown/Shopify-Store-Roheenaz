@@ -1,0 +1,67 @@
+ 
+<section class="splide hero-slider" id="splide-{{ section.id }}" aria-label="Hero Banner">
+    <div class="splide__track">
+        <ul class="splide__list">
+            {% for block in section.blocks %}
+                <li class="splide__slide" {{ block.shopify_attributes }}>
+                    <div class="hero-slide-content">
+                        {% if block.settings.image != blank %}
+                            <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt }}">
+                        {% endif %}
+                        
+                        <div class="hero-content-wrapper">
+                             <div class="inner-content-box">
+                              
+                             </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new Splide('#splide-{{ section.id }}', {
+            type   : 'fade',      
+            drag   : true,
+            pauseOnHover: false,
+            arrows : false,      
+            pagination: false,   
+            rewind : true,
+            speed  : 1000,       
+            autoplay: true,
+            interval: 2000,      
+            intersection: {
+                inView: { autoplay: true },
+                outView: { autoplay: false },
+            },
+        }).mount();
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Hero Banner Slider",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Select Slide Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+    }
+  ]
+}
+{% endschema %}

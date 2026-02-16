@@ -1,0 +1,181 @@
+<div class="rohe-collection-wrapper">
+<div class="section section--full-width-margin section--page-width">    
+    <div class="action-bar">
+        <div class="bar-item bar-left">
+            <button id="filterToggle" class="filter-trigger">
+                <span id="filterIcon">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M3.5 8.16667H7M3.5 19.8333H10.5M21 19.8333L24.5 19.8333M17.5 8.16667L24.5 8.16667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10.5" cy="8.16667" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="19.8333" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                </span>
+                <span class="btn-text">FILTERS</span>
+            </button>
+        </div>
+        <header class="rohe-main--desktop-header">
+            <h1 class="main-collection--desktop-title main-collection-title">{{ collection.title }}</h1>
+        </header>
+        
+        <div class="bar-item bar-center mobile-only">
+            <div class="grid-controls-mobile">
+                <div class="g-icon-m" data-cols="1"><span></span></div>
+                <div class="g-icon-m active" data-cols="2"><span></span><span></span></div>
+            </div>
+        </div>
+        
+        <div class="bar-item bar-right">
+            <div class="action-right-content">
+                <div class="grid-controls desktop-only">
+                    <div class="g-icon active" data-cols="4"><span></span><span></span><span></span><span></span></div>
+                    <div class="g-icon" data-cols="3"><span></span><span></span><span></span></div>
+                </div>
+                
+                <div class="sort-wrapper">
+                    <button id="sortBtn" class="filter-trigger">
+                        <span class="btn-text">SORT BY</span>
+                        <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="black" stroke-width="1.2" fill="none"/></svg>
+                    </button>
+                    <div id="sortMenu" class="sort-dropdown">
+                        {%- for option in collection.sort_options -%}
+                            <a href="{{ request.path }}?sort_by={{ option.value }}">{{ option.name }}</a>
+                        {%- endfor -%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <header class="rohe-main-header">
+        <h1 class="main-collection-title">{{ collection.title }}</h1>
+    </header>
+    <div class="main-layout-container">
+        <aside id="sideDrawer" class="filter-sidebar desktop-only">
+            {% for filter in collection.filters %}
+                <div class="filter-group">
+                    <p class="filter-label-title">{{ filter.label }}</p>
+                    {% for value in filter.values %}
+                        <label class="check-row">
+                            <input type="checkbox" {% if value.active %}checked{% endif %} onchange="window.location.href = this.checked ? '{{ value.url_to_add }}' : '{{ value.url_to_remove }}'">
+                            {{ value.label }} ({{ value.count }})
+                        </label>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </aside>
+
+        <main id="mainGrid" class="rohe-product-grid columns-4 m-columns-2">
+            {%- for product in collection.products -%}
+                <div class="Featured-product__card">
+                    
+                    <div class="Featured-product__image-wrapper">
+                        {%- if product.available == false -%}
+                        <span class="Featured-product__badge Featured-product__badge--sold-out">Sold Out</span>
+                        {%- elsif product.compare_at_price > product.price -%}
+                            <span class="Featured-product__badge Featured-product__badge--sale">Best Seller</span>
+                        {%- endif -%}
+    
+                        <a href="{{ product.url }}" class="Featured-product__link">
+                        <img src="{{ product.featured_image | img_url: '800x' }}" class="Featured-product__img Featured-product__img--primary" alt="{{ product.title }}" loading="lazy">
+                        {% if product.images[1] %}
+                            <img src="{{ product.images[1] | img_url: '800x' }}" class="Featured-product__img Featured-product__img--secondary" alt="{{ product.title }}" loading="lazy">
+                        {% endif %}
+                        </a>
+    
+                        <form method="post" action="/cart/add" class="Featured-product__form">
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" />
+                        <button type="submit" class="Featured-product__action-btn" {% unless product.available %}disabled{% endunless %}>
+                            <span class="Featured-product__add-text">ADD</span>
+                            {{- 'add-to-cart-icon.svg' | inline_asset_content -}}
+                        </button>
+                        </form>
+                    </div>
+    
+                    <div class="Featured-product__info">
+                        <div class="Featured-product__details">
+                        <h3 class="Featured-product__title">{{ product.title }}</h3>
+                        <p class="Featured-product__category">{{ collection.title }}</p>
+                        </div>
+                        <p class="Featured-product__price">{{ product.price }}</p>
+                    </div>
+    
+                    </div>
+            {%- endfor -%}
+        </main>
+    </div>
+
+    <div id="m-filter-drawer" class="m-drawer-overlay">
+        <div class="m-drawer-inner">
+            <div class="m-drawer-head">
+                <span style="font-weight:600;">FILTERS</span>
+                <button id="m-close-x" class="m-close-x">&times;</button>
+            </div>
+            <div class="m-drawer-body">
+                {% for filter in collection.filters %}
+                    <div class="m-filter-group-mobile">
+                        <p class="m-f-label">{{ filter.label }}</p>
+                        <div class="m-f-options">
+                            {% for value in filter.values %}
+                                <label class="m-check-label">
+                                    <input type="checkbox" {% if value.active %}checked{% endif %} onchange="window.location.href = this.checked ? '{{ value.url_to_add }}' : '{{ value.url_to_remove }}'">
+                                    <span>{{ value.label }} ({{ value.count }})</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Grid Logic Fix
+        document.querySelectorAll('.g-icon, .g-icon-m').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const cols = this.dataset.cols;
+                const grid = document.getElementById('mainGrid');
+                
+                if (window.innerWidth <= 768) {
+                    grid.classList.remove('m-columns-1', 'm-columns-2');
+                    grid.classList.add('m-columns-' + cols);
+                } else {
+                    grid.classList.remove('columns-3', 'columns-4');
+                    grid.classList.add('columns-' + cols);
+                }
+    
+                this.parentElement.querySelectorAll('.active').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    
+        // Sidebar & Drawer Toggle
+        document.getElementById('filterToggle').onclick = () => {
+            if(window.innerWidth <= 768) {
+                document.getElementById('m-filter-drawer').classList.add('m-is-open');
+            } else {
+                document.getElementById('sideDrawer').classList.toggle('open');
+            }
+        };
+        
+        document.getElementById('m-close-x').onclick = () => {
+            document.getElementById('m-filter-drawer').classList.remove('m-is-open');
+        };
+    
+        // Sort Toggle
+        const sortBtn = document.getElementById('sortBtn');
+        const sortMenu = document.getElementById('sortMenu');
+        sortBtn.onclick = (e) => { e.stopPropagation(); sortMenu.classList.toggle('active'); };
+        window.onclick = () => sortMenu.classList.remove('active');
+    });
+    </script>
+
+    
+{% schema %}
+{
+    "name": "Rohe Collection Grid",
+    "settings": [
+    { "type": "range", "id": "products_per_page", "min": 8, "max": 50, "step": 1, "label": "Products per page", "default": 20 }
+    ],
+    "presets": [{ "name": "Rohe Collection Grid" }]
+}
+{% endschema %}

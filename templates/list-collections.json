@@ -9,59 +9,169 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "collection-list-template",
+    "collection_list_Wfgh3m": {
+      "type": "main-collection-list",
       "blocks": {
-        "06786fde-900d-4048-b2a7-2f1af4b4963e": {
-          "type": "collection_item",
+        "group_4FtiAg": {
+          "type": "group",
+          "name": "t:names.header",
           "settings": {
-            "collection": "sweaters",
-            "image": "shopify://shop_images/1_a49daa5e-800a-463a-9b51-cbdee5b9d46a.jpg"
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 20,
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_fRMQMR": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<h1>Collections</h1>",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "center",
+                "type_preset": "h3",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_fRMQMR"
+          ]
         },
-        "c3c7dd10-c393-458e-a903-3de238b2e424": {
-          "type": "collection_item",
+        "static-collection-card": {
+          "type": "_collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
           "settings": {
-            "collection": "leather-boots",
-            "image": "shopify://shop_images/2_3d429d45-b48d-4f2c-9756-43e16ba15a58.jpg"
-          }
-        },
-        "b43bcd47-6305-4507-86b2-397dcbb3cdfc": {
-          "type": "collection_item",
-          "settings": {
-            "collection": "denim-pants",
-            "image": "shopify://shop_images/3_453ceb49-11f8-4463-a304-5d1ac0d355a1.jpg"
-          }
-        },
-        "17b453d1-b173-4aed-8571-7dc75d2ec6ca": {
-          "type": "collection_item",
-          "settings": {
-            "collection": "sunglasses",
-            "image": "shopify://shop_images/4_de697563-5f04-4d88-8028-1e5ff3fcea3e.jpg"
-          }
-        },
-        "3aedbb94-935a-4d80-865f-7c7fbbbddb39": {
-          "type": "collection_item",
-          "settings": {
-            "collection": "leather-bag",
-            "image": "shopify://shop_images/5_a506fafd-bde8-4dfc-b652-1db5fb97144c.jpg"
-          }
+            "placement": "on_image",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "flex-end",
+            "collection_card_gap": 25,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0
+          },
+          "blocks": {
+            "collection_title_7YgBPU": {
+              "type": "collection-title",
+              "name": "t:names.collection_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "narrow",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "name": "t:names.collection_card_image",
+              "static": true,
+              "settings": {
+                "image_ratio": "portrait",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection_title_7YgBPU"
+          ]
         }
       },
       "block_order": [
-        "06786fde-900d-4048-b2a7-2f1af4b4963e",
-        "c3c7dd10-c393-458e-a903-3de238b2e424",
-        "b43bcd47-6305-4507-86b2-397dcbb3cdfc",
-        "17b453d1-b173-4aed-8571-7dc75d2ec6ca",
-        "3aedbb94-935a-4d80-865f-7c7fbbbddb39"
+        "group_4FtiAg"
       ],
+      "name": "Collection list",
       "settings": {
-        "title": "All collection",
-        "description": "<p>Posuere in netus a eu varius adipiscing suspendisse elementum vitae tempor suspendisse <br/>ullamcorper aenean taciti morbi potenti.</p>"
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 3,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "bento_gap": 8,
+        "rows_gap": 24,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 12,
+        "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     }
   },
   "order": [
-    "main"
+    "collection_list_Wfgh3m"
   ]
 }

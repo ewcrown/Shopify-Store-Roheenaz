@@ -1,615 +1,253 @@
-<footer class="sf-footer" data-section-type="footer" data-section-id="{{ section.id }}">
-  {% render 'footer-blocks', blocks: section.blocks, bordered: section.settings.bordered, container: section.settings.container %}
-  {% render 'footer-design', container: section.settings.container %}
-</footer>
+
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
+>
+  {% liquid
+    assign total_blocks = section.blocks.size
+
+    # Grid layout calculations
+    assign grid_columns = total_blocks | at_most: 4
+
+    # Calculate last row counts using modulo arithmetic
+    # last_row_count = (total_blocks - 1) % N + 1
+    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
+    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
+
+    # Check if there are orphaned elements (single item in last row)
+    assign has_isolated_grid_item_desktop = false
+    assign has_isolated_grid_item_tablet = false
+
+    if total_blocks > 4 and last_row_count == 1
+      assign has_isolated_grid_item_desktop = true
+    endif
+
+    if total_blocks == 5
+      assign has_isolated_grid_item_tablet = true
+    endif
+  %}
+  <div
+    class="
+      footer-content
+      spacing-style
+      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
+      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
+    "
+    style="
+      {%  render 'spacing-style', settings: section.settings %}
+      --footer-gap: {{ section.settings.gap }}px;
+      --grid-columns: {{ grid_columns }};
+      --last-row-count: {{ last_row_count }};
+      --tablet-last-row-count: {{ tablet_last_row_count }};
+    "
+  >
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .footer-content {
+    contain: content;
+    content-visibility: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--footer-gap);
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .footer-content {
+      grid-template-columns: repeat(min(var(--grid-columns), 3), 1fr);
+      grid-auto-flow: row;
+    }
+
+    .footer-content[style*='--grid-columns: 4'] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-content--isolated-grid-item-tablet > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .footer-content {
+      grid-template-columns: repeat(var(--grid-columns), 1fr);
+    }
+
+    /* Single item centered */
+    .footer-content[style*='--grid-columns: 1'] {
+      justify-items: center;
+    }
+
+    .footer-content--isolated-grid-item-desktop > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Footer",
+  "name": "t:names.footer",
+  "class": "section-wrapper",
+  "tag": "footer",
+  "blocks": [
+    {
+      "type": "_divider"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "follow-on-shop"
+    },
+    {
+      "type": "group"
+    },
+    {
+      "type": "icon"
+    },
+    {
+      "type": "image"
+    },
+    {
+      "type": "menu"
+    },
+    {
+      "type": "payment-icons"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "logo"
+    },
+    {
+      "type": "jumbo-text"
+    },
+    {
+      "type": "social-links"
+    },
+    {
+      "type": "email-signup"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["footer"]
+  },
   "settings": [
     {
       "type": "select",
-      "id": "design",
-      "label": "Layout",
+      "id": "section_width",
+      "label": "t:settings.width",
       "options": [
         {
-          "value": "footer-1",
-          "label": "Layout 1"
+          "value": "page-width",
+          "label": "t:options.page"
         },
         {
-          "value": "footer-2",
-          "label": "Layout 2"
-        },
-        {
-          "value": "footer-3",
-          "label": "Layout 3"
+          "value": "full-width",
+          "label": "t:options.full"
         }
       ],
-      "default": "footer-1"
+      "default": "page-width"
     },
     {
-      "type": "select",
-      "id": "container",
-      "label": "Container type",
-      "default": "container-fluid",
-      "options": [
-        {
-          "value": "container-fluid",
-          "label": "Default"
-        },
-        {
-          "value": "w-full",
-          "label": "Full width"
-        },
-        {
-          "value": "container",
-          "label": "Use container box"
-        }
-      ]
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
     },
     {
-      "type": "checkbox",
-      "id": "bordered",
-      "label": "Block bordered",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "copyright",
-      "label": "Copyright text",
-      "default": "&copy; minimog 2021"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Addons"
+      "content": "t:content.padding"
     },
     {
-      "type": "checkbox",
-      "id": "show_country_selector",
-      "label": "Show country/region selector",
-      "default": false
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
     },
     {
-      "type": "checkbox",
-      "id": "show_currency_selector",
-      "label": "Show currency selector",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_language_selector",
-      "label": "Show language selector",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_social_links",
-      "label": "Show social icons",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Payment methods"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "Show payment icons",
-      "default": false
-    },
-    {
-      "type": "image_picker",
-      "id": "image_custom_payment",
-      "label": "Payment icons by image",
-      "info": "Leave blank to use icons by Payment methods"
-    },
-    {
-      "type": "number",
-      "id": "payment_icons_width",
-      "label": "Image width (px)",
-      "default": 300
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 20
     }
   ],
-  "max_blocks": 5,
-  "blocks": [
+  "presets": [
     {
-      "type": "menu",
-      "name": "Menu",
-      "limit": 4,
-      "settings": [
-        {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Footer menu",
-          "default": "main-menu"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Heading",
-          "default": "Service",
-          "info": "Leave blank to use menu title"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
+      "name": "t:names.footer",
+      "category": "t:categories.footer",
+      "settings": {
+        "gap": 20,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 36,
+        "padding-block-end": 36
+      },
+      "blocks": {
+        "newsletter-group": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "gap": 6,
+            "width": "fill",
+            "inherit_color_scheme": true
+          },
+          "blocks": {
+            "newsletter-heading": {
+              "type": "text",
+              "settings": {
+                "text": "t:html_defaults.join_our_email_list",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "h3"
+              }
             },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
+            "newsletter-text": {
+              "type": "text",
+              "settings": {
+                "text": "t:html_defaults.get_exclusive_deals_and_early_access_to_new_products",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "rte"
+              }
             }
-          ]
+          },
+          "block_order": ["newsletter-heading", "newsletter-text"]
         },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
+        "newsletter-form": {
+          "type": "email-signup",
+          "settings": {
+            "width": "fill"
+          }
         }
-      ]
-    },
-    {
-      "type": "our_store",
-      "name": "About",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Our store"
-        },
-        {
-          "type": "richtext",
-          "id": "description",
-          "label": "Description",
-          "default": "<p>Find a location nearest you.</p>"
-        },
-        {
-          "type": "header",
-          "content": "Contact information",
-          "info": "Go to \"Theme settings > Store contact\" to update these information."
-        },
-        {
-          "type": "checkbox",
-          "id": "show_email",
-          "label": "Show email",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_phone",
-          "label": "Show phone number",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_socials_link",
-          "label": "Show social icons",
-          "default": false
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "newsletter",
-      "name": "Newsletter",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Subscribe"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Description",
-          "default": "Enter your email below to be the first to know about new collections and product launches."
-        },
-        {
-          "type": "text",
-          "id": "email_placeholder",
-          "label": "Email placeholder",
-          "default": "Enter your email"
-        },
-        {
-          "type": "select",
-          "id": "form_style",
-          "label": "Form style",
-          "default": "bordered",
-          "options": [
-            {
-              "value": "bordered",
-              "label": "Bordered"
-            },
-            {
-              "value": "minimal",
-              "label": "Minimal"
-            }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "id": "show_social",
-          "label": "Show social link",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_agree_checkbox",
-          "label": "Show \"Terms & conditions\" checkbox",
-          "default": false
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "custom_text",
-      "name": "Custom content",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Custom text"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "image_max",
-          "label": "Image max-width (px)",
-          "default": "200px"
-        },
-        {
-          "type": "richtext",
-          "id": "description",
-          "label": "Content",
-          "default": "<p>Enter your email below to be the first to know about new collections and product launches.</p>"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "custom_html",
-      "name": "Custom HTML",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Custom text"
-        },
-        {
-          "type": "liquid",
-          "id": "html",
-          "label": "HTML",
-          "info": "Liquid code supported"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "spacing",
-      "name": "Spacing",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Use this block to make a spacing between columns"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "20%",
-              "label": "20%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        }
-      ]
+      },
+      "block_order": ["newsletter-group", "newsletter-form"]
     }
   ]
 }

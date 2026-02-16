@@ -9,224 +9,285 @@
  */
 {
   "sections": {
-    "custom_liquid_Hj3jw3": {
-      "type": "custom-liquid",
-      "disabled": true,
-      "settings": {
-        "custom_liquid": "{% render 'breadcrumbs' %}",
-        "custom_class": ""
-      }
-    },
-    "collection-header": {
-      "type": "collection-page-header",
-      "settings": {
-        "container": "container",
-        "layout": "without_breadcrumb",
-        "header_height": "small",
-        "text_alignment": "center",
-        "vertical_alignment": "center",
-        "text_color": "dark",
-        "bg_color": "#ffffff",
-        "enable_parallax": false,
-        "upper_title": true,
-        "show_desc": true,
-        "collection_all_desc": ""
-      }
-    },
-    "countdown_timer_p3jXTW": {
-      "type": "countdown-timer",
-      "disabled": true,
-      "custom_css": [
-        "h1,h2 {text-align: center;}",
-        ".sf__cdt-inner {height: 20vh;}",
-        ".container.sf__cdt.section-py {border-bottom: 1px solid #ddd !important; padding-bottom: 2rem;}",
-        ".lg\\:pb-16 {padding-bottom: 0rem;}",
-        "@media only screen and (max-width: 750px) {.pt-16 {padding-top: 0rem; } .block {display: none; }}"
+    "section": {
+      "type": "section",
+      "blocks": {
+        "text_tqQTNE": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h3>{{ closest.collection.title }}</h3>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "h3",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 50,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_twGGkJ": {
+          "type": "text",
+          "name": "Description",
+          "settings": {
+            "text": "{{ closest.collection.description }}",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_tqQTNE",
+        "text_twGGkJ"
       ],
-      "name": "Countdown timer",
+      "disabled": true,
+      "name": "Collection heading",
       "settings": {
-        "body_text": "#000000",
-        "container": "container",
-        "section_height": "small",
-        "align": "center",
-        "background_color": "#ffffff",
-        "heading": "",
-        "time": "2026-02-05 17:00:00",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "sf__btn-primary",
-        "button_size": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "custom_class": ""
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "rohe_collection_WeD3f6": {
+      "type": "rohe-collection",
+      "name": "Rohe Collection Grid",
+      "settings": {
+        "products_per_page": 20
       }
     },
     "main": {
-      "type": "main-collection-product-grid",
+      "type": "main-collection",
       "blocks": {
-        "26ef6509-772d-4c44-bd90-efc089bd9355": {
-          "type": "filter",
+        "filters": {
+          "type": "filters",
+          "disabled": true,
+          "static": true,
           "settings": {
-            "design_filtergroup": "button",
-            "title": "Size",
-            "filtergroup": "XS,S,M,L,XL",
-            "show_label": false,
-            "use_accordion": true,
-            "open_filtergroup": true
-          }
+            "enable_filtering": true,
+            "filter_style": "horizontal",
+            "filter_width": "centered",
+            "text_label_case": "uppercase",
+            "show_swatch_label": false,
+            "show_filter_label": false,
+            "enable_sorting": true,
+            "enable_grid_density": true,
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+            "padding-block-start": 8,
+            "padding-block-end": 8,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0,
+            "facets_margin_bottom": 8,
+            "facets_margin_right": 20
+          },
+          "blocks": {}
         },
-        "e12de6da-eab8-4abe-967c-06d0d959a18a": {
-          "type": "filter",
+        "product-card": {
+          "type": "_product-card",
+          "static": true,
           "settings": {
-            "design_filtergroup": "color",
-            "title": "Colors",
-            "filtergroup": "Blue, Red, White ,Black ,Pink ,Silver,Purple,Brown,Yellow,Grey,Green,Tan,Violet,Dark Grey,Beige,Light Blue, Dark Blue, Light Grey, Light Pink, Mint, Rose Gold, Night Blue, Copper, Coral, Rosy Brown",
-            "show_label": true,
-            "use_accordion": false,
-            "open_filtergroup": true
-          }
-        },
-        "fa31a837-9c99-4c92-8cfe-0527ffbe7b15": {
-          "type": "filter",
-          "settings": {
-            "design_filtergroup": "default",
-            "title": "Prices",
-            "filtergroup": "$0-$50,$50-$100,$100-$150,$150-$200,$200-$300,$300-$400",
-            "show_label": false,
-            "use_accordion": false,
-            "open_filtergroup": true
-          }
-        },
-        "4903963a-90f0-4fe1-be23-ee4f8749e483": {
-          "type": "filter",
-          "settings": {
-            "design_filtergroup": "inrow",
-            "title": "Brands",
-            "filtergroup": "Minimog,Retrolie,Abby,Brook,Learts,Vagabond",
-            "show_label": false,
-            "use_accordion": false,
-            "open_filtergroup": true
-          }
-        },
-        "filter_nedcFc": {
-          "type": "filter",
-          "settings": {
-            "design_filtergroup": "default",
-            "title": "Type",
-            "filtergroup": "printed,Embroidered",
-            "show_label": false,
-            "use_accordion": true,
-            "open_filtergroup": true
-          }
-        },
-        "00b3badd-1613-4230-85d8-f87f04306aaa": {
-          "type": "filter",
-          "settings": {
-            "design_filtergroup": "inrow",
-            "title": "Tags",
-            "filtergroup": "Dress,Tops,Shirts,Fashion,Hats,Sandal,Belt,Bags,Snacker,Denim,Minimog,Vagabond,Sunglasses, Beachwear,Vintage",
-            "show_label": false,
-            "use_accordion": true,
-            "open_filtergroup": true
-          }
+            "product_card_gap": 0,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "card-gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "portrait",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_card_group_ywid8q": {
+              "type": "_product-card-group",
+              "name": "t:names.group",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "space-between",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "padding-block-start": 10,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_MnL7Kk": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>{{ closest.product.title }}</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "price_F4NGxT": {
+                  "type": "price",
+                  "name": "t:names.product_price",
+                  "settings": {
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "",
+                    "width": "fit-content",
+                    "alignment": "left",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "color": "var(--color-foreground)",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_MnL7Kk",
+                "price_F4NGxT"
+              ]
+            }
+          },
+          "block_order": [
+            "card-gallery",
+            "product_card_group_ywid8q"
+          ]
         }
       },
-      "block_order": [
-        "26ef6509-772d-4c44-bd90-efc089bd9355",
-        "e12de6da-eab8-4abe-967c-06d0d959a18a",
-        "fa31a837-9c99-4c92-8cfe-0527ffbe7b15",
-        "4903963a-90f0-4fe1-be23-ee4f8749e483",
-        "filter_nedcFc",
-        "00b3badd-1613-4230-85d8-f87f04306aaa"
-      ],
+      "disabled": true,
       "settings": {
-        "container": "container-fluid",
-        "grid_layout": "grid",
-        "grid_columns": "3",
-        "show_columns_switcher": true,
-        "pagination_limit": 24,
-        "paginate_type": "infinite",
-        "show_sorting": true,
-        "show_filter": true,
-        "filters_type": "storefront_filters",
-        "sidebar": "leftColumn",
-        "sidebar_title": "Filters",
-        "limit_height_widget": false,
-        "limit_height": 300,
-        "change_product_variant_on_fitlering": true,
-        "show_product_count": true,
-        "collapsed_groups": "Brand, Vendor, Size",
-        "color_swatches": "color,colour,couleur,farbe"
-      }
-    },
-    "1733137255884954ec": {
-      "type": "apps",
-      "settings": {
-        "heading": "",
-        "subheading": "",
-        "header_alignment": "center",
-        "container": "container",
-        "background_color": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "custom_class": ""
-      }
-    },
-    "custom_liquid_cBR4ab": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "<script>\n// Set the date we're counting down to\nvar countDownDate = new Date(\"Dec 19, 2024 17:00:00\").getTime();\n\n// Update the count down every 1 second\nvar x = setInterval(function() {\n\n  // Get today's date and time\n  var now = new Date().getTime();\n    \n  // Find the distance between now and the count down date\n  var distance = countDownDate - now;\n    \n  // Time calculations for days, hours, minutes and seconds\n  var days = Math.floor(distance / (1000 * 60 * 60 * 24));\n  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));\n  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));\n  var seconds = Math.floor((distance % (1000 * 60)) / 1000);\n    \n  // Output the result in an element with id=\"demo\"\n  document.getElementById(\"demo\").innerHTML = days + \" <span>days</span> \" + hours + \" <span>hours</span> \"\n  + minutes + \" <span>minutes</span> \" + seconds + \" <span>sec</span> \";\n    \n  // If the count down is over, write some text \n  if (distance < 0) {\n    clearInterval(x);\n    document.getElementById(\"demo\").innerHTML = \"EXPIRED\";\n  }\n}, 1000);\n</script>\n\n<style>\n.prebooking {\n    margin: 0;\n    font-size: 30px;\n    text-align: center;\n    padding: 10px 10px 15px;\n    color: #fff;\n    text-transform:uppercase;\n    background: #111;\n    font-weight: 600;\n}\n#demo {\n  margin: 0;\n  font-weight: 400;\n}\n#demo span {\n  font-size: 18px;\n}\n.container.text-center {\n    max-width: none;\n}\n</style>",
-        "custom_class": ""
-      }
-    },
-    "1733137012ce28c08e": {
-      "type": "apps",
-      "blocks": {
-        "quoli_reviews_ugc_homepage_widgets_wA8KhL": {
-          "type": "shopify://apps/quoli-reviews-ugc/blocks/homepage-widgets/baf7b241-e443-4879-b3d4-360440b03895",
-          "settings": {
-            "carousel_title": "Happy customers",
-            "sub_heading": "",
-            "home-page-slider": "7",
-            "total-reviews": "all",
-            "no-of-lines": "100",
-            "carousel_auto_scroll": true,
-            "carousel_auto_scroll_speed": "5",
-            "slider_font": "sans_serif_n4"
-          }
-        }
-      },
-      "block_order": [
-        "quoli_reviews_ugc_homepage_widgets_wA8KhL"
-      ],
-      "settings": {
-        "heading": "",
-        "subheading": "",
-        "header_alignment": "center",
-        "container": "container",
-        "background_color": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "custom_class": ""
-      }
-    },
-    "custom_liquid_xWaNy9": {
-      "type": "custom-liquid",
-      "name": "Custom liquid",
-      "settings": {
-        "custom_liquid": "<style > \n.prod__tag--soldout, span.prod__tag--flash-left  {\n    align-items: center;\n    background: #fff;\n    border-radius: 0;\n    color: #202223;\n    font-size: 8px;\n    height: 24px;\n    justify-content: center;\n    line-height: 12px;\n    padding: 0 5px;\n    position: absolute;\n    text-align: center;\n    top: 5px;\n    white-space: normal;\n    width: 80px;\n    left: 5px;\n    font-weight: 200;\n}\n\n@media (max-width: 480px) {\n    .prod__tag--soldout,\n    span.prod__tag--flash-left {\n        font-size: 5px;\n        height: 20px;\n        line-height: 10px;\n        width: 60px;\n        padding: 0 4px;\n        top: 4px;\n        left: 4px;\n    }\n}\n\n\n\n</style>",
-        "custom_class": ""
+        "layout_type": "grid",
+        "product_card_size": "large",
+        "mobile_product_card_size": "large",
+        "enable_infinite_scroll": true,
+        "products_per_page": 24,
+        "product_grid_width": "centered",
+        "full_width_on_mobile": true,
+        "columns_gap_horizontal": 21,
+        "columns_gap_vertical": 30,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0,
+        "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+        "padding-block-start": 0,
+        "padding-block-end": 32
       }
     }
   },
   "order": [
-    "custom_liquid_Hj3jw3",
-    "collection-header",
-    "countdown_timer_p3jXTW",
-    "main",
-    "1733137255884954ec",
-    "custom_liquid_cBR4ab",
-    "1733137012ce28c08e",
-    "custom_liquid_xWaNy9"
+    "section",
+    "rohe_collection_WeD3f6",
+    "main"
   ]
 }

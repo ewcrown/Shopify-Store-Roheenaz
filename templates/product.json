@@ -9,244 +9,305 @@
  */
 {
   "sections": {
-    "custom_liquid_HnNEAF": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "{% render 'breadcrumbs' %}",
-        "custom_class": ""
-      }
-    },
     "main": {
-      "type": "main-product",
+      "type": "product-information",
       "blocks": {
-        "custom_liquid_R6gkwP": {
-          "type": "custom_liquid",
-          "disabled": true,
+        "media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
           "settings": {
-            "custom_liquid": "{% render 'breadcrumbs' %}"
-          }
+            "media_presentation": "carousel",
+            "media_columns": "two",
+            "image_gap": 10,
+            "large_first_image": false,
+            "icons_style": "none",
+            "slideshow_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "thumbnails",
+            "thumbnail_position": "right",
+            "thumbnail_width": 44,
+            "thumbnail_radius": 0,
+            "aspect_ratio": "1/1.25",
+            "constrain_to_viewport": true,
+            "media_fit": "contain",
+            "media_radius": 0,
+            "extend_media": false,
+            "zoom": true,
+            "video_loop": false,
+            "hide_variants": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "quoli_reviews_ugc_product_review_teRhTU": {
-          "type": "shopify://apps/quoli-reviews-ugc/blocks/product-review/baf7b241-e443-4879-b3d4-360440b03895",
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
           "settings": {
-            "stylerating": "standard",
-            "text_reviews": "[count] Reviews",
-            "align_widget": "default",
-            "font_size": 14,
-            "text_color": "#121212",
-            "star_color": "#fdcc0d",
-            "show_review_title": false
-          }
-        },
-        "custom_liquid_G6hCLe": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "<p>SKU: {{ product.selected_or_first_available_variant.sku }}</p>"
-          }
-        },
-        "price": {
-          "type": "price",
-          "settings": {
-            "show_saving": true
-          }
-        },
-        "a1b866c1-2e7a-4cb2-b8de-5f28009457e1": {
-          "type": "description",
-          "settings": {}
-        },
-        "variant_picker": {
-          "type": "variant_picker",
-          "settings": {
-            "size_title": "Size"
-          }
-        },
-        "custom_liquid_pdkCNU": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "<div id=\"ai-order-note\" style=\"display:none\">\n<strong>Note:</strong> All unstitched to stitched orders will require advance payment\n</div>"
-          }
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_quantity_selector": true,
-            "show_atc_button": true,
-            "show_dynamic_checkout": false
-          }
-        },
-        "quoli_reviews_ugc_quoli_nuggets_slider_RdJVEw": {
-          "type": "shopify://apps/quoli-reviews-ugc/blocks/quoli-nuggets-slider/baf7b241-e443-4879-b3d4-360440b03895",
-          "disabled": true,
-          "settings": {
-            "hide_review_rating": false,
-            "hide_review_image": true,
-            "name_size": 16,
-            "text_size": 18,
-            "verified_text": 13,
-            "auto_scroll": true,
-            "auto_speed": "5",
-            "show_border": false,
-            "border_radius": 5,
-            "background_color": "#f5f5f5",
-            "text_color": "#121212",
-            "name_color": "#121212",
-            "icon_color": "#121212",
-            "verified_text_color": "#121212",
-            "stars_color": "#121212",
-            "border_color": "#121212"
-          }
-        },
-        "custom_liquid_NPWJCR": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "{% assign image_url = product.metafields.custom.size_guide_image %}\n{% if image_url != blank %} \n <div class=\"sizebtn\">SIZE CHART</div>\n{% endif %}"
-          }
-        },
-        "addons": {
-          "type": "addons",
-          "settings": {
-            "show_atcp": false,
-            "show_ask_a_question": true,
-            "show_social": true
-          }
-        },
-        "custom_liquid_6mgDeD": {
-          "type": "custom_liquid",
-          "disabled": true,
-          "settings": {
-            "custom_liquid": "{% for tag in product.tags %}\n        {% if tag contains 'TDT' %}\n            {% assign TDT = tag | split: '--' %}\n            {% assign TDT = TDT[1] | strip %}\n        {% endif %}\n        {% endfor %}\n        {% if TDT %}\n            <div class=\"dinfo\"> \n<h2 style=\"font-size: 18px;\">DELIVERY & RETURNS</h2>\n{{ TDT }}\n</div>\n        {% endif %}"
-          }
-        },
-        "custom_liquid_Jajggt": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "<h2 class=\"acc_trigger\">DELIVERY TIMELINE </h2>\n    <div id=\"tab1\" class=\"acc_container\" style=\"display: block;\"> {% for tag in product.tags %}\n      {% if tag contains 'TDT' %}\n      {% assign TDT = tag | split: '--' %}\n      {% assign TDT = TDT[1] | strip %}\n      {% endif %}\n      {% endfor %}\n      {% if TDT %}\n      <div class=\"dinfo\"> {{ TDT }}</div>\n      {% endif %} </div>\n\t  \n\t<h2 class=\"acc_trigger\">CARE INSTRUCTIONS</h2>  \n    <div id=\"tab2\" class=\"acc_container\">\n      <div class=\"dinfo\">\n        <p>-Do not use any kind of bleach or stain removing chemicals<br>\n          -Do not over expose damp fabric to strong sunlight<br>\n          -Iron at moderate temperature<br>\n          -Do not wash at home</p>\n      </div>\n    </div>\n\t  \n\t<h2 class=\"acc_trigger\">DISCLAIMER</h2>  \n    <div id=\"tab3\" class=\"acc_container\"> {% for tag in product.tags %}\n      {% if tag contains 'DIS' %}\n      {% assign DIS = tag | split: '--' %}\n      {% assign DIS = DIS[1] | strip %}\n      {% endif %}\n      {% endfor %}\n      {% if DIS %}\n      <div class=\"dinfo\"> {{ DIS }}</div>\n      {% else %}\n      <div class=\"dinfo\">\n        <p>The fabric pattern/laces, patchwork, and handmade details may vary.<br>\n          Actual colors of the outfit may also vary from the colors being displayed on your device.</p>\n        <p>All laces used for finishing of the stitched outfit especially the dupatta or trousers may vary from the shoot.&nbsp;</p>\n      </div>\n      {% endif %} </div>\n  </div>\n\n<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js\"></script>\n<script>\n$(document).ready(function () {\n        //Add Inactive Class To All Accordion Headers\n        $('.acc_trigger').toggleClass('inactive-header');\n        $('.acc_trigger:first').addClass('active-header').next().show();\n        // The Accordion Effect\n        $('.acc_trigger').click(function () {\n            if ($(this).next().is(':hidden')) {\n                $('.active-header').toggleClass('active-header').toggleClass('inactive-header').next().slideToggle().toggleClass('open-content');\n                $(this).toggleClass('active-header').toggleClass('inactive-header');\n                $(this).next().slideToggle().toggleClass('open-content');\n            }\n\n            else {\n                $(this).toggleClass('active-header').toggleClass('inactive-header');\n                $(this).next().slideToggle().toggleClass('open-content');\n            }\n        });\n        return false;\n    });    </script>"
-          }
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "details_position": "flex-start",
+            "gap": 28,
+            "sticky_details_desktop": true,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_icgrde": {
+              "type": "group",
+              "name": "Header",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_xrnftG": {
+                  "type": "text",
+                  "name": "Product title",
+                  "settings": {
+                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h3",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "sku_F7JKkp": {
+                  "type": "sku",
+                  "name": "t:names.product_sku",
+                  "settings": {
+                    "type_preset": "",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "color": "var(--color-foreground)",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "price_tVjtKg": {
+                  "type": "price",
+                  "settings": {
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "paragraph",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "color": "var(--color-foreground)",
+                    "padding-block-start": 4,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_xrnftG",
+                "sku_F7JKkp",
+                "price_tVjtKg"
+              ]
+            },
+            "text_aEtTtq": {
+              "type": "text",
+              "name": "Product description",
+              "settings": {
+                "text": "{{ closest.product.description }}",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "divider_VJhene": {
+              "type": "_divider",
+              "name": "t:names.divider",
+              "settings": {
+                "thickness": 1,
+                "corner_radius": "square",
+                "width_percent": 100,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "variant_picker_R3rGDr": {
+              "type": "variant-picker",
+              "settings": {
+                "variant_style": "buttons",
+                "show_swatches": false,
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "buy_buttons_eYQEYi": {
+              "type": "buy-buttons",
+              "settings": {
+                "stacking": true,
+                "show_pickup_availability": false,
+                "gift_card_form": true,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "quantity": {
+                  "type": "quantity",
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                },
+                "add-to-cart": {
+                  "type": "add-to-cart",
+                  "static": true,
+                  "settings": {
+                    "style_class": "button"
+                  },
+                  "blocks": {}
+                },
+                "accelerated-checkout": {
+                  "type": "accelerated-checkout",
+                  "disabled": true,
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": []
+            }
+          },
+          "block_order": [
+            "group_icgrde",
+            "text_aEtTtq",
+            "divider_VJhene",
+            "variant_picker_R3rGDr",
+            "buy_buttons_eYQEYi"
+          ]
         }
       },
-      "block_order": [
-        "custom_liquid_R6gkwP",
-        "title",
-        "quoli_reviews_ugc_product_review_teRhTU",
-        "custom_liquid_G6hCLe",
-        "price",
-        "a1b866c1-2e7a-4cb2-b8de-5f28009457e1",
-        "variant_picker",
-        "custom_liquid_pdkCNU",
-        "buy_buttons",
-        "quoli_reviews_ugc_quoli_nuggets_slider_RdJVEw",
-        "custom_liquid_NPWJCR",
-        "addons",
-        "custom_liquid_6mgDeD",
-        "custom_liquid_Jajggt"
-      ],
-      "settings": {
-        "container": "container",
-        "layout": "layout-6",
-        "show_atwl": false,
-        "enable_history_state": true,
-        "enable_variant_group_images": false,
-        "show_featured_media": true,
-        "show_zoom_button": true,
-        "enable_video_autoplay": false,
-        "show_nav_media_mobile": true,
-        "show_pagination_mobile": false,
-        "use_sticky_atc": true,
-        "use_sticky_atc_on_mobile": true,
-        "enable_dynamic_checkout": true,
-        "sticky_atc_wishtlist": false,
-        "sticky_atc_compare": false
-      }
-    },
-    "custom_liquid_PXKPT9": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "{% assign image_url = product.metafields.custom.size_guide_image %}\n{% if image_url != blank %} \n <div class=\"size-wrapper\">\n     <div class=\"innerwrapper\">\n         <div class=\"rmsizebtn\">X</div>\n         <img src=\"{{ image_url.value | image_url }}\">\n      </div>\n </div>\n{% endif %}",
-        "custom_class": ""
-      }
-    },
-    "product-details-tabs": {
-      "type": "product-details-tabs",
       "disabled": true,
       "settings": {
-        "container": "container",
-        "bg_color": "",
-        "default_open": true
+        "content_width": "content-center-aligned",
+        "desktop_media_position": "left",
+        "equal_columns": false,
+        "limit_details_width": false,
+        "gap": 48,
+        "enable_sticky_add_to_cart": true,
+        "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
+        "padding-block-start": 20,
+        "padding-block-end": 80
       }
     },
-    "product-recommendations": {
-      "type": "product-recommendations",
-      "settings": {
-        "container": "container",
-        "heading": "You May Also Like",
-        "text_align": "center",
-        "limit": 4,
-        "columns": 4,
-        "column_gap": 30,
-        "enable_slider": true
-      }
+    "product_section_CgeMLM": {
+      "type": "product--section",
+      "disabled": true,
+      "name": "Roheenaz Custom Product",
+      "settings": {}
     },
-    "custom_liquid_W6JqNF": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "<script>\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n  const orderNote = document.getElementById('ai-order-note');\n  const variantField = document.querySelector('.variant-picker__field');\n\n  // Show/hide on page load based on selected value\n  if (variantField && variantField.getAttribute('data-selected-value') === 'Unstitched') {\n    orderNote.style.display = 'block';\n  } else {\n    orderNote.style.display = 'none';\n  }\n\n  // Handle future clicks/changes\n  document.querySelectorAll('.variant-picker__option').forEach(option => {\n    option.addEventListener('click', function () {\n      const value = this.getAttribute('data-value');\n\n      if (value === 'Unstitched') {\n        orderNote.style.display = 'block';\n        variantField.setAttribute('data-selected-value', 'Unstitched'); // Optional: Update attribute\n      } else {\n        orderNote.style.display = 'none';\n        variantField.setAttribute('data-selected-value', value); // Optional\n      }\n    });\n  });\n});\n</script>",
-        "custom_class": ""
-      }
-    },
-    "1750764478b0e9b03a": {
-      "type": "apps",
-      "blocks": {
-        "quoli_reviews_ugc_quoli_pdp_43RBRE": {
-          "type": "shopify://apps/quoli-reviews-ugc/blocks/quoli-pdp/baf7b241-e443-4879-b3d4-360440b03895",
-          "settings": {
-            "categories_shown": "reviews,questions",
-            "reviews_per_page": "5",
-            "default_sorting": "Most Recent",
-            "show_ugc_slider": true,
-            "show_filter": true,
-            "show_review_cta": true,
-            "enable_question_cta": true,
-            "review_tab_title": "REVIEWS",
-            "question_tab_title": "QUESTIONS",
-            "heading_font_size": 24,
-            "cta_font_size": 18
-          }
-        }
-      },
-      "block_order": [
-        "quoli_reviews_ugc_quoli_pdp_43RBRE"
-      ],
-      "settings": {
-        "heading": "",
-        "subheading": "",
-        "header_alignment": "center",
-        "container": "container",
-        "background_color": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "custom_class": ""
-      }
-    },
-    "custom_code_aYdERH": {
-      "type": "custom-code",
-      "name": "Custom css code",
-      "settings": {
-        "custom_css": ".swiper-button-next:after, .swiper-button-prev:after {\ndisplay:none !important;\n}\n.sf-pis__wrapper .swiper-button-control{\nheight:32px !important;\nwidth:32px !important;\n}"
-      }
+    "product_section_YjnHTm": {
+      "type": "product--section",
+      "name": "Product Information Pro",
+      "settings": {}
     }
   },
   "order": [
-    "custom_liquid_HnNEAF",
     "main",
-    "custom_liquid_PXKPT9",
-    "product-details-tabs",
-    "product-recommendations",
-    "custom_liquid_W6JqNF",
-    "1750764478b0e9b03a",
-    "custom_code_aYdERH"
+    "product_section_CgeMLM",
+    "product_section_YjnHTm"
   ]
 }

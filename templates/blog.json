@@ -6,59 +6,106 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
     "main": {
-      "type": "blog-template",
+      "type": "main-blog",
       "blocks": {
-        "d3edb8bc-04ea-4ca1-90c7-408677484928": {
-          "type": "categories",
+        "title": {
+          "type": "text",
+          "name": "Title",
           "settings": {
-            "title": "Categories",
-            "list_blog": "collections"
-          }
+            "text": "<h1>{{ closest.blog.title }}</h1>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
-        "261dcbb3-347b-4fc0-bdb9-897faf531886": {
-          "type": "recent_post",
+        "static-blog-post-card": {
+          "type": "_blog-post-card",
+          "static": true,
           "settings": {
-            "title": "Recent Post",
-            "sidebar_recent_blog_name": "mix-and-match",
-            "sidebar_recent_blog_count": "3",
-            "blog_show_tags": true,
-            "blog_show_author": false,
-            "blog_show_date": false,
-            "show_excerpt": false,
-            "truncate": "15"
-          }
-        },
-        "c1f05653-bae3-4ede-96e8-9b0c3b4d2d9a": {
-          "type": "tags",
-          "settings": {
-            "title": "Tags"
-          }
-        },
-        "64549c91-0da7-4040-9536-59e15e91e6d5": {
-          "type": "instagram",
-          "settings": {
-            "title": "Instagram",
-            "images_count": 6
-          }
+            "alignment": "left"
+          },
+          "blocks": {
+            "heading": {
+              "type": "_heading",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "type_preset": "h4",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "text": "",
+                "read_only": true,
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 10,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "blog-post-details": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
+              "static": true,
+              "settings": {
+                "show_date": true,
+                "show_author": false,
+                "type_preset": "",
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "image": {
+              "type": "_blog-post-image",
+              "static": true,
+              "settings": {
+                "height": "large",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 4
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
         }
       },
       "block_order": [
-        "d3edb8bc-04ea-4ca1-90c7-408677484928",
-        "261dcbb3-347b-4fc0-bdb9-897faf531886",
-        "c1f05653-bae3-4ede-96e8-9b0c3b4d2d9a",
-        "64549c91-0da7-4040-9536-59e15e91e6d5"
+        "title"
       ],
       "settings": {
-        "container": "container-fluid",
-        "show_sidebar": true,
-        "layout": "right_column",
-        "view": "grid",
-        "blog_list": 12,
-        "show_item_per_row": 4
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 48
       }
     }
   },

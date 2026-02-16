@@ -1,0 +1,191 @@
+<section class="new--collection__product_section new--collection__product_section-{{ section.id }}">
+<div class="section section--full-width-margin section--page-width">
+    <div class="new--collection__product-header">
+    <h2>{{ section.settings.heading }}</h2>
+    <p>{{ section.settings.subheading }}</p>
+    </div>
+
+    <div id="main-slider-{{ section.id }}" class="splide">
+    <div class="splide__track">
+        <ul class="splide__list">
+        {% for block in section.blocks %}
+            {% assign featured_product = block.settings.featured_product %}
+            
+            <li class="splide__slide" {{ block.shopify_attributes }}>
+            <div class="new--collection__product-card">
+                
+                {% comment %} Media Section with Link {% endcomment %}
+                <div class="new--collection__product-media">
+                <a href="{{ featured_product.url | default: '#' }}" class="product-card-link">
+                    {% if block.settings.video != blank and section.settings.enable_videos %}
+                    {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'product-video-element' }}
+                    {% elsif block.settings.external_video_url != blank and section.settings.enable_videos %}
+                    <video src="{{ block.settings.external_video_url }}" autoplay loop muted playsinline class="product-video-element"></video>
+                    {% elsif block.settings.image != blank %}
+                    <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">
+                    {% else %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                    {% endif %}
+                </a>
+
+                {% if section.settings.show_mute_button %}
+                    <button class="new--collection__product-mute js-mute-toggle" aria-label="Toggle Mute">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M14 14.8135V9.18646C14 6.04126 14 4.46866 13.0747 4.0773C12.1494 3.68593 11.0603 4.79793 8.88232 7.02192C7.75439 8.17365 7.11085 8.42869 5.50604 8.42869C4.10257 8.42869 3.40084 8.42869 2.89675 8.77262C1.85035 9.48655 2.00852 10.882 2.00852 12C2.00852 13.118 1.85035 14.5134 2.89675 15.2274C3.40084 15.5713 4.10257 15.5713 5.50604 15.5713C7.11085 15.5713 7.75439 15.8264 8.88232 16.9781C11.0603 19.2021 12.1494 20.3141 13.0747 19.9227C14 19.5313 14 17.9587 14 14.8135Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 10L22 14M18 14L22 10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    </button>
+                {% endif %}
+                </div>
+
+            <div class="new--collection__product-info">
+                {% if featured_product != blank %}
+                    
+                    {%- assign product_image = featured_product.featured_image -%}
+                    {% if block.settings.thumb != blank %}
+                    {%- assign product_image = block.settings.thumb -%}
+                    {% endif %}
+                
+                    {% if product_image != blank %}
+                    <img src="{{ product_image | img_url: 'master' }}" 
+                            class="new--collection__product-thumb" 
+                            alt="{{ featured_product.title }}">
+                    {% endif %}
+                    
+                    <div class="new--collection__product-content">
+                    <div>
+                        <a href="{{ featured_product.url }}" class="new--collection__product-name">
+                        {{ featured_product.title }}
+                        </a>
+                        <span class="new--collection__product-price">
+                        {{ featured_product.price | money }}
+                        </span>
+                    </div>
+                    <div>
+                        {% comment %} Yahan product ki category/collection show hogi {% endcomment %}
+                    <span class="new--collection__product-desc">
+                        {{ featured_product.collections.first.title }}
+                        </span>
+                        
+                        <button 
+                            type="button" 
+                            class="new--collection__product-add ajax-add-to-cart" 
+                            data-variant-id="{{ featured_product.selected_or_first_available_variant.id }}"
+                          >
+
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                              <path d="M8.40002 2.80005V14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M2.80005 8.3999H14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </button>
+                    </div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    </div>
+</div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+// Initialize Splide
+const splideID = '#main-slider-{{ section.id }}';
+if (document.querySelector(splideID)) {
+    new Splide(splideID, {
+    type: 'slide',
+    perPage: 4,
+    gap: '24px',
+    arrows: false,
+    pagination: false,
+    breakpoints: {
+        1024: { perPage: 3, gap: '20px' },
+        768: { perPage: 1.2, focus: 'center', gap: '15px' }
+    }
+    }).mount();
+}
+
+// Volume Toggle Logic
+const muteBtns = document.querySelectorAll('.js-mute-toggle');
+muteBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const video = this.closest('.new--collection__product-media').querySelector('video');
+
+    if (video) {
+        video.muted = !video.muted;
+    }
+    });
+});
+});
+</script>
+
+{% schema %}
+{
+"name": "New Collection Slider",
+"settings": [
+{
+    "type": "text",
+    "id": "heading",
+    "label": "Section Heading",
+    "default": "Trending Festive"
+},
+{
+    "type": "textarea",
+    "id": "subheading",
+    "label": "Section Subheading",
+    "default": "Styles selected with you in mind."
+},
+{
+    "type": "checkbox",
+    "id": "enable_videos",
+    "label": "Enable Videos",
+    "default": true
+},
+{
+    "type": "checkbox",
+    "id": "show_mute_button",
+    "label": "Show Mute Button",
+    "default": true
+}
+],
+"blocks": [
+{
+    "type": "product",
+    "name": "Product Slide",
+    "settings": [
+    {
+        "type": "product",
+        "id": "featured_product",
+        "label": "Select Product"
+    },
+    {
+        "type": "video",
+        "id": "video",
+        "label": "Product Video (Shopify File)"
+    },
+    {
+        "type": "url",
+        "id": "external_video_url",
+        "label": "External Video URL (.mp4 link)"
+    }
+    ]
+}
+],
+"presets": [
+{
+    "name": "New Collection Slider",
+    "blocks": [
+    { "type": "product" },
+    { "type": "product" },
+    { "type": "product" }
+    ]
+}
+]
+}
+{% endschema %}
