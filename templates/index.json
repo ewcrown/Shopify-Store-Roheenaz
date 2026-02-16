@@ -14,7 +14,8 @@
       "disabled": true,
       "custom_css": [
         "h1,h2 {text-align: center;}",
-        ".sf__cdt-inner {height: 20vh;}",
+        ".container {height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}",
+        ".sf__cdt-inner {height: 200px;}",
         ".container.sf__cdt.section-py {border-bottom: 1px solid #ddd !important; padding-bottom: 2rem;}",
         ".lg\\:pb-16 {padding-bottom: 0rem;}",
         "@media only screen and (max-width: 750px) {.pt-16 {padding-top: 0rem; } .block {display: none; }}"
@@ -29,7 +30,7 @@
         "background_image": "shopify://shop_images/sale_page_banner1.jpg",
         "mb_image": "shopify://shop_images/sale_page_banner_mobile.jpg",
         "heading": "",
-        "time": "2025-07-25 17:00:00",
+        "time": "2025-11-27 17:00:00",
         "button_label": "",
         "button_link": "",
         "button_style": "sf__btn-primary",
@@ -42,11 +43,11 @@
     "1621243260e1af0c20": {
       "type": "slider",
       "blocks": {
-        "slider_item_FXnt7G": {
+        "slider_item_BQ4zUj": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/222.jpg",
-            "mb_background": "shopify://shop_images/111.jpg",
+            "background": "shopify://shop_images/desktop_shopnow.jpg",
+            "mb_background": "shopify://shop_images/mobile_shopnow.jpg",
             "content_in_container": false,
             "content_position": "center middle",
             "text_alignment": "center",
@@ -55,7 +56,108 @@
             "subheading": "",
             "title": "",
             "description": "",
-            "image_link": "#",
+            "image_link": "shopify://collections/summer-reveire-luxury-lawn",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "show_footer": false,
+            "footer_alignment": "end",
+            "footer_text": "",
+            "footer_button": "",
+            "footer_link": ""
+          }
+        },
+        "slider_item_egAjFP": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/1920x900-copy_jpg_191efd15-d7f0-4cf7-a9e9-b72907ea735d.jpg",
+            "mb_background": "shopify://shop_images/760x606_jpg.jpg",
+            "content_in_container": false,
+            "content_position": "center top",
+            "text_alignment": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "subheading": "",
+            "title": "",
+            "description": "",
+            "image_link": "https://roheenaz.com/collections/whispered-florals",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "show_footer": false,
+            "footer_alignment": "end",
+            "footer_text": "",
+            "footer_button": "",
+            "footer_link": ""
+          }
+        },
+        "slider_item_rgWc4R": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/Deskop_banner.png",
+            "mb_background": "shopify://shop_images/760x606_67f6198a-2d75-44b3-8ded-9fba305eb188.png",
+            "content_in_container": false,
+            "content_position": "center top",
+            "text_alignment": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "subheading": "",
+            "title": "",
+            "description": "",
+            "image_link": "shopify://collections/rosette",
+            "button_text": "",
+            "button_link": "#",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "show_footer": false,
+            "footer_alignment": "end",
+            "footer_text": "",
+            "footer_button": "",
+            "footer_link": ""
+          }
+        },
+        "slider_item_6Ek76k": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/aangan.jpg",
+            "mb_background": "shopify://shop_images/angan.jpg",
+            "content_in_container": false,
+            "content_position": "center top",
+            "text_alignment": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "subheading": "",
+            "title": "",
+            "description": "",
+            "image_link": "shopify://collections/aangan-chiffon-collection25",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "sf__btn-primary",
+            "button_size": "",
+            "show_footer": false,
+            "footer_alignment": "end",
+            "footer_text": "",
+            "footer_button": "",
+            "footer_link": ""
+          }
+        },
+        "slider_item_FXnt7G": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
+            "background": "shopify://shop_images/aezal.jpg",
+            "mb_background": "shopify://shop_images/aezel.jpg",
+            "content_in_container": false,
+            "content_position": "center middle",
+            "text_alignment": "center",
+            "text_size": "medium",
+            "text_color": "black",
+            "subheading": "",
+            "title": "",
+            "description": "",
+            "image_link": "shopify://collections/aezel-unstitched-emb-cambric",
             "button_text": "",
             "button_link": "",
             "button_style": "sf__btn-primary",
@@ -69,9 +171,10 @@
         },
         "slider_item_L6a7XF": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/Main_banner-1920x900.png",
-            "mb_background": "shopify://shop_images/Mobile_760x606_22e1dffa-ecc4-497f-b4fe-35b9ccf8c9ec.jpg",
+            "background": "shopify://shop_images/pareesa_9b2eb6b4-40d8-414b-a728-4e2d71256bab.jpg",
+            "mb_background": "shopify://shop_images/Mobile-760-x-606-_pareesa.jpg",
             "content_in_container": false,
             "content_position": "center middle",
             "text_alignment": "center",
@@ -119,6 +222,7 @@
         },
         "slider_item_btQ9Cb": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/1920x900_2_3c923ab1-b6c0-4bf8-be59-aa771691a9c4.jpg",
             "mb_background": "shopify://shop_images/760_x_606_2.jpg",
@@ -131,84 +235,6 @@
             "title": "",
             "description": "",
             "image_link": "shopify://collections/summer-reverie-luxury-lawn",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
-        "slider_item_rgWc4R": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/1920x900_2_3460d983-7730-40dd-8655-e41768af067e.jpg",
-            "mb_background": "shopify://shop_images/new_4607be18-7b2c-4c2a-8a57-127154ac0068.jpg",
-            "content_in_container": false,
-            "content_position": "center top",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/garden-veal-printed-lawn",
-            "button_text": "",
-            "button_link": "https://roheenaz.com/collections/garden-veal-printed-lawn",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
-        "slider_item_egAjFP": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/1920X900_a33f9896-9279-4299-895a-d73eee08484c.png",
-            "mb_background": "shopify://shop_images/760X606_df9976a6-6b4f-4b59-95e8-7e0be97e98e6.png",
-            "content_in_container": false,
-            "content_position": "center top",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/aashiyana-lawn",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "",
-            "footer_button": "",
-            "footer_link": ""
-          }
-        },
-        "slider_item_BQ4zUj": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/1920X900_8727f306-9592-4099-9ae3-3c86f99f8a12.png",
-            "mb_background": "shopify://shop_images/760X606_588d1f61-56c7-4578-a224-a1082b793420.png",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/ethereal-bloom-lawn-2025",
             "button_text": "",
             "button_link": "",
             "button_style": "sf__btn-primary",
@@ -271,45 +297,19 @@
             "footer_button": "",
             "footer_link": ""
           }
-        },
-        "slider_item_mXFPTQ": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/2_3.jpg",
-            "mb_background": "shopify://shop_images/2_1_f5bc8b73-e773-47ff-a7a8-f773485269c9.jpg",
-            "content_in_container": false,
-            "content_position": "center middle",
-            "text_alignment": "center",
-            "text_size": "medium",
-            "text_color": "black",
-            "subheading": "",
-            "title": "",
-            "description": "",
-            "image_link": "shopify://collections/pheli-si-muhabbat-wedding-unstitched",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "sf__btn-primary",
-            "button_size": "",
-            "show_footer": false,
-            "footer_alignment": "end",
-            "footer_text": "New Collection",
-            "footer_button": "Shop Now",
-            "footer_link": ""
-          }
         }
       },
       "block_order": [
+        "slider_item_BQ4zUj",
+        "slider_item_egAjFP",
+        "slider_item_rgWc4R",
+        "slider_item_6Ek76k",
         "slider_item_FXnt7G",
         "slider_item_L6a7XF",
         "slider_item_LzXrby",
         "slider_item_btQ9Cb",
-        "slider_item_rgWc4R",
-        "slider_item_egAjFP",
-        "slider_item_BQ4zUj",
         "slider_item_4jEQRG",
-        "slider_item_LPVcrV",
-        "slider_item_mXFPTQ"
+        "slider_item_LPVcrV"
       ],
       "settings": {
         "container": "container-fluid",
@@ -328,26 +328,6 @@
     "home_static_blocks_cQcC3K": {
       "type": "HOME-STATIC-BLOCKS",
       "blocks": {
-        "select_EeMVnE": {
-          "type": "select",
-          "settings": {
-            "link": "shopify://collections/luxury-chiffon",
-            "img": "shopify://shop_images/banner_2.jpg",
-            "img_mobile": "shopify://shop_images/RWD-06-5.webp",
-            "title": "LUXURY FESTIVE",
-            "btntxt": ""
-          }
-        },
-        "select_hL7UAR": {
-          "type": "select",
-          "settings": {
-            "link": "shopify://collections/aashiyana-lawn",
-            "img": "shopify://shop_images/594x476-02.png",
-            "img_mobile": "shopify://shop_images/182x246-02.png",
-            "title": "LAWN",
-            "btntxt": ""
-          }
-        },
         "select_qNTG3P": {
           "type": "select",
           "disabled": true,
@@ -358,12 +338,32 @@
             "title": "LAWN",
             "btntxt": ""
           }
+        },
+        "select_hL7UAR": {
+          "type": "select",
+          "settings": {
+            "link": "shopify://collections/summer-reveire-luxury-lawn",
+            "img": "shopify://shop_images/960x770-2.jpg",
+            "img_mobile": "shopify://shop_images/960x770-2.jpg",
+            "title": "Luxury lawn",
+            "btntxt": ""
+          }
+        },
+        "select_EeMVnE": {
+          "type": "select",
+          "settings": {
+            "link": "shopify://collections/luxury-chiffon",
+            "img": "shopify://shop_images/festive.webp",
+            "img_mobile": "shopify://shop_images/festive.webp",
+            "title": "LUXURY FESTIVE",
+            "btntxt": ""
+          }
         }
       },
       "block_order": [
-        "select_EeMVnE",
+        "select_qNTG3P",
         "select_hL7UAR",
-        "select_qNTG3P"
+        "select_EeMVnE"
       ],
       "settings": {
         "heading": "CATEGORIES",
@@ -374,9 +374,9 @@
       "type": "ew-simple-image-banner",
       "name": "<> Image Banner with Link",
       "settings": {
-        "banner_image": "shopify://shop_images/CATEGORIES_1200x476_cc462e77-e4d0-453c-9494-1d91fa653e60.png",
-        "heading": "Pareesa Printed Cambric",
-        "link_url": "shopify://collections/pareesa-printed-cambric",
+        "banner_image": "shopify://shop_images/CATEGORY_-_middle.jpg",
+        "heading": "Summer reverie | luxury lawn",
+        "link_url": "shopify://collections/summer-reveire-luxury-lawn",
         "alt_text": "Promotional banner"
       }
     },
@@ -386,16 +386,16 @@
         ".container-fluid.section-my {max-width: 1500px; margin: 0 auto; font-size: 0; border-bottom: 1px solid #8d8d8d; padding-bottom: 3%;}"
       ],
       "settings": {
-        "img": "shopify://shop_images/New_Arrivals_655x901_d8112b28-1b6f-4d0c-b311-606a245361e6.png",
-        "video_thumbnail": "shopify://shop_images/New_Arrivals_655x901_d8112b28-1b6f-4d0c-b311-606a245361e6.png",
-        "link": "shopify://collections/pareesa-printed-cambric",
-        "heading": "New Arrival",
-        "subheading": "Update your wardrobe with our latest pieces crafted\nto blend comfort and sophistication\n<a class=\"VIEWbtn\" href=\"/collections/pareesa-printed-cambric\">VIEW ALL</a>",
+        "img": "shopify://shop_images/NEW-ARRIVAL_cc164f76-9a1b-4756-9cd1-cf90399a7fb4.jpg",
+        "video_thumbnail": "shopify://shop_images/NEW-ARRIVAL_cc164f76-9a1b-4756-9cd1-cf90399a7fb4.jpg",
+        "link": "shopify://collections/summer-reveire-luxury-lawn",
+        "heading": "New Arrivals",
+        "subheading": "Update your wardrobe with our latest pieces crafted\nto blend comfort and sophistication\n<a class=\"VIEWbtn\" href=\"/collections/summer-reveire-luxury-lawn\">VIEW ALL</a>",
         "description": "",
         "header_alignment": "center",
         "container": "container-fluid",
         "background_color": "rgba(0,0,0,0)",
-        "collection": "pareesa-printed-cambric",
+        "collection": "summer-reveire-luxury-lawn",
         "enable_flashsale": false,
         "show_countdown": false,
         "product_to_show": 12,
@@ -424,7 +424,7 @@
     "featured_collection_kwQiLY": {
       "type": "featured-collection",
       "custom_css": [
-        ".container-fluid.section-my {max-width: 1750px; margin: 0 auto;}",
+        ".container-fluid.section-my {max-width: 100%; margin: 0 auto;}",
         "button.sf-slider__controls-button.swiper-button-prev.sf-slider__controls-prev.border.sm\\:hover\\:border-black.rounded-full.cursor-pointer.mx-2 {display: none;}"
       ],
       "settings": {
@@ -439,12 +439,12 @@
         "show_countdown": false,
         "product_to_show": 8,
         "items_per_row": 4,
-        "item_gap": 18,
+        "item_gap": 12,
         "pcard_layout": "",
         "pcard_image_ratio": "",
         "show_vendor": false,
         "hide_title": false,
-        "enable_slider": true,
+        "enable_slider": false,
         "show_pagination": false,
         "show_navigation": true,
         "button_type": "link",
@@ -466,9 +466,9 @@
         "select_BMENih": {
           "type": "select",
           "settings": {
-            "link": "shopify://collections/pareesa-printed-cambric",
-            "img": "shopify://shop_images/Footer_left_640x920_d0f0c976-0766-4eb1-bbc7-364ecce22c0d.png",
-            "img_mobile": "shopify://shop_images/Footer_left_640x920_d0f0c976-0766-4eb1-bbc7-364ecce22c0d.png",
+            "link": "shopify://collections/summer-reveire-luxury-lawn",
+            "img": "shopify://shop_images/thumbnail-left_2fe42893-0a8d-44e6-968c-c823ef2a18d1.jpg",
+            "img_mobile": "shopify://shop_images/thumbnail-left_2fe42893-0a8d-44e6-968c-c823ef2a18d1.jpg",
             "title": ""
           }
         },
@@ -476,17 +476,17 @@
           "type": "select",
           "settings": {
             "link": "#.",
-            "img": "shopify://shop_images/640x920_footer_thumbnail.png",
-            "img_mobile": "shopify://shop_images/640x920_footer_thumbnail.png",
-            "title": "<video id=\"\" controls=\"\" poster=\"//roheenaz.com/ cdn.shopify.com/s/files/1/0572/5401/9233/files/640_x_920_Thumbnail_3497222c-b48e-48fe-83cc-c1c0d3446578.jpg?v=1752408020\" loop autoplay muted>\n              <source src=\"https://cdn.shopify.com/videos/c/o/v/04a37ff8e0374c9898c4566ed3dec575.mp4\">\n              <source src=\"\" type=\"video/webm\">\n\n            </source></source></video>"
+            "img": "shopify://shop_images/new_640_x_920_Thumbnail.jpg",
+            "img_mobile": "shopify://shop_images/new_640_x_920_Thumbnail.jpg",
+            "title": "<video id=\"\" controls=\"\" poster=\"//roheenaz.com/ cdn.shopify.com/s/files/1/0572/5401/9233/files/640_x_920_Thumbnail_f461806a-3869-41cf-9563-1d4ec3aa8d89.jpg?v=1756194579?v=1752408020\" loop autoplay muted>\n              <source src=\"https://cdn.shopify.com/videos/c/o/v/7c92a082adcd43779e3214fdd4f5b872.mp4\">\n              <source src=\"\" type=\"video/webm\">\n\n            </source></source></video>"
           }
         },
         "select_99q8yJ": {
           "type": "select",
           "settings": {
-            "link": "shopify://collections/pareesa-printed-cambric",
-            "img": "shopify://shop_images/Footer_right_640x920_f67e0aac-4055-405c-9605-55082e5e6426.png",
-            "img_mobile": "shopify://shop_images/Footer_right_640x920_f67e0aac-4055-405c-9605-55082e5e6426.png",
+            "link": "shopify://collections/summer-reveire-luxury-lawn",
+            "img": "shopify://shop_images/thumbnail-right_3a930f9f-72d2-448c-b114-ad8269567e54.jpg",
+            "img_mobile": "shopify://shop_images/thumbnail-right_3a930f9f-72d2-448c-b114-ad8269567e54.jpg",
             "title": ""
           }
         }
@@ -505,6 +505,14 @@
         "heading": "",
         "addclassnew": "threeboxss"
       }
+    },
+    "custom_liquid_U6F9AL": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<style > \n.prod__tag--soldout, span.prod__tag--flash-left {\n    align-items: center;\n    background: #fff;\n    border-radius: 0;\n    color: #202223;\n    font-size: 8px;\n    height: 24px;\n    justify-content: center;\n    line-height: 12px;\n    padding: 0 5px;\n    position: absolute;\n    text-align: center;\n    top: 5px;\n    white-space: normal;\n    width: 80px;\n    left: 5px;\n    font-weight: 200;\n}\n\n@media (max-width: 480px) {\n    .prod__tag--soldout,\n    span.prod__tag--flash-left {\n        font-size: 5px;\n        height: 20px;\n        line-height: 10px;\n        width: 65px;\n        padding: 0 4px;\n        top: 4px;\n        left: 4px;\n    }\n}\n\n\n\n</style>",
+        "custom_class": ""
+      }
     }
   },
   "order": [
@@ -514,6 +522,7 @@
     "ew_simple_image_banner_JfcUmA",
     "home_collection_yJj4d7",
     "featured_collection_kwQiLY",
-    "home_video_block_bzJjat"
+    "home_video_block_bzJjat",
+    "custom_liquid_U6F9AL"
   ]
 }

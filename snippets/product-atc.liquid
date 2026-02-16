@@ -30,7 +30,12 @@
     {% if product.selected_or_first_available_variant.available %}
       {{ btn_text | default: atc_text }}
     {% else %}
+      {% if product.tags contains 'coming-soon' %}
+        
+        coming soon
+      {% else %}
       {{ 'products.product.sold_out' | t }}
+      {% endif %}
     {% endif %}
   </span>
 </button>

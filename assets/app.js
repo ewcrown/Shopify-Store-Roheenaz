@@ -10078,3 +10078,89 @@ initTheme();
 }();
 /******/ })()
 ;
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.querySelector("[data-search-input]");
+  const predictiveResults = document.getElementById("PredictiveResults");
+  const searchItemsWrapper = document.querySelector("[data-search-items-wrapper]");
+  const resultWrapper = document.querySelector("[data-result]");
+  const queryText = document.querySelector("[data-query]");
+  const messageEl = document.querySelector("[data-message]");
+  const spinner = document.querySelector("[data-spinner]");
+  const clearBtn = document.querySelector("[data-clear-search]");
+
+  let controller;
+
+  function clearResults() {
+    predictiveResults.innerHTML = "";
+    if (searchItemsWrapper) {
+      searchItemsWrapper.querySelectorAll("[data-search-item]").forEach(el => el.classList.add("hidden"));
+    }
+    resultWrapper.classList.add("hidden");
+  }
+
+  async function fetchPredictiveResults(query) {
+    if (controller) controller.abort();
+    controller = new AbortController();
+
+    spinner.classList.remove("invisible");
+    try {
+      const res = await fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product`, {
+        signal: controller.signal,
+      });
+      const data = await res.json();
+      renderResults(query, data.resources.results.products || []);
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        console.error("Predictive search error:", err);
+      }
+    } finally {
+      spinner.classList.add("invisible");
+    }
+  }
+
+  function renderResults(query, products) {
+    clearResults();
+
+    queryText.textContent = query;
+    resultWrapper.classList.remove("hidden");
+
+    if (!products.length) {
+      messageEl.textContent = messageEl.dataset.noResults;
+      return;
+    }
+
+    messageEl.textContent = messageEl.dataset.resultsTitle;
+
+    products.forEach((p, idx) => {
+      const slot = searchItemsWrapper.querySelectorAll("[data-search-item]")[idx];
+      if (slot) {
+        slot.innerHTML = `
+          <a href="${p.url}" class="block border p-2 rounded hover:shadow transition">
+            <img src="${p.featured_image?.url || ''}" alt="${p.title}" />
+            <div class="text-sm font-medium mt-2">${p.title}</div>
+            <div class="text-xs text-gray-600">${p.price}</div>
+          </a>
+        `;
+        slot.classList.remove("hidden");
+      }
+    });
+  }
+
+  searchInput.addEventListener("input", function (e) {
+    const query = e.target.value.trim();
+    if (!query.length) {
+      clearResults();
+      clearBtn.classList.add("invisible");
+      return;
+    }
+    clearBtn.classList.remove("invisible");
+    fetchPredictiveResults(query);
+  });
+
+  clearBtn.addEventListener("click", function () {
+    searchInput.value = "";
+    clearResults();
+    clearBtn.classList.add("invisible");
+  });
+});

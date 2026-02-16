@@ -120,12 +120,12 @@
           "logo_max_width": 145,
           "sticky_logo_max_width": 140,
           "mobile_logo_max_width": 105,
-          "main_menu": "main-menu",
+          "main_menu": "main-menu-copy",
           "secondary_menu": "",
           "mobile_menu": "",
           "uppercase_parent_level": true,
           "search": "show_icon",
-          "show_account_icon": true,
+          "show_account_icon": false,
           "show_cart_icon": true,
           "show_wishlist_icon": true,
           "show_compare_icon": false,
@@ -154,7 +154,7 @@
           "7ebc2f78-975b-4a81-b874-103c3355a866": {
             "type": "menu",
             "settings": {
-              "menu": "ft-menu",
+              "menu": "ft-menu-copy",
               "title": "Information",
               "width": "100%",
               "order_first": false,
@@ -237,11 +237,6 @@
           "greeting_message": "👋 Hi, message us with any questions. We're happy to help!"
         }
       },
-      "8764476057892802672": {
-        "type": "shopify://apps/stoq/blocks/main/4bb73be2-b7c2-4870-949f-c528145452a3",
-        "disabled": false,
-        "settings": {}
-      },
       "9693171294570118353": {
         "type": "shopify://apps/quoli-reviews-ugc/blocks/quoli-global-style/baf7b241-e443-4879-b3d4-360440b03895",
         "disabled": false,
@@ -250,6 +245,33 @@
           "show_helpful_button": true,
           "attributes": true
         }
+      },
+      "6610233760104865948": {
+        "type": "shopify://apps/pushowl-brevo-email-push-sms/blocks/pushowl-app-embed-3d2ff2b5/fa20c3ba-38bf-43e0-ba5c-431f6ae07d95",
+        "disabled": false,
+        "settings": {}
+      },
+      "8764476057892802672": {
+        "type": "shopify://apps/stoq/blocks/main/4bb73be2-b7c2-4870-949f-c528145452a3",
+        "disabled": false,
+        "settings": {}
+      },
+      "7079518687644006178": {
+        "type": "shopify://apps/checkout-blocks/blocks/app-embed/b0024ca5-9de8-4bf0-a92f-cd0783877ae2",
+        "disabled": false,
+        "settings": {
+          "utm_id": true,
+          "utm_source": true,
+          "utm_medium": true,
+          "utm_campaign": true,
+          "utm_term": true,
+          "ref": true
+        }
+      },
+      "2567389343055140935": {
+        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
@@ -274,6 +296,10 @@
     }
   },
   "platform_customizations": {
-    "custom_css": []
+    "custom_css": [
+      ".sf-footer__block a {text-transform: uppercase !important;}",
+      ".ai-image-gallery-ac05qq1r6vdrtndbtbaigenblock697a34bjb6nph.ai-image-gallery-ac05qq1r6vdrtndbtbaigenblock697a34bjb6nph--flex {padding: 50px 40px 50px 40px;}",
+      "img.ai-image-ac05qq1r6vdrtndbtbaigenblock697a34bjb6nph {object-fit: contain;}"
+    ]
   }
 }

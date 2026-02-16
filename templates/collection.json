@@ -11,6 +11,7 @@
   "sections": {
     "custom_liquid_Hj3jw3": {
       "type": "custom-liquid",
+      "disabled": true,
       "settings": {
         "custom_liquid": "{% render 'breadcrumbs' %}",
         "custom_class": ""
@@ -44,15 +45,13 @@
       ],
       "name": "Countdown timer",
       "settings": {
-        "body_text": "#ffffff",
+        "body_text": "#000000",
         "container": "container",
         "section_height": "small",
         "align": "center",
         "background_color": "#ffffff",
-        "background_image": "shopify://shop_images/sale_page_banner1.jpg",
-        "mb_image": "shopify://shop_images/sale_page_banner_mobile.jpg",
         "heading": "",
-        "time": "2025-07-25 17:00:00",
+        "time": "2026-02-05 17:00:00",
         "button_label": "",
         "button_link": "",
         "button_style": "sf__btn-primary",
@@ -193,7 +192,7 @@
             "no-of-lines": "100",
             "carousel_auto_scroll": true,
             "carousel_auto_scroll_speed": "5",
-            "slider_font": "helvetica_n4"
+            "slider_font": "sans_serif_n4"
           }
         }
       },
@@ -210,6 +209,14 @@
         "padding_bottom": 0,
         "custom_class": ""
       }
+    },
+    "custom_liquid_xWaNy9": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<style > \n.prod__tag--soldout, span.prod__tag--flash-left  {\n    align-items: center;\n    background: #fff;\n    border-radius: 0;\n    color: #202223;\n    font-size: 8px;\n    height: 24px;\n    justify-content: center;\n    line-height: 12px;\n    padding: 0 5px;\n    position: absolute;\n    text-align: center;\n    top: 5px;\n    white-space: normal;\n    width: 80px;\n    left: 5px;\n    font-weight: 200;\n}\n\n@media (max-width: 480px) {\n    .prod__tag--soldout,\n    span.prod__tag--flash-left {\n        font-size: 5px;\n        height: 20px;\n        line-height: 10px;\n        width: 60px;\n        padding: 0 4px;\n        top: 4px;\n        left: 4px;\n    }\n}\n\n\n\n</style>",
+        "custom_class": ""
+      }
     }
   },
   "order": [
@@ -219,6 +226,7 @@
     "main",
     "1733137255884954ec",
     "custom_liquid_cBR4ab",
-    "1733137012ce28c08e"
+    "1733137012ce28c08e",
+    "custom_liquid_xWaNy9"
   ]
 }

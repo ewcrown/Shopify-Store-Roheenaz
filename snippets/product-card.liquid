@@ -276,8 +276,14 @@
           {%- endif -%}
             <div class="badges-ai">
           {%- if settings.show_badge_soldout -%}
-            <span class="prod__tag prod__tag--soldout" style="display: none;">{{ 'products.product.sold_out' | t }}</span>
+            {% unless product.available %}
+              {% if product.tags contains 'coming-soon' %}
+                <span class="prod__tag prod__tag--soldout prod__tag--soon">coming soon</span>
+              {% else %}
+                <span class="prod__tag prod__tag--soldout" style="display: none;">{{ 'products.product.sold_out' | t }}</span>
+              {% endif %}
             
+            {% endunless %}
             {% if on_sale and product.available %}
               <span class="prod__tag prod__tag--flash-right" style="display: none; display: flex
 ;
@@ -286,7 +292,13 @@
     font-weight: bold;">{{ compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | floor | append: "% OFF" }}</span>
               {% endif %}
           {%- endif -%}
-            
+            {% if product.tags contains 'New' %}
+              <span class="prod__tag prod__tag--flash-right" style="display: none; display: flex
+;
+    background: #ad0000;
+    color: #fff;
+    font-weight: bold;">NEW IN</span>
+              {% endif %}
             </div>
           {%- case card_style -%}
             {%- when '2' -%}

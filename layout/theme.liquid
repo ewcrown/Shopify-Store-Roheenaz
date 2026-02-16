@@ -23,6 +23,10 @@ template-{{ template.name | handle }} {{ template.name }}-{{ template.suffix }} 
   data-template="{{ template.name }}"
   {% if enable_rtl %}dir="rtl"{% endif %}
 >
+  <link href="
+https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
+" rel="stylesheet">
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -122,11 +126,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
   </script>
- <script src="{{ 'app.min.js' | asset_url }}" defer="defer"></script>
+ <script src="{{ 'app.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'foxkit-app.min.js' | asset_url }}" defer="defer"></script>
 
   <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-card-swatch.min.js' | asset_url }}" defer="defer"></script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  function nukePredictiveCache() {
+    const ps = window.MinimogTheme?.Search?.predictiveSearch;
+    if (!ps) return;
+
+    // kill existing cache contents
+    if (ps.cache?.clear) {
+      ps.cache.clear();
+    }
+
+    // override methods so nothing ever sticks
+    ps.cache.get = () => undefined;
+    ps.cache.set = () => {};
+    console.info('[PredictiveSearch] cache disabled');
+  }
+
+  // run now and whenever predictive search is initialized
+  nukePredictiveCache();
+  document.addEventListener('click', nukePredictiveCache, { once: true });
+});
+</script>
 </div>
+<script src="
+https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js
+"></script>
+<script src="{{ 'splide.js' | asset_url }}" defer></script>
+
 </body>
 </html>

@@ -102,9 +102,13 @@
                 <div product-id="{{ product.id }}" class="alr-display-review-badge mt-2"></div>
               {% endif %}
             {%- when 'price' -%}
+              {% if product.tags contains 'coming-soon' %} 
+            {% else %}
               <div class="prod__reviews-and-prices flex">
                 {% render 'product-prices', use_variant: true, product: product, show_sale_badge: block.settings.show_saving, price_text_size: 'text-xl md:text-2xl' %}
               </div>
+            {% endif %}
+              
               {%- if shop.taxes_included -%}
                 <div class="main-product__block-tax text-color-subtext">
                   {{ 'products.product.include_taxes' | t }}

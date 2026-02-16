@@ -1,0 +1,486 @@
+{% doc %}
+  @prompt
+    imgs block that are flex or each img have a differnt link full width img or max 4 imgs in 1 row on dextop or 2 imgs in 1 row in mobile
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-image-gallery-{{ ai_gen_id }} {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .ai-image-gallery__container-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: {{ block.settings.image_spacing }}px;
+    justify-content: {{ block.settings.alignment }};
+  }
+
+  .ai-image-gallery__item-{{ ai_gen_id }} {
+    flex: 1 1 calc({{ 100 | divided_by: block.settings.columns_desktop }}% - {{ block.settings.image_spacing | times: block.settings.columns_desktop | minus: block.settings.image_spacing | divided_by: block.settings.columns_desktop }}px);
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.border_radius }}px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ai-image-gallery__item-{{ ai_gen_id }}:hover {
+    transform: translateY(-{{ block.settings.hover_lift }}px);
+    box-shadow: 0 {{ block.settings.hover_lift | times: 2 }}px {{ block.settings.hover_lift | times: 4 }}px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-image-gallery__link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    position: relative;
+  }
+
+  .ai-image-gallery__image-wrapper-{{ ai_gen_id }} {
+    width: 100%;
+    height: 0;
+    padding-bottom: {{ block.settings.aspect_ratio }}%;
+    position: relative;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
+
+  .ai-image-gallery__image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-image-gallery__item-{{ ai_gen_id }}:hover .ai-image-gallery__image-{{ ai_gen_id }} {
+    transform: scale({{ block.settings.hover_scale }});
+  }
+
+  .ai-image-gallery__placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+  }
+
+  .ai-image-gallery__placeholder-{{ ai_gen_id }} svg {
+    width: 60px;
+    height: 60px;
+    opacity: 0.3;
+  }
+
+  .ai-image-gallery__overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, {{ block.settings.overlay_opacity | divided_by: 100.0 }}) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-image-gallery__item-{{ ai_gen_id }}:hover .ai-image-gallery__overlay-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  .ai-image-gallery__caption-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    color: {{ block.settings.caption_color }};
+    text-align: {{ block.settings.caption_alignment }};
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .ai-image-gallery__item-{{ ai_gen_id }}:hover .ai-image-gallery__caption-{{ ai_gen_id }} {
+    transform: translateY(0);
+  }
+
+  .ai-image-gallery__caption-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.caption_title_size }}px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    line-height: 1.2;
+  }
+
+  .ai-image-gallery__caption-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.caption_text_size }}px;
+    margin: 0;
+    opacity: 0.9;
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 767px) {
+    .ai-image-gallery__item-{{ ai_gen_id }} {
+      flex: 1 1 calc({{ 100 | divided_by: block.settings.columns_mobile }}% - {{ block.settings.image_spacing | times: block.settings.columns_mobile | minus: block.settings.image_spacing | divided_by: block.settings.columns_mobile }}px);
+    }
+
+    .ai-image-gallery__caption-{{ ai_gen_id }} {
+      transform: translateY(0);
+      position: static;
+      padding: 15px 0 0 0;
+      color: {{ block.settings.caption_color_mobile | default: block.settings.caption_color }};
+    }
+
+    .ai-image-gallery__overlay-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-image-gallery__item-{{ ai_gen_id }}:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .ai-image-gallery__item-{{ ai_gen_id }}:hover .ai-image-gallery__image-{{ ai_gen_id }} {
+      transform: none;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-image-gallery-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-image-gallery__container-{{ ai_gen_id }}">
+    {% for i in (1..4) %}
+      {% liquid
+        assign image_key = 'image_' | append: i
+        assign link_key = 'link_' | append: i
+        assign title_key = 'title_' | append: i
+        assign caption_key = 'caption_' | append: i
+        
+        assign image = block.settings[image_key]
+        assign link = block.settings[link_key]
+        assign title = block.settings[title_key]
+        assign caption = block.settings[caption_key]
+      %}
+      
+      {% if image != blank %}
+        <div class="ai-image-gallery__item-{{ ai_gen_id }}">
+          {% if link != blank %}
+            <a href="{{ link }}" class="ai-image-gallery__link-{{ ai_gen_id }}">
+          {% else %}
+            <div class="ai-image-gallery__link-{{ ai_gen_id }}">
+          {% endif %}
+            
+            <div class="ai-image-gallery__image-wrapper-{{ ai_gen_id }}">
+              <img
+                src="{{ image | image_url: width: 800 }}"
+                alt="{{ image.alt | escape }}"
+                class="ai-image-gallery__image-{{ ai_gen_id }}"
+                loading="lazy"
+                width="{{ image.width }}"
+                height="{{ image.height }}"
+              >
+              
+              {% if block.settings.show_overlay %}
+                <div class="ai-image-gallery__overlay-{{ ai_gen_id }}"></div>
+              {% endif %}
+              
+              {% if title != blank or caption != blank %}
+                <div class="ai-image-gallery__caption-{{ ai_gen_id }}">
+                  {% if title != blank %}
+                    <h3 class="ai-image-gallery__caption-title-{{ ai_gen_id }}">{{ title }}</h3>
+                  {% endif %}
+                  {% if caption != blank %}
+                    <p class="ai-image-gallery__caption-text-{{ ai_gen_id }}">{{ caption }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+            
+          {% if link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image gallery",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "image_spacing",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Space between images",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Image style"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "value": "56.25", "label": "16:9" },
+        { "value": "75", "label": "4:3" },
+        { "value": "100", "label": "1:1" },
+        { "value": "133.33", "label": "3:4" },
+        { "value": "177.78", "label": "9:16" }
+      ],
+      "default": "100"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Hover effects"
+    },
+    {
+      "type": "range",
+      "id": "hover_lift",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Hover lift",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "min": 1.0,
+      "max": 1.2,
+      "step": 0.1,
+      "label": "Image scale on hover",
+      "default": 1.1
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Caption style"
+    },
+    {
+      "type": "color",
+      "id": "caption_color",
+      "label": "Caption color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "caption_color_mobile",
+      "label": "Caption color on mobile",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "caption_alignment",
+      "label": "Caption alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "caption_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "caption_text_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Caption text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "caption_1",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "caption_2",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "link_3",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "caption_3",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "link_4",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "title_4",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "caption_4",
+      "label": "Caption"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image gallery"
+    }
+  ]
+}
+{% endschema %}

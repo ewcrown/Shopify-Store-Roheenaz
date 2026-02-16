@@ -12,3 +12,23 @@
     justify-content: center;
   }
 }
+
+
+.product-form__actions .restock-rocket-button {
+  opacity:.8 !important;
+  background-color: var(--color-btn-bg, var(--color-primary)) !important;
+  border-color: var(--border-color-2) !important;
+  color: var(--color-disabled) !important;
+  pointer-events: none !important;
+  border: 1px solid transparent !important;
+  border-radius: var(--btn-border-radius, 0) !important;
+  display: inline-block !important;
+  font-size: var(--font-btn-size, 1rem) !important;
+  font-weight: var(--font-btn-weight, 500) !important;
+  letter-spacing: var(--btn-letter-spacing, 0) !important;
+  line-height: var(--btn-line-height, "normal") !important;
+  outline: none !important;
+  text-transform: var(--btn-text-transform, "") !important;
+  transition: all .32s !important;
+  padding: 0 !important;
+}

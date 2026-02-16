@@ -66,6 +66,7 @@
         },
         "custom_liquid_pdkCNU": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
             "custom_liquid": "<div id=\"ai-order-note\" style=\"display:none\">\n<strong>Note:</strong> All unstitched to stitched orders will require advance payment\n</div>"
           }
