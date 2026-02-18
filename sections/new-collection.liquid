@@ -246,15 +246,17 @@ document.addEventListener('click', function(e) {
       .then(function(data) {
         clearLoading();
         if (data.status && data.status !== 200) {
-          if (data.message) alert(data.message);
+          alert(data.message || 'Unable to add to cart.');
           return;
         }
         var formComponent = form.closest('product-form-component');
-        document.dispatchEvent(new CustomEvent('cart:update', { bubbles: true, detail: { resource: data, data: { source: 'new-collection', itemCount: parseInt(formData.get('quantity') || '1', 10), productId: formComponent ? formComponent.getAttribute('data-product-id') : null } } }));
+        var itemCount = parseInt(formData.get('quantity') || '1', 10);
+        document.dispatchEvent(new CustomEvent('cart:update', { bubbles: true, detail: { resource: data, data: { source: 'product-form-component', itemCount: itemCount, productId: formComponent ? formComponent.getAttribute('data-product-id') : null } } }));
       })
       .catch(function(err) {
         console.error('Add to cart error:', err);
         clearLoading();
+        alert('Unable to add to cart. Please try again.');
       });
   }, true);
 

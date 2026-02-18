@@ -1,6 +1,4 @@
-/* body {
-    background: #F6F6F6;
-} */
+
 
 span.menu-drawer__menu-item-text.wrap-text {
     font-size: 16px;
@@ -37,7 +35,7 @@ span.menu-drawer__menu-item-text.wrap-text {
 
 /* Announcement Bar – keep transparent/semi-transparent unless mega menu is open */
 body:not(.custom-mega-open) .announcement-bar {
-    background: rgba(0, 0, 0, 0.20) !important;
+    background: rgba(0, 0, 0, 0.20);
     transition: background 0.3s ease-in-out;
 }
 
@@ -1557,7 +1555,7 @@ video {
     display: grid;
     gap: 30px 15px;
     transition: 0.3s;
-    padding-left: 20px;
+    padding-left: 0;
 }
 
 .columns-4 {
@@ -1783,24 +1781,6 @@ body.filter-open {
     grid-template-columns: repeat(3, 1fr);
 }
 
-@media (max-width: 600px) {
-    .desktop-only {
-        display: none;
-    }
-
-    .rohe-product-grid {
-        padding-left: 0;
-    }
-
-    .rohe-product-grid.m-columns-2 {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .rohe-product-grid.m-columns-1 {
-        grid-template-columns: 1fr !important;
-    }
-}
-
 .header__icon .header__icon--menu .header__icon--summary {
     padding: 0px !important;
 
@@ -1859,4 +1839,65 @@ body.filter-open {
 
 .header-logo__svg {
     height: auto !important;
+}
+
+.ew-transparent-header-false {
+
+    .announcement-bar__row .announcement-bar__text--promo,
+    .announcement-bar__countdown {
+        color: #000 !important;
+    }
+
+    .announcement-bar__row {
+        gap: 0 !important;
+    }
+    .announcement-bar__row .announcement-bar__text--promo {
+        margin-top: 8px !important;
+    }   
+
+    .announcement-bar {
+        background: #F6F6F6 !important;
+    }
+
+    .header-logo__svg svg path{
+        fill: #000 !important;
+    }
+
+    .header__column--right svg path,
+    .custom-mega__trigger svg path{
+        stroke: #000 !important;
+    }
+}
+
+
+@media (max-width: 767px) {
+    .desktop-only {
+        display: none;
+    }
+
+    .rohe-product-grid {
+        padding-left: 0;
+    }
+
+    .rohe-product-grid.m-columns-2 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .rohe-product-grid.m-columns-1 {
+        grid-template-columns: 1fr !important;
+    }
+
+    .media-grid-container {
+        height: auto;
+        flex-direction: column;
+    }
+
+    .announcement-bar__row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .announcement-bar__row .announcement-bar__countdown {
+        justify-self: center !important;
+    }
+
 }
