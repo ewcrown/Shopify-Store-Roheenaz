@@ -1,54 +1,22 @@
 <style>
-  * Global Reset */
+/* Global Reset */
 .product__page--main-container {
   display: grid;
-  grid-template-columns: 1fr 400px; /* Right section fixed width */
+  grid-template-columns: 1fr 400px;
   gap: 40px;
   padding: 20px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
-/* GALLERY SECTION */
+/* Media column – native gallery lives here */
 .product__page--media {
-  display: flex;
-  gap: 15px;
-}
-
-.product__page--gallery--thumbnails {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   position: sticky;
   top: 20px;
   height: fit-content;
-  max-height: 80vh; /* Scrollable if too many thumbs */
-  overflow-y: auto;
-  min-width: 80px;
 }
 
-.product__page--gallery--thumbnails img {
-  width: 80px;
-  height: 100px; /* Fixed small height */
-  object-fit: cover;
-  cursor: pointer;
-  border: 1px solid #f1f1f1;
-  border-radius: 4px;
-}
-
-.product__page--gallery--main-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  flex-grow: 1;
-}
-
-.product__page--gallery--main-grid img {
-  width: 100%;
-  height: 600px; /* Fixed height for uniformity */
-  object-fit: cover; /* Image crop hogi par stretch nahi */
-  background: #f9f9f9;
-}
+.mobile__product__page--container { display: none; }
 
 /* RIGHT INFO SECTION */
 .product__page--product__information--section {
@@ -107,14 +75,6 @@
   cursor: pointer;
 }
 
-/* MOBILE RESPONSIVENESS */
-@media (max-width: 768px) {
-  .product__page--main-container { grid-template-columns: 1fr; }
-  .product__page--gallery--main-grid { grid-template-columns: 1fr; }
-  .product__page--gallery--main-grid img { height: 450px; }
-  .product__page--media { flex-direction: column-reverse; }
-  .product__page--gallery--thumbnails { flex-direction: row; overflow-x: auto; width: 100%; }
-}
 {% comment %} /* Reset & Global */
 .product__page--main-container, .mobile__product__page--container {
   font-family: 'Inter', sans-serif; /* Ya jo bhi apka theme font ho */
@@ -204,9 +164,7 @@ input:checked ~ .checkmark::after { content: "✓"; color: #fff; font-size: 12px
 @media (max-width: 1024px) {
   .product__page--main-container { display: none; }
   .mobile__product__page--container { display: flex; flex-direction: column; }
-  .mobile__product__page--main-image img { width: 100%; }
-  .mobile__product__page--thumbnails { display: flex; overflow-x: auto; gap: 8px; padding: 10px; }
-  .mobile__product__page--thumbnails img { width: 80px; flex-shrink: 0; }
+  .product__page--media { padding: 0 0 10px; }
   .mobile__product__page--product__information--section { padding: 15px; }
   .mobile__info-header { display: flex; justify-content: space-between; align-items: center; }
   .mobile__info-header h1 { font-size: 20px; }
@@ -226,17 +184,18 @@ input:checked ~ .checkmark::after { content: "✓"; color: #fff; font-size: 12px
 <div class="section section--full-width-margin section--page-width">
 <div class="product__page--main-container">
 <div class="product__page--media">
-  <div class="product__page--gallery--thumbnails">
-    {% for image in product.images %}
-      <img src="{{ image.src | img_url: 'compact' }}" class="js-thumb" data-index="{{ forloop.index0 }}">
-    {% endfor %}
-  </div>
-
-  <div class="product__page--gallery--main-grid">
-    {% for image in product.images %}
-      <img src="{{ image.src | img_url: '1024x1024' }}" id="img-{{ forloop.index0 }}">
-    {% endfor %}
-  </div>
+  {%- for block in section.blocks -%}
+    {%- if block.type == '_product-media-gallery' -%}
+      {% render 'product-media-gallery-content',
+        product: product,
+        media_presentation: block.settings.media_presentation,
+        block_settings: block.settings,
+        block_id: block.id,
+        block_shopify_attributes: block.shopify_attributes
+      %}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
 </div>
 
 <div class="product__page--product__information--section">
@@ -303,13 +262,19 @@ input:checked ~ .checkmark::after { content: "✓"; color: #fff; font-size: 12px
 
 <div class="mobile__product__page--container">
 <div class="section section--full-width-margin section--page-width">
-<div class="mobile__product__page--main-image">
-  <img src="{{ product.featured_image | img_url: 'master' }}" id="mobile-main-img">
-</div>
-<div class="mobile__product__page--thumbnails">
-  {% for image in product.images %}
-    <img src="{{ image.src | img_url: 'master' }}" class="js-mobile-thumb">
-  {% endfor %}
+<div class="product__page--media mobile-only-gallery">
+  {%- for block in section.blocks -%}
+    {%- if block.type == '_product-media-gallery' -%}
+      {% render 'product-media-gallery-content',
+        product: product,
+        media_presentation: block.settings.media_presentation,
+        block_settings: block.settings,
+        block_id: block.id,
+        block_shopify_attributes: block.shopify_attributes
+      %}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
 </div>
 <div class="mobile__product__page--product__information--section">
   <div class="mobile__info-header">
@@ -367,19 +332,15 @@ const variants = {{ product.variants | json }};
 document.querySelectorAll('.js-variant-container').forEach(container => {
   container.addEventListener('click', (e) => {
     if (!e.target.classList.contains('pill') && !e.target.classList.contains('mobile__pill')) return;
-    
     const pills = container.children;
     Array.from(pills).forEach(p => p.classList.remove('active'));
     e.target.classList.add('active');
-
-    // Update Labels
     updateSelectedVariant();
   });
 });
 
 function updateSelectedVariant() {
-  // Ye function logic aapke variants ko match karke ID aur Price update karegi
-  // (Pichle code wali logic yahan apply hogi)
+  // Match selected options to variant and update ID/price
 }
 
 // Quantity
@@ -389,7 +350,6 @@ document.querySelectorAll('.js-qty').forEach(btn => {
     const isMobile = btn.closest('.mobile__product__page--container');
     const display = document.getElementById(isMobile ? 'qty-mobile' : 'qty-desktop');
     const input = document.getElementById(isMobile ? 'qty-input-mobile' : 'qty-input-desktop');
-    
     let val = parseInt(display.innerText) + delta;
     if (val < 1) val = 1;
     display.innerText = val;
@@ -418,20 +378,6 @@ document.querySelectorAll('.js-lining-toggle').forEach(el => {
     el.classList.toggle('active');
     const chk = el.querySelector('input[type="checkbox"]');
     chk.checked = !chk.checked;
-  });
-});
-
-// Desktop Thumbnail Scroll
-document.querySelectorAll('.js-thumb').forEach(t => {
-  t.addEventListener('click', () => {
-    document.getElementById('img-' + t.dataset.index).scrollIntoView({behavior:'smooth'});
-  });
-});
-
-// Mobile Image Swap
-document.querySelectorAll('.js-mobile-thumb').forEach(t => {
-  t.addEventListener('click', () => {
-    document.getElementById('mobile-main-img').src = t.src;
   });
 });
 });

@@ -61,37 +61,60 @@
       on:click="/toggle"
     >
       <span class="svg-wrapper menu-inverse-icon header-drawer-icon header-drawer-icon--open">
-        {{- 'menu-inverse-icon.svg' | inline_asset_content -}} 
-      </span> 
-      <span class="svg-wrapper menu-icon header-drawer-icon header-drawer-icon--close">
-        {{- 'menu-icon.svg' | inline_asset_content -}}
+        {{- 'menu-inverse-icon.svg' | inline_asset_content -}}
       </span>
     </summary>
     <div
       data-header-drawer
       class="
         menu-drawer
+        menu-drawer--dropdown
         motion-reduce
         color-{{ block_settings.color_scheme }}
       "
     >
-      <button
-        class="button button-unstyled close-button menu-drawer__close-button"
-        type="button"
-        aria-label="{{ 'actions.close' | t }}"
-        on:click="/close"
-      >
-        <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
-          {{- 'icon-close.svg' | inline_asset_content -}}
-        </span>
-      </button>
-      <nav
-        class="menu-drawer__navigation"
+      <div class="menu-drawer__dropdown-inner">
+        <div class="menu-drawer__header">
+          <button
+            class="button button-unstyled close-button menu-drawer__close-button"
+            type="button"
+            aria-label="{{ 'actions.close' | t }}"
+            on:click="/close"
+          >
+            <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
+              {{- 'icon-close.svg' | inline_asset_content -}}
+            </span>
+          </button>
+        </div>
+        <nav
+          class="menu-drawer__navigation"
         style="
           {%- render 'menu-font-styles', settings: block_settings, menu_type: 'drawer' %}
           {%- render 'submenu-font-styles', settings: block_settings %}
         "
       >
+        {% if block_settings.drawer_layout != 'accordion' %}
+        <div class="menu-drawer__mega">
+          <div class="mega-menu section section--full-width-margin">
+            <div class="mega-menu__grid menu-drawer__mega-grid">
+              <ul class="mega-menu__list list-unstyled" role="list">
+                {% for link in linklist.links %}
+                  <li class="mega-menu__column mega-menu__column--span-1">
+                    <a href="{{ link.url }}" class="mega-menu__link mega-menu__link--parent">{{ link.title | escape }}</a>
+                    {% if link.links != blank %}
+                      <ul class="mega-menu__content-list list-unstyled">
+                        {% for child in link.links %}
+                          <li><a href="{{ child.url }}" class="mega-menu__link">{{ child.title | escape }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% else %}
         <ul
           class="menu-drawer__menu has-submenu"
           role="list"
@@ -127,7 +150,7 @@
                         id="HeaderDrawer-{{ link.handle }}"
                         class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset"
                       >
-                        <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
+                        <span class="menu-drawer__menu-item-text wrap-text">{{ link.title }}</span>
                         <span class="svg-wrapper icon-plus">
                           {{- 'icon-plus.svg' | inline_asset_content -}}
                         </span>
@@ -559,6 +582,7 @@
             {%- endfor -%}
           {% endif %}
         </ul>
+        {% endif %}
       </nav>
       <div
         class="menu-drawer__utility-links menu-drawer__animated-element"
@@ -744,6 +768,7 @@
           </ul>
         </div>
       {% endif %}
+      </div>
     </div>
     <div
       class="menu-drawer__backdrop"
@@ -768,7 +793,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: var(--padding-lg);
+    padding: 0;
   }
 
   .header__icon--summary .header-drawer-icon {
@@ -799,6 +824,78 @@
     }
   }
 
+  .menu-drawer__mega {
+    width: 100%;
+    padding: var(--padding-md, 1rem) var(--page-margin, 1.5rem);
+    overflow-y: auto;
+  }
+
+  .menu-drawer__mega .menu-drawer__mega-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-xl, 1.5rem) var(--gap-lg, 2rem);
+  }
+
+  @media screen and (min-width: 750px) {
+    .menu-drawer__mega .menu-drawer__mega-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  /* Dropdown mega menu: full-width multi-column strip below header */
+  .menu-drawer--dropdown .menu-drawer__mega {
+    padding: 0;
+  }
+
+  .menu-drawer--dropdown .menu-drawer__mega .menu-drawer__mega-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-lg) var(--gap-xl);
+  }
+
+  @media screen and (min-width: 990px) {
+    .menu-drawer--dropdown .menu-drawer__mega .menu-drawer__mega-grid {
+      grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    }
+  }
+
+  .menu-drawer--dropdown .menu-drawer__mega .mega-menu__link--parent {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .menu-drawer--dropdown .menu-drawer__mega .mega-menu__content-list .mega-menu__link {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text, 0.75));
+    font-weight: 400;
+  }
+
+  .menu-drawer__mega .mega-menu__column {
+    min-width: 0;
+  }
+
+  .menu-drawer__mega .mega-menu__link--parent {
+    font-weight: 600;
+    display: block;
+    padding: 0.25rem 0;
+  }
+
+  .menu-drawer__mega .mega-menu__content-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.25rem 0 0;
+  }
+
+  .menu-drawer__mega .mega-menu__content-list li {
+    margin: 0;
+  }
+
+  .menu-drawer__mega .mega-menu__content-list .mega-menu__link {
+    padding: 0.2rem 0;
+    font-size: 0.9em;
+  }
+
   details:not(.menu-open) .header__icon--menu .header-drawer-icon--close {
     display: none;
   }
@@ -819,19 +916,20 @@
 
   .menu-drawer {
     position: fixed;
-    transform: translateX(-100%);
+    top: 0;
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
     visibility: hidden;
     height: var(--drawer-height);
     width: var(--drawer-width);
     max-width: var(--drawer-max-width);
     z-index: var(--layer-menu-drawer);
-    left: 0;
-    top: 0;
     padding: 0;
     background-color: var(--color-background);
     overflow: auto;
     display: flex;
-    border-right: var(--style-border-drawer);
+    border-left: var(--style-border-drawer);
     box-shadow: var(--shadow-drawer);
     flex-direction: column;
 
@@ -839,9 +937,53 @@
       width: 25rem;
     }
 
-    .header__drawer--desktop & {
+    .header__drawer--desktop &:not(.menu-drawer--dropdown) {
       height: 100vh;
     }
+  }
+
+  /* Full-width dropdown mega menu (opens below header, not a side drawer) */
+  .menu-drawer--dropdown {
+    top: var(--header-height, 60px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(100dvh - var(--header-height, 60px));
+    transform: translateY(-100%);
+    visibility: hidden;
+    border-left: none;
+    border-bottom: var(--style-border-drawer);
+    overflow-y: auto;
+  }
+
+  .menu-open > .menu-drawer--dropdown {
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  .menu-drawer--dropdown .menu-drawer__dropdown-inner {
+    width: 100%;
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding: var(--padding-lg, 1.5rem) var(--page-margin, 1.5rem);
+  }
+
+  .menu-drawer--dropdown .menu-drawer__header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 0 var(--padding-sm);
+  }
+
+  .menu-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    padding: var(--padding-sm) 0 0;
   }
 
   .menu-drawer:has(details[open]) {
@@ -878,6 +1020,7 @@
     display: flex;
     flex-direction: column;
   }
+
 
   .menu-drawer__inner-container {
     position: relative;
@@ -1002,6 +1145,7 @@
     transform: translateX(0);
     transition: none;
   }
+
 
   .menu-drawer__menu details,
   .menu-drawer__menu-item,
@@ -1190,14 +1334,19 @@
     position: absolute;
     width: 100%;
     top: 0;
-    height: 100dvh;
+    right: 0;
     left: 0;
+    height: 100dvh;
     background-color: var(--color-background);
     z-index: var(--layer-flat);
-    transform: translateX(-5%);
+    transform: translateX(100%);
     visibility: hidden;
     overflow-y: auto;
     opacity: 0;
+  }
+
+  .menu-drawer--right .menu-drawer__submenu {
+    transform: translateX(100%);
   }
 
   .menu-drawer__back-button > .svg-wrapper {
@@ -1248,7 +1397,7 @@
     0% {
       visibility: hidden;
       opacity: 0;
-      transform: translateX(-0.5rem);
+      transform: translateX(0.5rem);
     }
 
     100% {
@@ -1268,7 +1417,7 @@
     100% {
       visibility: hidden;
       opacity: 0;
-      transform: translateX(-1rem);
+      transform: translateX(1rem);
     }
   }
 {% endstylesheet %}

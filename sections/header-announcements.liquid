@@ -1,5 +1,3 @@
-
-
 {% if section.blocks.size > 1 %}
   <script
     src="{{ 'announcement-bar.js' | asset_url }}"
@@ -7,11 +5,14 @@
     fetchpriority="low"
   ></script>
 {% endif %}
+<script
+  src="{{ 'announcement-countdown.js' | asset_url }}"
+  defer
+></script>
 
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <aside
-  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
-  style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
+  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}{% if section.settings.custom_background != blank %} announcement-bar--custom-bg{% endif %}"
+  style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.custom_background != blank %} --announcement-bar-custom-bg: {{ section.settings.custom_background }};{% endif %}"
 >
   {% liquid
     assign autoplay = false
@@ -43,6 +44,14 @@
     border-block-end: var(--border-bottom-width) solid var(--color-border);
   }
 
+  .announcement-bar--custom-bg {
+    background-color: var(--announcement-bar-custom-bg) !important;
+  }
+  .announcement-bar--custom-bg .announcement-bar__countdown,
+  .announcement-bar--custom-bg .announcement-bar__text {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
   .announcement-bar__slider {
     display: flex;
     flex-direction: row;
@@ -57,7 +66,7 @@
   .announcement-bar__slides {
     display: grid;
     grid: [stack] auto / [stack] auto;
-    width: calc(100% - var(--button-size) * 2);
+    width: 100%;
     max-width: 680px;
     margin-inline: auto;
   }
@@ -120,11 +129,79 @@
     position: absolute;
     inset: 0;
   }
+
+  .announcement-bar__slides:has(.announcement-bar__slide--with-countdown) {
+    max-width: 100%;
+  }
+
+  .announcement-bar__row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem 2rem;
+    width: 100%;
+  }
+
+  .announcement-bar__row .announcement-bar__countdown {
+    justify-self: start;
+  }
+
+  .announcement-bar__row .announcement-bar__text--promo {
+    justify-self: center;
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    font-family: 'Instrument Sans';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .announcement-bar__row-spacer {
+    display: block;
+  }
+
+  .announcement-bar__countdown {
+    display: flex;
+    align-items: baseline;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+  }
+
+  .announcement-bar__countdown-part {
+    display: inline-flex;
+    align-items: flex-start;
+  }
+  .announcement-bar__countdown-value {
+    font-size: 1.25em;
+    line-height: 1;
+  }
+
+  .announcement-bar__countdown-unit {
+    font-size: 0.5em;
+    opacity: 0.9;
+    vertical-align: super;
+    line-height: 1;
+    margin-inline-start: 0.05em;
+    font-weight: bold;
+    margin-top: 2px;
+  }
+
+  .announcement-bar__countdown-sep {
+    opacity: 0.8;
+    margin-inline: 0.15em;
+  }
+
+  .announcement-bar__text--promo {
+    margin: 0;
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:names.announcement_bar",
+  "name": "Header Announcements",
   "blocks": [
     {
       "type": "_announcement"
@@ -146,6 +223,12 @@
     {
       "type": "header",
       "content": "t:content.appearance"
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Custom bar background",
+      "info": "Optional. e.g. purplish grey #5d565b. Leave blank to use color scheme."
     },
     {
       "type": "select",
@@ -191,7 +274,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 10
     },
     {
       "type": "range",
@@ -201,12 +284,12 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 10
     }
   ],
   "presets": [
     {
-      "name": "t:names.announcement_bar",
+      "name": "Header Announcements",
       "blocks": {
         "announcement_1": {
           "type": "_announcement"

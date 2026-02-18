@@ -14,14 +14,15 @@
 {% case variant %}
   {% when 'mobile' %}
     <div
-      class="header__drawer desktop:hidden"
+      class="header__drawer"
       ref="headerDrawerContainer"
       {{ block.shopify_attributes }}
     >
-      {% render 'header-drawer',
+      {% render 'custom-header-mega',
         class: 'header__drawer--mobile',
         linklist: block_settings.menu,
-        data_header_drawer_type: 'mobile-drawer'
+        block: block,
+        section: section
       %}
     </div>
 
@@ -55,6 +56,8 @@
       </div>
     {% endif %}
   {% else %}
+    {% comment %} When "Burger only", no inline menu in header; all nav is in the drawer. {% endcomment %}
+    {% if block_settings.desktop_menu_style == 'horizontal_links' %}
     {% liquid
       assign block_settings = block.settings
       assign menu_content_type = block_settings.menu_style | default: 'text'
@@ -183,6 +186,7 @@
         fetchpriority="low"
       ></script>
     </header-menu>
+    {% endif %}
 {% endcase %}
 
 {% stylesheet %}
@@ -718,6 +722,17 @@
       "default": "primary"
     },
     {
+      "type": "select",
+      "id": "desktop_menu_style",
+      "label": "Desktop menu",
+      "options": [
+        { "value": "burger_only", "label": "Burger only (all links in drawer)" },
+        { "value": "horizontal_links", "label": "Horizontal links in header" }
+      ],
+      "default": "burger_only",
+      "info": "Choose “Burger only” to show all navigation inside the burger menu with no links in the header bar."
+    },
+    {
       "type": "header",
       "content": "t:content.typography"
     },
@@ -894,6 +909,16 @@
     {
       "type": "header",
       "content": "t:content.mobile_layout"
+    },
+    {
+      "type": "select",
+      "id": "drawer_layout",
+      "label": "Burger menu layout",
+      "options": [
+        { "value": "accordion", "label": "Accordion list" },
+        { "value": "mega_menu", "label": "Mega menu (multi-column)" }
+      ],
+      "default": "mega_menu"
     },
     {
       "type": "checkbox",

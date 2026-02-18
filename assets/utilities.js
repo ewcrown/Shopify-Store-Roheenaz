@@ -315,7 +315,7 @@ export function onAnimationEnd(elements, callback, options = { subtree: true }) 
     }
 
     return acc;
-  }, /** @type {Promise<Animation>[]} */ ([]));
+  }, /** @type {Promise<Animation>[]} */([]));
 
   return Promise.allSettled(animationPromises).then(callback);
 }

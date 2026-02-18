@@ -1,8 +1,9 @@
 {% doc %}
   Product Media Gallery Content
 
-  Renders product media gallery for the closest product.
+  Renders product media gallery for the closest product (or passed product).
 
+  @param {object} [product] - Optional product; when passed (e.g. from product--section), used instead of closest.product
   @param {string} media_presentation - Either 'grid' or 'carousel'
   @param {object} block_settings - Block settings object
   @param {string} block_id - Block ID for unique element IDs
@@ -10,6 +11,7 @@
 
   @example
   {% render 'product-media-gallery-content',
+    product: product,
     media_presentation: 'carousel',
     block_settings: block.settings,
     block_id: block.id,
@@ -23,7 +25,7 @@
   ></script>
 {%- endif -%}
 {%- liquid
-  assign selected_product = closest.product
+  assign selected_product = product | default: closest.product
   assign selected_variant_media = selected_product.selected_or_first_available_variant.featured_media
   assign first_3d_model = selected_product.media | where: 'media_type', 'model' | first
 
@@ -287,7 +289,7 @@
   {% endif %}
 {% endstyle %}
 
-{% if closest.product == blank %}
+{% if selected_product == blank %}
   <div
     class="
       {% if block_settings.extend_media %}

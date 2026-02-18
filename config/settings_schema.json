@@ -15,6 +15,11 @@
         "content": "t:content.manage_store_name"
       },
       {
+        "type": "textarea",
+        "id": "logo_svg",
+        "label": "Logo Svg"
+      },
+      {
         "type": "image_picker",
         "id": "logo",
         "label": "t:settings.default_logo"

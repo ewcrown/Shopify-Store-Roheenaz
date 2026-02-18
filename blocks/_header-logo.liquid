@@ -1,5 +1,3 @@
-
-
 {% liquid
   assign block_settings = block.settings
   assign use_inverse_logo = false
@@ -41,41 +39,84 @@
   {{ block.shopify_attributes }}
 >
   {% liquid
-    assign logo_width = settings.logo_height | times: settings.logo.aspect_ratio | ceil
-    assign logo_width_mobile = settings.logo_height_mobile | times: settings.logo.aspect_ratio | ceil
-    assign inverse_logo_width = settings.logo_height | times: inverse_logo.aspect_ratio | ceil
-    assign inverse_logo_width_mobile = settings.logo_height_mobile | times: inverse_logo.aspect_ratio | ceil
-    assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
-    assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
+    assign block_height = block_settings.logo_height | default: 0
+    assign block_height_mobile = block_settings.logo_height_mobile | default: 0
+    assign block_width = block_settings.logo_width | default: 0
+    assign block_width_mobile = block_settings.logo_width_mobile | default: 0
+
+    assign logo_height = block_height | times: 1
+    if logo_height == 0
+      assign logo_height = settings.logo_height
+    endif
+    assign logo_height_mobile = block_height_mobile | times: 1
+    if logo_height_mobile == 0
+      assign logo_height_mobile = settings.logo_height_mobile
+    endif
+
+    assign logo_aspect = settings.logo.aspect_ratio | default: 2.5
+    assign logo_width = block_width | times: 1
+    if logo_width == 0
+      assign logo_width = logo_height | times: logo_aspect | ceil
+    endif
+    assign logo_width_mobile = block_width_mobile | times: 1
+    if logo_width_mobile == 0
+      assign logo_width_mobile = logo_height_mobile | times: logo_aspect | ceil
+    endif
+
+    assign inverse_logo_width = logo_height | times: inverse_logo.aspect_ratio | ceil
+    assign inverse_logo_width_mobile = logo_height_mobile | times: inverse_logo.aspect_ratio | ceil
+    assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: logo_height_mobile | append: 'px;'
+    assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: logo_height_mobile | append: 'px;'
   %}
 
   <span
     class="header-logo__image-container header-logo__image-container--original"
     data-testid="header-logo"
+    {% if settings.logo_svg == blank %}
+      style="{{ logo_style }}"
+    {% endif %}
   >
-    {% render 'image',
-      image: settings.logo,
-      class: 'header-logo__image',
-      height: settings.logo_height,
-      text_fallback: shop.name,
-      style: logo_style
-    %} 
-      {% comment %} {% render 'rohe-logo-svg' %} {% endcomment %}
-    </span>
-    
-    {% if use_inverse_logo %}
-      <span
-        class="header-logo__image-container header-logo__image-container--inverse"
-        data-testid="header-logo-inverse"
-      >
-        {% render 'image',
+    {% if settings.logo_svg != blank %}
+      <span class="header-logo__svg" style="{{ logo_style }}" aria-hidden="true" data-svg="">
+        {{ settings.logo_svg }}
+      </span>
+      {% comment %}
+        <script>
+          (function() {
+            var el = document.currentScript.previousElementSibling;
+            if (el && el.classList.contains('header-logo__svg')) {
+              try {
+                var svg = JSON.parse(el.getAttribute('data-svg') || '""');
+                if (svg) { el.innerHTML = svg; el.removeAttribute('data-svg'); }
+              } catch (e) {}
+            }
+          })();
+        </script>
+      {% endcomment %}
+    {% else %}
+      {% render 'image',
+        image: settings.logo,
+        class: 'header-logo__image',
+        height: logo_height,
+        text_fallback: shop.name,
+        style: logo_style
+      %}
+    {% endif %}
+  </span>
+
+  {% if use_inverse_logo %}
+    <span
+      class="header-logo__image-container header-logo__image-container--inverse"
+      data-testid="header-logo-inverse"
+    >
+      {% render 'image',
         image: inverse_logo,
         class: 'header-logo__image',
-        height: settings.logo_height,
+        height: logo_height,
         text_fallback: shop.name,
         style: inverse_logo_style
-        %}
-        {% comment %} {% render 'rohe-logo-inverse-svg' %} {% endcomment %}
+      %}
+      {% comment %} {% render 'rohe-logo-inverse-svg' %} {% endcomment %}
     </span>
   {% endif %}
 </a>
@@ -132,6 +173,26 @@
     }
   }
 
+  .header-logo__svg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--header-logo-image-height-mobile);
+    width: var(--header-logo-image-width-mobile);
+
+    @media screen and (min-width: 750px) {
+      height: var(--header-logo-image-height);
+      width: var(--header-logo-image-width);
+    }
+  }
+
+  .header-logo__svg svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
   .header-logo:has(.header-logo__image-container--inverse) .header-logo__image-container--original {
     display: var(--header-logo-display, block);
   }
@@ -150,6 +211,38 @@
     {
       "type": "paragraph",
       "content": "t:content.edit_logo_in_theme_settings"
+    },
+    {
+      "type": "header",
+      "content": "Logo size"
+    },
+    {
+      "type": "text",
+      "id": "logo_height",
+      "label": "Desktop height (px)",
+      "placeholder": "0 = use theme setting",
+      "info": "Leave empty or 0 to use theme logo height"
+    },
+    {
+      "type": "text",
+      "id": "logo_width",
+      "label": "Desktop width (px)",
+      "placeholder": "0 = auto from aspect ratio",
+      "info": "Leave empty or 0 for auto width"
+    },
+    {
+      "type": "text",
+      "id": "logo_height_mobile",
+      "label": "Mobile height (px)",
+      "placeholder": "0 = use theme setting",
+      "info": "Leave empty or 0 to use theme logo height"
+    },
+    {
+      "type": "text",
+      "id": "logo_width_mobile",
+      "label": "Mobile width (px)",
+      "placeholder": "0 = auto from aspect ratio",
+      "info": "Leave empty or 0 for auto width"
     },
     {
       "type": "header",

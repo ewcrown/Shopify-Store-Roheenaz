@@ -20,15 +20,6 @@
       {{ 'rohe-cart-icon.svg' | inline_asset_content }}
       {% comment %} {{ 'icon-cart.svg' | inline_asset_content }} {% endcomment %}
     </span>
-    <span
-      class="svg-wrapper cart-inverse-icon"
-      aria-hidden="true"
-    >
-      
-      {{ 'cart-inverse-icon.svg' | inline_asset_content }}
-      {% comment %} {{ 'icon-cart.svg' | inline_asset_content }} {% endcomment %}
-    </span>
-
     {% render 'cart-bubble', limit: 100, live_region: true, test_id: test_id %}
   </cart-icon>
 {% endcapture %}
@@ -60,9 +51,6 @@
      <div class="wishlist-icon__icon--wishlist">
         <span class="svg-wrapper wishlist-icon">
           {{- 'wishlist-icon.svg' | inline_asset_content -}}
-        </span>
-        <span class="svg-wrapper wishlist-inverse-icon">
-          {{- 'wishlist-inverse-icon.svg' | inline_asset_content -}}
         </span>
      <div>
     <dialog-component
@@ -105,9 +93,7 @@
     <cart-drawer-component
       class="cart-drawer"
       {{ block.shopify_attributes }}
-      {% if settings.auto_open_cart_drawer %}
-        auto-open
-      {% endif %}
+      auto-open
     >
       <button
         class="button header-actions__action button-unstyled"
@@ -683,5 +669,23 @@
       --cart-bubble-top: 4px;
       --cart-bubble-right: 4px;
     }
+  }
+
+  @keyframes cart-trigger-pulse {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.15); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+
+  .cart-drawer-trigger--animate .header-actions__cart-icon,
+  .cart-drawer-trigger--animate cart-icon {
+    animation: cart-trigger-pulse 0.4s ease-out;
+  }
+
+  .cart-drawer-trigger--drawer-open .header-actions__cart-icon,
+  .cart-drawer-trigger--drawer-open cart-icon {
+    opacity: 0.45;
+    transition: opacity 0.25s ease;
   }
 {% endstylesheet %}

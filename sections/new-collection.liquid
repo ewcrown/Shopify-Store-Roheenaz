@@ -10,7 +10,9 @@
         <ul class="splide__list">
         {% for block in section.blocks %}
             {% assign featured_product = block.settings.featured_product %}
-            
+            {% if featured_product == blank or featured_product.available == false %}
+              {% continue %}
+            {% endif %}
             <li class="splide__slide" {{ block.shopify_attributes }}>
             <div class="new--collection__product-card">
                 
@@ -39,6 +41,7 @@
                 </div>
 
             <div class="new--collection__product-info">
+
                 {% if featured_product != blank %}
                     
                     {%- assign product_image = featured_product.featured_image -%}
@@ -58,7 +61,7 @@
                         {{ featured_product.title }}
                         </a>
                         <span class="new--collection__product-price">
-                        {{ featured_product.price | money }}
+                          {% render 'price', product_resource: featured_product %}
                         </span>
                     </div>
                     <div>
@@ -66,19 +69,33 @@
                     <span class="new--collection__product-desc">
                         {{ featured_product.collections.first.title }}
                         </span>
-                        
-                        <button 
-                            type="button" 
-                            class="new--collection__product-add ajax-add-to-cart" 
-                            data-variant-id="{{ featured_product.selected_or_first_available_variant.id }}"
-                          >
-
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-                              <path d="M8.40002 2.80005V14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M2.80005 8.3999H14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                          </button>
+                        {%- assign product_form_id = 'NewCollectionForm-' | append: section.id | append: '-' | append: block.id -%}
+                        <product-form-component
+                          id="{{ product_form_id }}"
+                          data-section-id="{{ section.id }}"
+                          data-product-id="{{ featured_product.id }}"
+                          data-quantity-default="1"
+                          class="new--collection__product-form"
+                        >
+                          <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+                          <form id="{{ product_form_id }}-form" method="post" action="{{ routes.cart_add_url }}" data-type="add-to-cart-form" novalidate>
+                            <input type="hidden" name="id" ref="variantId" value="{{ featured_product.selected_or_first_available_variant.id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <add-to-cart-component ref="addToCartButtonContainer">
+                              <button type="submit" name="add" ref="addToCartButton" on:click="/handleClick" class="new--collection__product-add new--collection__product-add-btn" {% unless featured_product.available %}disabled{% endunless %}>
+                                <span class="new--collection__product-add-content">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                                    <path d="M8.40002 2.80005V14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2.80005 8.3999H14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                </span>
+                                <span class="new--collection__product-add-loading" aria-hidden="true">
+                                  <span class="new--collection__product-add-spinner"></span>
+                                </span>
+                              </button>
+                            </add-to-cart-component>
+                          </form>
+                        </product-form-component>
                     </div>
                     </div>
                 {% endif %}
@@ -92,37 +109,158 @@
 </div>
 </section>
 
+<style>
+  .new--collection__product-add-btn {
+    position: relative;
+    transition: opacity 0.25s ease, transform 0.2s ease;
+  }
+  .new--collection__product-add-btn:active:not(:disabled) {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+  .new--collection__product-add-content,
+  .new--collection__product-add-loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .new--collection__product-add-loading {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .new--collection__product-add-btn.is-loading .new--collection__product-add-content {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .new--collection__product-add-btn.is-loading .new--collection__product-add-loading {
+    opacity: 1;
+  }
+  .new--collection__product-add-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: new-collection-spin 0.6s linear infinite;
+  }
+  @keyframes new-collection-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-// Initialize Splide
-const splideID = '#main-slider-{{ section.id }}';
-if (document.querySelector(splideID)) {
-    new Splide(splideID, {
-    type: 'slide',
-    perPage: 4,
-    gap: '24px',
-    arrows: false,
-    pagination: false,
-    breakpoints: {
+(function() {
+  const sectionId = '{{ section.id }}';
+  const splideID = '#main-slider-{{ section.id }}';
+  const instances = window.__newCollectionSplide = window.__newCollectionSplide || {};
+
+  function initSlider() {
+    const el = document.querySelector(splideID);
+    if (!el) return;
+    if (instances[sectionId]) {
+      instances[sectionId].destroy();
+      instances[sectionId] = null;
+    }
+    const splide = new Splide(splideID, {
+      type: 'slide',
+      perPage: 4,
+      gap: '24px',
+      arrows: false,
+      pagination: false,
+      breakpoints: {
         1024: { perPage: 3, gap: '20px' },
         768: { perPage: 1.2, focus: 'center', gap: '15px' }
-    }
-    }).mount();
-}
-
-// Volume Toggle Logic
-const muteBtns = document.querySelectorAll('.js-mute-toggle');
-muteBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    const video = this.closest('.new--collection__product-media').querySelector('video');
-
-    if (video) {
-        video.muted = !video.muted;
-    }
+      }
     });
+    splide.mount();
+    instances[sectionId] = splide;
+  }
+
+  function init() {
+    initSlider();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  document.addEventListener('shopify:section:load', function(event) {
+    if (event.detail.sectionId === sectionId) {
+      init();
+    }
+  });
+})();
+
+// Mute toggle: event delegation so it works after section re-renders
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.js-mute-toggle');
+  if (!btn) return;
+  e.preventDefault();
+  const media = btn.closest('.new--collection__product-media');
+  if (!media) return;
+  const video = media.querySelector('video');
+  if (video) {
+    video.muted = !video.muted;
+  }
 });
-});
+
+// Add-to-cart loading state for new collection section
+(function() {
+  var sectionEl = document.querySelector('.new--collection__product_section-{{ section.id }}');
+  if (!sectionEl) return;
+
+  function clearLoading() {
+    sectionEl.querySelectorAll('.new--collection__product-add-btn.is-loading').forEach(function(b) {
+      b.classList.remove('is-loading');
+    });
+  }
+
+  sectionEl.addEventListener('submit', function(e) {
+    var form = e.target.closest('form[data-type="add-to-cart-form"]');
+    if (!form || !sectionEl.contains(form)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var btn = form.querySelector('.new--collection__product-add-btn');
+    if (btn && btn.disabled) return;
+    if (btn) btn.classList.add('is-loading');
+    setTimeout(clearLoading, 4000);
+
+    var formData = new FormData(form);
+    var cartAddUrl = (window.Theme && window.Theme.routes && window.Theme.routes.cart_add_url) || '{{ routes.cart_add_url | append: ".js" }}';
+
+    fetch(cartAddUrl, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      credentials: 'same-origin'
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        clearLoading();
+        if (data.status && data.status !== 200) {
+          if (data.message) alert(data.message);
+          return;
+        }
+        var formComponent = form.closest('product-form-component');
+        document.dispatchEvent(new CustomEvent('cart:update', { bubbles: true, detail: { resource: data, data: { source: 'new-collection', itemCount: parseInt(formData.get('quantity') || '1', 10), productId: formComponent ? formComponent.getAttribute('data-product-id') : null } } }));
+      })
+      .catch(function(err) {
+        console.error('Add to cart error:', err);
+        clearLoading();
+      });
+  }, true);
+
+  document.addEventListener('cart:update', clearLoading);
+  document.addEventListener('cart:error', clearLoading);
+})();
 </script>
 
 {% schema %}

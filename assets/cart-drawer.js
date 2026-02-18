@@ -1,4 +1,4 @@
-import { DialogComponent, DialogOpenEvent } from '@theme/dialog';
+import { DialogComponent, DialogOpenEvent, DialogCloseEvent } from '@theme/dialog';
 import { CartAddEvent } from '@theme/events';
 
 /**
@@ -17,13 +17,31 @@ class CartDrawerComponent extends DialogComponent {
     super.connectedCallback();
     document.addEventListener(CartAddEvent.eventName, this.#handleCartAdd);
     this.addEventListener(DialogOpenEvent.eventName, this.#updateStickyState);
+    this.addEventListener(DialogOpenEvent.eventName, this.#fadeCartIcon);
+    this.addEventListener(DialogCloseEvent.eventName, this.#unfadeCartIcon);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener(CartAddEvent.eventName, this.#handleCartAdd);
     this.removeEventListener(DialogOpenEvent.eventName, this.#updateStickyState);
+    this.removeEventListener(DialogOpenEvent.eventName, this.#fadeCartIcon);
+    this.removeEventListener(DialogCloseEvent.eventName, this.#unfadeCartIcon);
   }
+
+  #getTrigger() {
+    return this.querySelector('button[data-testid="cart-drawer-trigger"]') || this.querySelector('.header-actions__action');
+  }
+
+  #fadeCartIcon = () => {
+    const trigger = this.#getTrigger();
+    if (trigger) trigger.classList.add('cart-drawer-trigger--drawer-open');
+  };
+
+  #unfadeCartIcon = () => {
+    const trigger = this.#getTrigger();
+    if (trigger) trigger.classList.remove('cart-drawer-trigger--drawer-open');
+  };
 
   #handleCartAdd = () => {
     if (this.hasAttribute('auto-open')) {
@@ -32,6 +50,11 @@ class CartDrawerComponent extends DialogComponent {
   };
 
   open() {
+    const trigger = this.#getTrigger();
+    if (trigger) {
+      trigger.classList.add('cart-drawer-trigger--animate');
+      setTimeout(() => trigger.classList.remove('cart-drawer-trigger--animate'), 400);
+    }
     this.showDialog();
 
     /**

@@ -9,115 +9,32 @@
  */
 {
   "sections": {
-    "hero_jVaWmY": {
-      "type": "hero",
-      "blocks": {
-        "text_YLPk4p": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground-heading)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop all",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-secondary",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
-      ],
-      "disabled": true,
-      "name": "t:names.hero",
-      "settings": {
-        "media_type_1": "image",
-        "image_1": "shopify://shop_images/Hero.png",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
-        "media_type_1_mobile": "image",
-        "media_type_2_mobile": "image",
-        "link": "",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 24,
-        "section_width": "page-width",
-        "section_height": "full-screen",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-6",
-        "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
-      }
-    },
     "custom_hero_banner_section_X9etXV": {
       "type": "custom-hero-banner-section",
       "blocks": {
         "slide_TWxcTT": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Hero.png"
+            "image": "shopify://shop_images/Rectangle_2.png"
           }
         },
-        "slide_DHPdid": {
+        "slide_HwqCrV": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Hero.png"
+            "image": "shopify://shop_images/Rectangle_2.png"
           }
         },
-        "slide_J9bPi9": {
+        "slide_nKytLz": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Hero.png"
+            "image": "shopify://shop_images/Rectangle_2.png"
           }
         }
       },
       "block_order": [
         "slide_TWxcTT",
-        "slide_DHPdid",
-        "slide_J9bPi9"
+        "slide_HwqCrV",
+        "slide_nKytLz"
       ],
       "name": "Hero Banner",
       "settings": {}
@@ -127,7 +44,7 @@
       "name": "Roheenaz Slider",
       "settings": {
         "header_title": "New in",
-        "collection": "aangan-chiffon",
+        "collection": "aangan-chiffon-collection25",
         "products_to_show": 8
       }
     },
@@ -135,9 +52,9 @@
       "type": "media-grid-section",
       "name": "Media Triple Grid",
       "settings": {
-        "left_image": "shopify://shop_images/Image-2.png",
-        "center_video": "shopify://files/videos/get (2).mp4",
-        "right_image": "shopify://shop_images/Image-1.png"
+        "left_image": "shopify://shop_images/Rectangle_704.png",
+        "center_image": "shopify://shop_images/Rectangle_705.png",
+        "right_image": "shopify://shop_images/Rectangle_706.png"
       }
     },
     "collection_list_Xt9NLe": {
@@ -312,9 +229,9 @@
       "name": "t:names.collections_grid",
       "settings": {
         "collection_list": [
-          "printed",
-          "luxury-lawn",
-          "festive"
+          "festive",
+          "aafreen-luxury-chiffon-collection-22",
+          "aangan-chiffon-collection25"
         ],
         "layout_type": "grid",
         "carousel_on_mobile": false,
@@ -334,253 +251,22 @@
         "padding-block-end": 30
       }
     },
-    "collection_list_4nz77g": {
-      "type": "collection-list",
-      "blocks": {
-        "group_CLkMw6": {
-          "type": "group",
-          "name": "t:names.header",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 8,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 30,
-            "padding-block-end": 30,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_gcMi7D": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<h4>Shop by collection</h4>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_HJD3HL": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<h4>A blend of classic silhouettes and our signature shine, embodied by enigmatic sequins.</h4>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h6",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_gcMi7D",
-            "text_HJD3HL"
-          ]
-        },
-        "static-collection-card": {
-          "type": "_collection-card",
-          "name": "t:names.collection_card",
-          "static": true,
-          "settings": {
-            "placement": "on_image",
-            "horizontal_alignment": "center",
-            "vertical_alignment": "flex-end",
-            "collection_card_gap": 0,
-            "inherit_color_scheme": false,
-            "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0
-          },
-          "blocks": {
-            "text_AqF4mJ": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_rHpQUc": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<p>{{ closest.collection.title }}</p>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "collection-card-image": {
-              "type": "_collection-card-image",
-              "name": "t:names.collection_card_image",
-              "static": true,
-              "settings": {
-                "image_ratio": "square",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_AqF4mJ",
-            "text_rHpQUc"
-          ]
-        }
-      },
-      "block_order": [
-        "group_CLkMw6"
-      ],
-      "name": "t:names.collections_grid",
-      "settings": {
-        "collection_list": [
-          "printed",
-          "luxury-lawn",
-          "festive"
-        ],
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "columns": 3,
-        "mobile_columns": "1",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 10,
-        "bento_gap": 8,
-        "rows_gap": 8,
-        "max_collections": 4,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "full-width",
-        "gap": 0,
-        "color_scheme": "scheme-b7005bc4-ac29-425a-867d-3843444ffcf8",
-        "padding-block-start": 0,
-        "padding-block-end": 30
-      }
-    },
-    "rohe_feature_product_cVLPkr": {
-      "type": "rohe-feature-product",
-      "name": "Roheenaz Slider",
-      "settings": {
-        "header_title": "New in",
-        "collection": "aangan-chiffon",
-        "products_to_show": 8
-      }
-    },
     "new_collection_ByQ6tY": {
       "type": "new-collection",
       "blocks": {
         "product_TaWRUY": {
           "type": "product",
           "settings": {
-            "featured_product": "wafa-copy-copy-copy",
-            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "featured_product": "aaliyah",
+            "video": "shopify://files/videos/Rosaline.mp4",
             "external_video_url": ""
           }
         },
         "product_4TdViD": {
           "type": "product",
           "settings": {
-            "featured_product": "wafa-copy-copy-copy-copy-copy",
-            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "featured_product": "abeer",
+            "video": "shopify://files/videos/Solenne.mp4",
             "external_video_url": ""
           }
         },
@@ -588,15 +274,31 @@
           "type": "product",
           "settings": {
             "featured_product": "wafa",
-            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "video": "shopify://files/videos/Moonveil.mp4",
             "external_video_url": ""
           }
         },
-        "product_ELx49f": {
+        "product_GRDQkH": {
           "type": "product",
           "settings": {
-            "featured_product": "wafa-copy-copy",
-            "video": "shopify://files/videos/Aangan - Chiffon Collection ‘25 - Coming SoonOur outfit Sehrish is a vision in beige, fully embr.mp4",
+            "featured_product": "pale-peony",
+            "video": "shopify://files/videos/Dewlight Bloom.mp4",
+            "external_video_url": ""
+          }
+        },
+        "product_878rkA": {
+          "type": "product",
+          "settings": {
+            "featured_product": "muted-rose",
+            "video": "shopify://files/videos/Dewlight Bloom.mp4",
+            "external_video_url": ""
+          }
+        },
+        "product_aMd6tw": {
+          "type": "product",
+          "settings": {
+            "featured_product": "petal-lullaby",
+            "video": "shopify://files/videos/Dewlight Bloom.mp4",
             "external_video_url": ""
           }
         }
@@ -605,7 +307,9 @@
         "product_TaWRUY",
         "product_4TdViD",
         "product_EcMyBc",
-        "product_ELx49f"
+        "product_GRDQkH",
+        "product_878rkA",
+        "product_aMd6tw"
       ],
       "name": "New Collection Slider",
       "settings": {
@@ -617,13 +321,10 @@
     }
   },
   "order": [
-    "hero_jVaWmY",
     "custom_hero_banner_section_X9etXV",
     "rohe_feature_product_gWwVVE",
     "media_grid_section_fFgGQH",
     "collection_list_Xt9NLe",
-    "collection_list_4nz77g",
-    "rohe_feature_product_cVLPkr",
     "new_collection_ByQ6tY"
   ]
 }

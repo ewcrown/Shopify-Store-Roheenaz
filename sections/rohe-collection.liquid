@@ -78,13 +78,26 @@
                         {% endif %}
                         </a>
     
-                        <form method="post" action="/cart/add" class="Featured-product__form">
-                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" />
-                        <button type="submit" class="Featured-product__action-btn" {% unless product.available %}disabled{% endunless %}>
-                            <span class="Featured-product__add-text">ADD</span>
-                            {{- 'add-to-cart-icon.svg' | inline_asset_content -}}
-                        </button>
-                        </form>
+                        {%- assign product_form_id = 'RoheCollectionForm-' | append: section.id | append: '-' | append: product.id -%}
+                        <product-form-component
+                          id="{{ product_form_id }}"
+                          data-section-id="{{ section.id }}"
+                          data-product-id="{{ product.id }}"
+                          data-quantity-default="1"
+                          on:submit="/handleSubmit"
+                          class="Featured-product__form-wrapper"
+                        >
+                          <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+                          <form id="{{ product_form_id }}-form" method="post" action="{{ routes.cart_add_url }}" data-type="add-to-cart-form" class="Featured-product__form">
+                            <input type="hidden" name="id" ref="variantId" value="{{ product.selected_or_first_available_variant.id }}">
+                            <add-to-cart-component ref="addToCartButtonContainer">
+                              <button type="submit" name="add" ref="addToCartButton" class="Featured-product__action-btn" {% unless product.available %}disabled{% endunless %}>
+                                <span class="Featured-product__add-text">ADD</span>
+                                {{- 'add-to-cart-icon.svg' | inline_asset_content -}}
+                              </button>
+                            </add-to-cart-component>
+                          </form>
+                        </product-form-component>
                     </div>
     
                     <div class="Featured-product__info">
@@ -92,7 +105,9 @@
                         <h3 class="Featured-product__title">{{ product.title }}</h3>
                         <p class="Featured-product__category">{{ collection.title }}</p>
                         </div>
-                        <p class="Featured-product__price">{{ product.price }}</p>
+                        <p class="Featured-product__price">
+                            {% render 'price', product: product %}
+                        </p>
                     </div>
     
                     </div>

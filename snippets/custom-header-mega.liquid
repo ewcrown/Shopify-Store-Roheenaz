@@ -1,0 +1,206 @@
+{%- comment -%}
+  Custom header mega menu (replaces theme header-drawer).
+  Renders a full-width dropdown below the header with multi-column nav.
+  Params: linklist (required), block (optional), section (optional), class (optional).
+{%- endcomment -%}
+
+{% liquid
+  assign linklist = linklist | default: linklists['main-menu']
+  assign block_settings = block.settings | default: section.settings
+  assign color_scheme = block_settings.color_scheme | default: 'primary'
+%}
+
+<div
+  class="custom-mega {{ class }}"
+  data-custom-mega
+  {{ block.shopify_attributes }}
+>
+  <details
+    id="custom-mega-details"
+    class="custom-mega__details"
+    data-details
+  >
+    <summary
+      class="custom-mega__trigger header__icon header__icon--menu header__icon--summary"
+      aria-label="{{ 'accessibility.menu' | t }}"
+      aria-expanded="false"
+    >
+      <span class="custom-mega__trigger-icon custom-mega__trigger-icon--menu svg-wrapper">
+        {{- 'menu-inverse-icon.svg' | inline_asset_content -}}
+      </span>
+      <span class="custom-mega__trigger-icon custom-mega__trigger-icon--close svg-wrapper">
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+
+    <div class="custom-mega__panel color-{{ color_scheme }}" data-panel>
+      <div class="custom-mega__panel-inner">
+        <nav class="custom-mega__nav" aria-label="{{ 'accessibility.menu' | t }}">
+          <div class="custom-mega__grid">
+            {% for link in linklist.links %}
+              <div class="custom-mega__column">
+                <a href="{{ link.url }}" class="custom-mega__parent">{{ link.title }}</a>
+                {% if link.links != blank %}
+                  <ul class="custom-mega__children list-unstyled" role="list">
+                    {% for child in link.links %}
+                      <li>
+                        <a href="{{ child.url }}" class="custom-mega__child">{{ child.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </nav>
+      </div>
+      <button
+        type="button"
+        class="custom-mega__backdrop"
+        aria-label="{{ 'actions.close' | t }}"
+        data-backdrop
+      ></button>
+    </div>
+  </details>
+</div>
+
+<script src="{{ 'custom-header-mega.js' | asset_url }}" type="module"></script>
+
+{% stylesheet %}
+  .custom-mega {
+    display: block;
+  }
+
+  .custom-mega__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .custom-mega__trigger-icon {
+    display: flex;
+    margin: auto;
+    width: var(--icon-size-xs, 22px);
+    height: var(--icon-size-xs, 22px);
+  }
+
+  .custom-mega__trigger-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .custom-mega__trigger-icon--close {
+    display: none;
+  }
+
+  .custom-mega__details[open] .custom-mega__trigger-icon--menu {
+    display: none;
+  }
+
+  .custom-mega__details[open] .custom-mega__trigger-icon--close {
+    display: flex;
+  }
+
+  .custom-mega__details[open] .custom-mega__trigger {
+    aria-expanded: true;
+  }
+
+  .custom-mega__panel {
+    position: fixed;
+    top: calc(var(--header-height, 60px) - 1px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: calc(100dvh - var(--header-height, 60px) + 1px);
+    z-index: var(--layer-menu-drawer, 100);
+    background: rgb(var(--color-background));
+    border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  }
+
+  .custom-mega__details[open] .custom-mega__panel {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .custom-mega__panel-inner {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding: var(--padding-lg, 1.5rem) var(--page-margin, 1.5rem);
+    background: #fff;
+  }
+
+  .custom-mega__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-lg) var(--gap-xl);
+  }
+
+  @media screen and (min-width: 750px) {
+    .custom-mega__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .custom-mega__grid {
+      grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    }
+  }
+
+  .custom-mega__column {
+    min-width: 0;
+  }
+
+  .custom-mega__parent {
+    display: block;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    color: rgb(var(--color-foreground));
+    text-decoration: none;
+  }
+
+  .custom-mega__parent:hover {
+    color: rgb(var(--color-foreground));
+    text-decoration: underline;
+  }
+
+  .custom-mega__children {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .custom-mega__children li {
+    margin: 0;
+  }
+
+  .custom-mega__child {
+    display: block;
+    padding: 0.2rem 0;
+    font-size: 0.9em;
+    color: rgb(var(--color-foreground-rgb) / 0.75);
+    text-decoration: none;
+  }
+
+  .custom-mega__child:hover {
+    color: rgb(var(--color-foreground));
+    text-decoration: underline;
+  }
+
+  .custom-mega__backdrop {
+    display: none !important;
+  }
+{% endstylesheet %}

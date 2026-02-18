@@ -3,8 +3,13 @@
 {%- assign block_settings = block.settings -%}
 {%- assign plain_text = block_settings.text | strip_newlines | strip_html | strip -%}
 {%- assign block_index = section.blocks | find_index: 'id', block.id -%}
-
-{%- unless plain_text == '' -%}
+{%- liquid
+  assign show_countdown = false
+  if block_settings.show_countdown and block_settings.countdown_end != blank
+    assign show_countdown = true
+  endif
+-%}
+{%- unless plain_text == '' and show_countdown == false -%}
   <slideshow-slide
     ref="slides[]"
     class="
@@ -16,6 +21,7 @@
       custom-typography
       {% if block_settings.font_size != "" %}custom-font-size{% endif %}
       {% if block_settings.weight != "" %}custom-font-weight{% endif %}
+      {% if show_countdown %}announcement-bar__slide--with-countdown{% endif %}
     "
     style="
       {% render 'typography-style', settings: block_settings, preset: 'custom' %}
@@ -26,9 +32,39 @@
     {{ block.shopify_attributes }}
     aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
   >
-    <p class="announcement-bar__text">
-      {{ block.settings.text }}
-    </p>
+    {% if show_countdown %}
+      <div class="announcement-bar__row">
+        <div
+          class="announcement-bar__countdown"
+          data-end-date="{{ block_settings.countdown_end | strip | escape }}"
+          aria-live="polite"
+        >
+          <span class="announcement-bar__countdown-part">
+            <span class="announcement-bar__countdown-value" data-days>00</span><sup class="announcement-bar__countdown-unit">d</sup>
+          </span>
+          <span class="announcement-bar__countdown-sep"> : </span>
+          <span class="announcement-bar__countdown-part">
+            <span class="announcement-bar__countdown-value" data-hours>00</span><sup class="announcement-bar__countdown-unit">hrs</sup>
+          </span>
+          <span class="announcement-bar__countdown-sep"> : </span>
+          <span class="announcement-bar__countdown-part">
+            <span class="announcement-bar__countdown-value" data-minutes>00</span><sup class="announcement-bar__countdown-unit">min</sup>
+          </span>
+          <span class="announcement-bar__countdown-sep"> : </span>
+          <span class="announcement-bar__countdown-part">
+            <span class="announcement-bar__countdown-value" data-seconds>00</span><sup class="announcement-bar__countdown-unit">sec</sup>
+          </span>
+        </div>
+        <p class="announcement-bar__text announcement-bar__text--promo">
+          {{ block.settings.text }}
+        </p>
+        <span class="announcement-bar__row-spacer" aria-hidden="true"></span>
+      </div>
+    {% else %}
+      <p class="announcement-bar__text">
+        {{ block.settings.text }}
+      </p>
+    {% endif %}
 
     {% if block_settings.link != blank %}
       <a
@@ -129,6 +165,23 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "header",
+      "content": "Countdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show countdown timer",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "countdown_end",
+      "label": "Countdown end date & time",
+      "info": "Use format: YYYY-MM-DD HH:MM (e.g. 2026-02-20 23:59). Leave empty to hide.",
+      "placeholder": "2026-02-20 23:59"
     },
     {
       "type": "header",

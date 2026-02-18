@@ -31,13 +31,31 @@
                     {% endif %}
                 </a>
 
-                <form method="post" action="/cart/add" class="Featured-product__form">
-                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" />
-                    <button type="submit" class="Featured-product__action-btn" {% unless product.available %}disabled{% endunless %}>
-                    <span class="Featured-product__add-text">ADD</span>
-                    {{- 'add-to-cart-icon.svg' | inline_asset_content -}}
-                    </button>
-                </form>
+                {%- assign product_form_id = 'FeaturedProductForm-' | append: section.id | append: '-' | append: product.id -%}
+                <product-form-component
+                  id="{{ product_form_id }}"
+                  data-section-id="{{ section.id }}"
+                  data-product-id="{{ product.id }}"
+                  data-quantity-default="1"
+                  on:submit="/handleSubmit"
+                  class="Featured-product__form-wrapper"
+                >
+                  <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+                  <form id="{{ product_form_id }}-form" method="post" action="{{ routes.cart_add_url }}" data-type="add-to-cart-form" class="Featured-product__form">
+                    <input type="hidden" name="id" ref="variantId" value="{{ product.selected_or_first_available_variant.id }}">
+                    <add-to-cart-component ref="addToCartButtonContainer">
+                      <button type="submit" name="add" ref="addToCartButton" on:click="/handleClick" class="Featured-product__action-btn" {% unless product.available %}disabled{% endunless %}>
+                        <span class="Featured-product__action-btn-content">
+                          <span class="Featured-product__add-text">ADD</span>
+                          {{- 'add-to-cart-icon.svg' | inline_asset_content -}}
+                        </span>
+                        <span class="Featured-product__action-btn-loading" aria-hidden="true">
+                          <span class="Featured-product__action-btn-spinner"></span>
+                        </span>
+                      </button>
+                    </add-to-cart-component>
+                  </form>
+                </product-form-component>
                 </div>
 
                 <div class="Featured-product__info">
@@ -45,7 +63,9 @@
                     <h3 class="Featured-product__title">{{ product.title }}</h3>
                     <p class="Featured-product__category">{{ collection.title }}</p>
                 </div>
-                <p class="Featured-product__price">{{ product.price }}</p>
+                <p class="Featured-product__price">
+                    {% render 'price', product: product %}
+                </p>
                 </div>
 
             </div>
@@ -62,26 +82,93 @@
 </div>
 </section>
 
+<style>
+  .Featured-product__action-btn {
+    position: relative;
+    transition: opacity 0.25s ease, transform 0.2s ease;
+  }
+  .Featured-product__action-btn:active:not(:disabled) {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+  .Featured-product__action-btn-content,
+  .Featured-product__action-btn-loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+  }
+  .Featured-product__action-btn-loading {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .Featured-product__action-btn.is-loading .Featured-product__action-btn-content {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .Featured-product__action-btn.is-loading .Featured-product__action-btn-loading {
+    opacity: 1;
+  }
+  .Featured-product__action-btn-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: Featured-product-spin 0.6s linear infinite;
+  }
+  @keyframes Featured-product-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-const sliderId = '#splide-{{ section.id }}';
-const sliderEl = document.querySelector(sliderId);
+  var sectionId = '{{ section.id }}';
+  var sectionEl = document.getElementById('section-' + sectionId);
+  if (!sectionEl) return;
 
-if (sliderEl) {
-new Splide(sliderId, {
-    type   : 'slide',
-    perPage: 5,
-    perMove: 1,
-    gap    : '25px',
-    arrows : false,
-    pagination: false,
-    breakpoints: {
-    1200: { perPage: 3 },
-    900: { perPage: 2 },
-    600: { perPage: 1, padding: { right: '15%' } }
-    }
-}).mount();
-}
+  function removeLoading() {
+    sectionEl.querySelectorAll('.Featured-product__action-btn.is-loading').forEach(function(btn) {
+      btn.classList.remove('is-loading');
+    });
+  }
+
+  sectionEl.querySelectorAll('form[data-type="add-to-cart-form"]').forEach(function(form) {
+    form.addEventListener('submit', function() {
+      var btn = form.querySelector('.Featured-product__action-btn');
+      if (btn && !btn.disabled) {
+        btn.classList.add('is-loading');
+        setTimeout(removeLoading, 4000);
+      }
+    });
+  });
+
+  document.addEventListener('cart:update', removeLoading);
+  document.addEventListener('cart:error', removeLoading);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  var sliderId = '#splide-{{ section.id }}';
+  var sliderEl = document.querySelector(sliderId);
+  if (sliderEl) {
+    new Splide(sliderEl, {
+      type   : 'slide',
+      perPage: 5,
+      perMove: 1,
+      gap    : '10px',
+      arrows : false,
+      pagination: false,
+      breakpoints: {
+        1200: { perPage: 3 },
+        900: { perPage: 2 },
+        600: { perPage: 1, padding: { right: '15%' } }
+      }
+    }).mount();
+  }
 });
 </script>
 

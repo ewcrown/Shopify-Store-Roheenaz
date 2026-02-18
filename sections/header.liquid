@@ -383,8 +383,8 @@
     --header-bg-color: transparent;
 
     /* used to display the appropriate logo based on transparency state */
-    --header-logo-display: none;
-    --header-logo-inverse-display: block;
+    --header-logo-display: block;
+    --header-logo-inverse-display: none;
 
     position: absolute;
     top: 0;
@@ -685,6 +685,19 @@
 
   .header.header--compact {
     --header-padding: var(--padding-2xs);
+  }
+
+  /* Compact header when sticky (body class added by header.js) */
+  body.header-is-sticky .header {
+    --header-padding: var(--padding-2xs);
+  }
+
+  body.header-is-sticky .header:not(.header--compact) .header__row--bottom {
+    --header-padding: var(--padding-2xs);
+  }
+
+  body.header-is-sticky .header .header__columns {
+    transition: padding 0.2s var(--animation-easing, ease);
   }
 
   .header__columns {
