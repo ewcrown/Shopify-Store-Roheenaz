@@ -63,9 +63,9 @@
                     <h3 class="Featured-product__title">{{ product.title }}</h3>
                     <p class="Featured-product__category">{{ collection.title }}</p>
                 </div>
-                <p class="Featured-product__price">
-                    {% render 'price', product: product %}
-                </p>
+                <div class="Featured-product__price">
+                    {% render 'price', product_resource: product %}
+                </div>
                 </div>
 
             </div>

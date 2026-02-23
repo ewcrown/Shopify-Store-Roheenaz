@@ -3,10 +3,17 @@
     <div class="action-bar">
       <div class="bar-item bar-left">
         <button id="filterToggle" class="filter-trigger">
-          <span id="filterIcon">
-            <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-              <path d="M3.5 8.16667H7M3.5 19.8333H10.5M21 19.8333L24.5 19.8333M17.5 8.16667L24.5 8.16667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10.5" cy="8.16667" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="19.8333" r="3.5" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
+          <span id="filterIcon" class="filter-icon-swap">
+            <span class="filter-icon-filter">
+              <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <path d="M3.5 8.16667H7M3.5 19.8333H10.5M21 19.8333L24.5 19.8333M17.5 8.16667L24.5 8.16667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10.5" cy="8.16667" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="19.8333" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </span>
+            <span class="filter-icon-close">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </span>
           </span>
           <span class="btn-text">FILTERS</span>
         </button>
@@ -49,24 +56,106 @@
     <header class="rohe-main-header">
       <h1 class="main-collection-title">{{ collection.title }}</h1>
     </header>
+
+    {%- assign has_any_active = false -%}
+    {%- for filter in collection.filters -%}
+      {%- if filter.type == 'price_range' -%}
+        {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+          {%- assign has_any_active = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- if filter.active_values.size > 0 -%}
+          {%- assign has_any_active = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if has_any_active -%}
+      <div class="active-filters-bar">
+        <div class="active-filters-inner">
+          <span class="active-filters-label">Active:</span>
+          <div class="active-filters-pills">
+            {%- for filter in collection.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                  <a href="{{ filter.url_to_remove }}" class="active-filter-pill" aria-label="{{ 'actions.remove' | t }} {{ filter.label }}">
+                    {%- if filter.min_value.value != null and filter.max_value.value != null -%}
+                      {{ filter.min_value.value | money }} – {{ filter.max_value.value | money }}
+                    {%- elsif filter.min_value.value != null -%}
+                      {{ filter.min_value.value | money }} – {{ filter.range_max | money }}
+                    {%- elsif filter.max_value.value != null -%}
+                      {{ 0 | money }} – {{ filter.max_value.value | money }}
+                    {%- endif -%}
+                    <span class="active-filter-pill-x" aria-hidden="true">&times;</span>
+                  </a>
+                {%- endif -%}
+              {%- else -%}
+                {%- for value in filter.active_values -%}
+                  <a href="{{ value.url_to_remove }}" class="active-filter-pill" aria-label="{{ 'actions.remove' | t }} {{ value.label }}">
+                    {{ value.label }}
+                    <span class="active-filter-pill-x" aria-hidden="true">&times;</span>
+                  </a>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <a href="{{ collection.url }}{% if collection.sort_by != collection.default_sort_by %}?sort_by={{ collection.sort_by }}{% endif %}" class="active-filters-clear-all">
+            {{ 'actions.clear_all' | t | default: 'Clear all' }}
+          </a>
+        </div>
+      </div>
+    {%- endif -%}
+
     <div class="main-layout-container">
       <aside id="sideDrawer" class="filter-sidebar desktop-only">
         {% for filter in collection.filters %}
-          <div class="filter-group">
-            <p class="filter-label-title">{{ filter.label }}</p>
+          {% assign has_active = false %}
+          {% if filter.type == 'price_range' %}
+            {% if filter.min_value.value != null or filter.max_value.value != null %}
+              {% assign has_active = true %}
+            {% endif %}
+          {% else %}
             {% for value in filter.values %}
-              <label class="check-row">
-                <input
-                  type="checkbox"
-                  {% if value.active %}
-                    checked
-                  {% endif %}
-                  onchange="window.location.href = this.checked ? '{{ value.url_to_add }}' : '{{ value.url_to_remove }}'"
-                >
-                {{ value.label }} ({{ value.count }})
-              </label>
+              {% if value.active %}{% assign has_active = true %}{% break %}{% endif %}
             {% endfor %}
-          </div>
+          {% endif %}
+          <details class="filter-accordion__item" {% if has_active or forloop.first %}open{% endif %}>
+            <summary class="filter-accordion__header">
+              <span class="filter-accordion__label">{{ filter.label }}</span>
+              <svg class="filter-accordion__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="filter-accordion__content">
+              {% if filter.type == 'price_range' %}
+                <form class="price-range-form" data-min-param="{{ filter.min_value.param_name }}" data-max-param="{{ filter.max_value.param_name }}" data-range-max="{{ filter.range_max | money_without_currency }}">
+                  <div class="price-range-inputs">
+                    <input type="text" inputmode="decimal" class="price-range-input" name="min" placeholder="0" {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency }}"{% endif %} data-min="0" data-max="{{ filter.range_max | money_without_currency }}" autocomplete="off">
+                    <span class="price-range-sep">–</span>
+                    <input type="text" inputmode="decimal" class="price-range-input" name="max" placeholder="{{ filter.range_max | money_without_currency }}" {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency }}"{% endif %} data-min="0" data-max="{{ filter.range_max | money_without_currency }}" autocomplete="off">
+                  </div>
+                  {%- assign formatted_highest_price = filter.range_max | money -%}
+                  <p class="price-range-hint">{{ 'content.price_filter_html' | t: price: formatted_highest_price }}</p>
+                  <button type="submit" class="price-range-apply">{{ 'actions.apply' | t | default: 'Apply' }}</button>
+                </form>
+              {% else %}
+                {% for value in filter.values %}
+                  <label class="check-row">
+                    <input
+                      type="checkbox"
+                      {% if value.active %}
+                        checked
+                      {% endif %}
+                      onchange="window.location.href = this.checked ? '{{ value.url_to_add }}' : '{{ value.url_to_remove }}'"
+                    >
+                    {{ value.label }} ({{ value.count }})
+                  </label>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </details>
         {% endfor %}
       </aside>
 
@@ -166,9 +255,9 @@
                 <h3 class="Featured-product__title">{{ product.title }}</h3>
                 <p class="Featured-product__category">{{ collection.title }}</p>
               </div>
-              <p class="Featured-product__price">
+              <div class="Featured-product__price">
                 {% render 'price', product_resource: product %}
-              </p>
+              </div>
             </div>
           </div>
         {%- endfor -%}
@@ -193,23 +282,51 @@
         </div>
         <div class="m-drawer-body">
           {% for filter in collection.filters %}
-            <div class="m-filter-group-mobile">
-              <p class="m-f-label">{{ filter.label }}</p>
-              <div class="m-f-options">
-                {% for value in filter.values %}
-                  <label class="m-check-label">
-                    <input
-                      type="checkbox"
-                      {% if value.active %}
-                        checked
-                      {% endif %}
-                      onchange="window.location.href = this.checked ? '{{ value.url_to_add }}' : '{{ value.url_to_remove }}'"
-                    >
-                    <span>{{ value.label }} ({{ value.count }})</span>
-                  </label>
-                {% endfor %}
+            {% assign has_active_m = false %}
+            {% if filter.type == 'price_range' %}
+              {% if filter.min_value.value != null or filter.max_value.value != null %}
+                {% assign has_active_m = true %}
+              {% endif %}
+            {% else %}
+              {% for value in filter.values %}
+                {% if value.active %}{% assign has_active_m = true %}{% break %}{% endif %}
+              {% endfor %}
+            {% endif %}
+            <details class="filter-accordion__item filter-accordion__item--mobile" {% if has_active_m or forloop.first %}open{% endif %}>
+              <summary class="filter-accordion__header">
+                <span class="filter-accordion__label">{{ filter.label }}</span>
+                <svg class="filter-accordion__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <div class="filter-accordion__content m-f-options">
+                {% if filter.type == 'price_range' %}
+                  <form class="price-range-form" data-min-param="{{ filter.min_value.param_name }}" data-max-param="{{ filter.max_value.param_name }}" data-range-max="{{ filter.range_max | money_without_currency }}">
+                    <div class="price-range-inputs">
+                      <input type="text" inputmode="decimal" class="price-range-input" name="min" placeholder="0" {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency }}"{% endif %} data-min="0" data-max="{{ filter.range_max | money_without_currency }}" autocomplete="off">
+                      <span class="price-range-sep">–</span>
+                      <input type="text" inputmode="decimal" class="price-range-input" name="max" placeholder="{{ filter.range_max | money_without_currency }}" {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency }}"{% endif %} data-min="0" data-max="{{ filter.range_max | money_without_currency }}" autocomplete="off">
+                    </div>
+                    {%- assign formatted_highest_price_m = filter.range_max | money -%}
+                    <p class="price-range-hint">{{ 'content.price_filter_html' | t: price: formatted_highest_price_m }}</p>
+                    <button type="submit" class="price-range-apply">{{ 'actions.apply' | t | default: 'Apply' }}</button>
+                  </form>
+                {% else %}
+                  {% for value in filter.values %}
+                    <label class="m-check-label">
+                      <input
+                        type="checkbox"
+                        {% if value.active %}
+                          checked
+                        {% endif %}
+                        onchange="window.location.href = this.checked ? '{{ value.url_to_add }}' : '{{ value.url_to_remove }}'"
+                      >
+                      <span>{{ value.label }} ({{ value.count }})</span>
+                    </label>
+                  {% endfor %}
+                {% endif %}
               </div>
-            </div>
+            </details>
           {% endfor %}
         </div>
       </div>
@@ -465,18 +582,60 @@
       });
     });
 
-    // Sidebar & Drawer Toggle
-    document.getElementById('filterToggle').onclick = () => {
-      if (window.innerWidth <= 768) {
-        document.getElementById('m-filter-drawer').classList.add('m-is-open');
+    // Open filter by default when any filter is active (desktop: sidebar only; mobile: drawer only)
+    var sideDrawer = document.getElementById('sideDrawer');
+    var mFilterDrawer = document.getElementById('m-filter-drawer');
+    var filterToggle = document.getElementById('filterToggle');
+
+    var hasActiveFilters = window.location.search.indexOf('filter') !== -1;
+    if (hasActiveFilters) {
+      if (window.innerWidth > 768) {
+        if (sideDrawer) sideDrawer.classList.add('open');
       } else {
-        document.getElementById('sideDrawer').classList.toggle('open');
+        if (mFilterDrawer) mFilterDrawer.classList.add('m-is-open');
       }
+    }
+
+    function updateFilterIcon() {
+      var isOpen = (sideDrawer && sideDrawer.classList.contains('open')) ||
+                   (mFilterDrawer && mFilterDrawer.classList.contains('m-is-open'));
+      filterToggle.classList.toggle('is-open', !!isOpen);
+    }
+
+    // Sidebar & Drawer Toggle
+    filterToggle.onclick = function () {
+      if (window.innerWidth <= 768) {
+        mFilterDrawer.classList.add('m-is-open');
+      } else {
+        sideDrawer.classList.toggle('open');
+      }
+      updateFilterIcon();
     };
 
-    document.getElementById('m-close-x').onclick = () => {
-      document.getElementById('m-filter-drawer').classList.remove('m-is-open');
+    document.getElementById('m-close-x').onclick = function () {
+      mFilterDrawer.classList.remove('m-is-open');
+      updateFilterIcon();
     };
+
+    updateFilterIcon();
+
+    // Price range form
+    document.querySelectorAll('.price-range-form').forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var minParam = form.dataset.minParam;
+        var maxParam = form.dataset.maxParam;
+        var minInput = form.querySelector('input[name="min"]');
+        var maxInput = form.querySelector('input[name="max"]');
+        var minVal = minInput && minInput.value.trim() ? parseFloat(String(minInput.value).replace(/,/g, '')) : null;
+        var maxVal = maxInput && maxInput.value.trim() ? parseFloat(String(maxInput.value).replace(/,/g, '')) : null;
+        var url = new URL(window.location.href);
+        if (minVal != null) url.searchParams.set(minParam, String(minVal)); else url.searchParams.delete(minParam);
+        if (maxVal != null) url.searchParams.set(maxParam, String(maxVal)); else url.searchParams.delete(maxParam);
+        url.searchParams.delete('page');
+        window.location.href = url.toString();
+      });
+    });
 
     // Sort Toggle
     const sortBtn = document.getElementById('sortBtn');

@@ -1,0 +1,54 @@
+{%- comment -%}
+  Returns a CSS color value for color names.
+  Uses Theme settings > Swatches > Color swatch map when configured.
+  Falls back to hardcoded defaults when no match.
+  @param {string} color_name - The color name (e.g. "Lime yellow", "Black")
+{%- endcomment -%}
+{%- assign color_handle = color_name | strip | downcase | replace: ' ', '-' -%}
+{%- assign fallback_color = '' -%}
+
+{%- if settings.color_swatch_map != blank -%}
+  {% capture newline_char %}
+
+{% endcapture %}
+  {%- assign map_lines = settings.color_swatch_map | strip | split: newline_char -%}
+  {%- for line in map_lines -%}
+    {%- assign line_stripped = line | strip -%}
+    {%- if line_stripped != '' -%}
+      {%- assign line_parts = line_stripped | split: ':' -%}
+      {%- if line_parts.size >= 2 -%}
+        {%- assign map_name = line_parts[0] | strip | downcase | replace: ' ', '-' | replace: '--', '' -%}
+        {%- assign map_value = line_parts[1] | strip | remove: ';' | strip -%}
+        {%- if map_name == color_handle -%}
+          {%- assign fallback_color = map_value -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if fallback_color == '' -%}
+  {%- comment -%} Hardcoded fallback when theme setting is empty or no match {%- endcomment -%}
+  {%- case color_handle -%}
+    {%- when 'black' -%}{%- assign fallback_color = '#000000' -%}
+    {%- when 'white' -%}{%- assign fallback_color = '#ffffff' -%}
+    {%- when 'red' -%}{%- assign fallback_color = '#c0392b' -%}
+    {%- when 'blue' -%}{%- assign fallback_color = '#2980b9' -%}
+    {%- when 'green' -%}{%- assign fallback_color = '#27ae60' -%}
+    {%- when 'yellow' -%}{%- assign fallback_color = '#f1c40f' -%}
+    {%- when 'orange' -%}{%- assign fallback_color = '#e67e22' -%}
+    {%- when 'purple' -%}{%- assign fallback_color = '#8e44ad' -%}
+    {%- when 'pink' -%}{%- assign fallback_color = '#e91e63' -%}
+    {%- when 'brown' -%}{%- assign fallback_color = '#795548' -%}
+    {%- when 'grey', 'gray' -%}{%- assign fallback_color = '#9e9e9e' -%}
+    {%- when 'navy' -%}{%- assign fallback_color = '#1a237e' -%}
+    {%- when 'lime-yellow', 'limeyellow' -%}{%- assign fallback_color = '#c8d44c' -%}
+    {%- when 'olive' -%}{%- assign fallback_color = '#808000' -%}
+    {%- else -%}
+      {%- if color_handle contains 'lime' -%}{%- assign fallback_color = '#c8d44c' -%}
+      {%- elsif color_handle contains 'navy' -%}{%- assign fallback_color = '#1a237e' -%}
+      {%- elsif color_handle contains 'olive' -%}{%- assign fallback_color = '#808000' -%}
+      {%- endif -%}
+  {%- endcase -%}
+{%- endif -%}{{ fallback_color | strip }}

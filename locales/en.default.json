@@ -161,7 +161,7 @@
     "cart_title": "Cart",
     "cart_subtotal": "Subtotal",
     "cart_total": "Cart total",
-    "checkout": "Check out",
+    "checkout": "Checkout",
     "collection_placeholder": "Collection title",
     "discount_code": "Discount code",
     "shipping_discount_error": "Shipping discounts are shown at checkout after adding an address",
@@ -308,6 +308,14 @@
     "recipient_form_fields_hidden": "Recipient form fields are now hidden",
     "recipient_form_error": "There was an error with the form submission",
     "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} characters used"
+  },
+  "general": {
+    "share": {
+      "share": "Share",
+      "copy_link": "Copy link",
+      "close": "Close",
+      "copied": "Link copied to clipboard!"
+    }
   },
   "fields": {
     // Separates min and max values in price range filter

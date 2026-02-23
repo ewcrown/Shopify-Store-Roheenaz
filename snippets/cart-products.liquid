@@ -108,7 +108,7 @@
           </thead>
           <tbody role="rowgroup">
             {% for item in cart.items %}
-              <tr role="row" class="cart-items__table-row custom-cart-row" data-key="{{ item.key }}">
+              <tr role="row" class="cart-items__table-row custom-cart-row" ref="cartItemRows[]" data-key="{{ item.key }}">
                 <td class="cart-items__media" role="cell">
                   {% if item.image %}
                     <a href="{{ item.url }}" class="cart-items__media-container">
@@ -116,34 +116,34 @@
                     </a>
                   {% endif %}
                 </td>
-          
+
                 <td class="cart-items__details" role="cell">
                   <div class="cart-item__header-flex">
                     <div class="cart-item__info-side">
                       <a href="{{ item.url }}" class="cart-items__title">{{ item.product.title }}</a>
-                      {% if item.product.collections.size > 0 %}
-                        <p class="cart-item__vendor">
-                          {{ item.product.collections.first.title }}
-                        </p>
+                      {% if item.product.has_only_default_variant == false and item.variant.title != 'Default Title' %}
+                        <p class="cart-item__variant">{{ item.variant.title }}</p>
+                      {% elsif item.product.collections.size > 0 %}
+                        <p class="cart-item__variant">{{ item.product.collections.first.title }}</p>
                       {% endif %}
                     </div>
-                    
+
                     <div class="cart-item__price-side">
-                      <span class="cart-item__price-bold">{{ item.original_price | money }}</span>
+                      <span class="cart-item__price-bold">{{ item.final_line_price | money }}</span>
                     </div>
                   </div>
-          
+
                   <div class="cart-item__footer-flex">
-                    <div class="cart-items__quantity-wrapper">
-                       {% render 'quantity-selector', 
-                          product: item.product, 
-                          variant: item.variant, 
-                          in_cart_quantity: item.quantity, 
-                          line_index: item.index 
-                       %}
+                    <div class="cart-items__quantity-wrapper cart-quantity-pill">
+                      {% render 'quantity-selector',
+                        product: item.product,
+                        variant: item.variant,
+                        in_cart_quantity: item.quantity,
+                        line_index: item.index
+                      %}
                     </div>
-          
-                    <button class="cart-items__remove-btn" type="button" on:click="/onLineItemRemove/{{ item.index | plus: 1 }}">
+
+                    <button class="cart-items__remove-btn" type="button" aria-label="{{ 'accessibility.remove_item' | t: title: item.title | escape }}" on:click="/onLineItemRemove/{{ item.index | plus: 1 }}">
                       {{- 'icon-delete.svg' | inline_asset_content -}}
                     </button>
                   </div>

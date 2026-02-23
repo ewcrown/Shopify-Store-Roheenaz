@@ -271,6 +271,16 @@
     {{ 'content.checkout' | t }}
   </button>
 
+  {% unless request.page_type == 'cart' %}
+    <a
+      href="{{ routes.cart_url }}"
+      class="cart__view-cart-button button button--secondary"
+      on:click="cart-drawer-component/close"
+    >
+      {{ 'content.view_cart' | t }}
+    </a>
+  {% endunless %}
+
   {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
     <div
       class="

@@ -1,19 +1,39 @@
 
 
-{% if closest.product == blank %}
-  {% assign text = 'placeholders.product_title' | t %}
-  {% assign product_title = '<p>' | append: text | append: '</p>' %}
-  {% render 'text', fallback_text: product_title, block: block %}
-{% else %}
-  {% assign product_title = '<p>' | append: closest.product.title | append: '</p>' %}
-  <a
-    class="contents user-select-text"
-    ref="productTitleLink"
-    href="{{ closest.product.selected_or_first_available_variant.url }}"
-  >
-    {% render 'text', fallback_text: product_title, block: block %}
-  </a>
-{% endif %}
+<div class="product-information-header-group">
+  <div class="product-title-with-share">
+    {% if closest.product == blank %}
+      {% assign text = 'placeholders.product_title' | t %}
+      {% assign product_title = '<p>' | append: text | append: '</p>' %}
+      {% render 'text', fallback_text: product_title, block: block %}
+    {% else %}
+      {% assign product_title = '<p>' | append: closest.product.title | append: '</p>' %}
+      <a
+        class="contents user-select-text product-title-with-share__title"
+        ref="productTitleLink"
+        href="{{ closest.product.selected_or_first_available_variant.url }}"
+      >
+        {% render 'text', fallback_text: product_title, block: block %}
+      </a>
+    {% endif %}
+    {% if closest.product != blank %}
+      hello world{% render 'product-share', product: closest.product, share_id: block.id %}
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .product-information-header-group { width: 100%; }
+  .product-title-with-share {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+  }
+  .product-title-with-share__title { flex: 1; min-width: 0; }
+  .product-title-with-share .text-block { margin-block-end: 0; }
+{% endstylesheet %}
 
 {% schema %}
 {

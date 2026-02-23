@@ -108,6 +108,7 @@
 .price { font-size: 18px; font-weight: 500; margin-bottom: 20px; }
 
 .section-label { font-size: 12px; font-weight: 500; margin-top: 15px; display: block; }
+.variant-label-value { font-weight: 600; color: #333; }
 .description-content { font-size: 12px; line-height: 1.6; color: #777; margin-bottom: 20px; }
 .description-content li { list-style: none; margin-bottom: 2px; }
 .description-content li::before { content: "• "; }
@@ -210,8 +211,8 @@ input:checked ~ .checkmark::after { content: "✓"; color: #fff; font-size: 12px
   </div>
 
   {%- for option in product.options_with_values -%}
-    <span class="section-label">{{ option.name }}: <span id="label-{{ option.name | handle }}" style="font-weight: normal; color: #888;">{{ option.selected_value }}</span></span>
-    <div class="pill-container js-variant-container" id="opt-{{ option.name | handle }}">
+    <span class="section-label">{{ option.name }}: <span id="label-{{ option.name | handle }}" class="variant-label-value">{{ option.selected_value }}</span></span>
+    <div class="pill-container js-variant-container" id="opt-{{ option.name | handle }}" data-option-name="{{ option.name | handle }}">
       {%- for value in option.values -%}
         <div class="pill {% if option.selected_value == value %}active{% endif %}" data-value="{{ value | escape }}">
           {{ value }}
@@ -287,8 +288,8 @@ input:checked ~ .checkmark::after { content: "✓"; color: #fff; font-size: 12px
 
   {%- for option in product.options_with_values -%}
     <div class="mobile__option-group">
-      <span class="section-label">{{ option.name }}: <span id="m-label-{{ option.name | handle }}">{{ option.selected_value }}</span></span>
-      <div class="mobile__pills js-variant-container">
+      <span class="section-label">{{ option.name }}: <span id="m-label-{{ option.name | handle }}" class="variant-label-value">{{ option.selected_value }}</span></span>
+      <div class="mobile__pills js-variant-container" data-option-name="{{ option.name | handle }}">
         {%- for value in option.values -%}
           <div class="mobile__pill {% if option.selected_value == value %}active{% endif %}" data-value="{{ value | escape }}">{{ value }}</div>
         {%- endfor -%}
@@ -326,21 +327,62 @@ input:checked ~ .checkmark::after { content: "✓"; color: #fff; font-size: 12px
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-const variants = {{ product.variants | json }};
+const variants = [
+  {%- for v in product.variants -%}
+  {"id":{{ v.id }},"price":{{ v.price }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | default: '' | json }},"option3":{{ v.option3 | default: '' | json }},"price_formatted":{{ v.price | money | strip_html | json }}}
+  {%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+];
+const optionsOrderHandles = [
+  {%- for opt in product.options_with_values -%}
+  "{{ opt.name | handle }}"
+  {%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+];
 
 // Variant Switching
 document.querySelectorAll('.js-variant-container').forEach(container => {
   container.addEventListener('click', (e) => {
     if (!e.target.classList.contains('pill') && !e.target.classList.contains('mobile__pill')) return;
-    const pills = container.children;
-    Array.from(pills).forEach(p => p.classList.remove('active'));
-    e.target.classList.add('active');
+    var optName = container.dataset.optionName;
+    var val = e.target.dataset.value;
+    document.querySelectorAll('.js-variant-container[data-option-name="' + optName + '"]').forEach(function (c) {
+      Array.from(c.children).forEach(function (p) {
+        p.classList.toggle('active', p.dataset.value === val);
+      });
+    });
     updateSelectedVariant();
   });
 });
 
 function updateSelectedVariant() {
-  // Match selected options to variant and update ID/price
+  var selected = {};
+  document.querySelectorAll('.js-variant-container').forEach(function (container) {
+    var optName = container.dataset.optionName;
+    var active = container.querySelector('.pill.active, .mobile__pill.active');
+    if (optName && active) {
+      selected[optName] = active.dataset.value;
+      var labelDesk = document.getElementById('label-' + optName);
+      var labelMob = document.getElementById('m-label-' + optName);
+      if (labelDesk) labelDesk.textContent = active.dataset.value;
+      if (labelMob) labelMob.textContent = active.dataset.value;
+    }
+  });
+  var opt1 = selected[optionsOrderHandles[0]];
+  var opt2 = selected[optionsOrderHandles[1]];
+  var opt3 = selected[optionsOrderHandles[2]];
+  var match = variants.find(function (v) {
+    return v.option1 === opt1 && (!opt2 || v.option2 === opt2) && (!opt3 || v.option3 === opt3);
+  });
+  if (match) {
+    document.getElementById('variant-id-desktop').value = match.id;
+    document.getElementById('variant-id-mobile').value = match.id;
+    var priceStr = match.price_formatted || '';
+    var priceDesk = document.getElementById('price-desktop');
+    var priceMob = document.getElementById('price-mobile');
+    if (priceDesk) priceDesk.textContent = priceStr;
+    if (priceMob) priceMob.textContent = priceStr;
+  }
 }
 
 // Quantity

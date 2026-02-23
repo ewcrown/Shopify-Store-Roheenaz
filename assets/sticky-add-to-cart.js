@@ -219,6 +219,9 @@ class StickyAddToCartComponent extends Component {
     this.refs.stickyBar.setAttribute('data-stuck', currentStuck);
     this.dataset.variantAvailable = variantAvailable;
 
+    // Sync sold-out class
+    this.classList.toggle('sticky-add-to-cart--sold-out', variantAvailable !== 'true');
+
     // Update the dataset attributes with new variant info
     if (variant && variant.id) {
       this.dataset.currentVariantId = variant.id;

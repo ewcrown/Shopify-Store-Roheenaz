@@ -36,6 +36,11 @@
       {%- for product_option in product_resource.options_with_values -%}
         {%- liquid
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
+          assign option_name_handle = product_option.name | handle
+          assign is_color_option = false
+          if option_name_handle == 'color' or option_name_handle == 'colour'
+            assign is_color_option = true
+          endif
           assign variant_style = block_settings.variant_style
 
           if swatch_count > 0 and block_settings.show_swatches
@@ -44,6 +49,8 @@
             else
               assign variant_style = 'swatch'
             endif
+          elsif is_color_option
+            assign variant_style = 'swatch'
           endif
 
           if variant_style == 'buttons' and settings.variant_button_width == 'equal-width-buttons'
@@ -62,10 +69,8 @@
             {{ option_id_attribute }}
           >
             <legend>
-              {{ product_option.name | escape -}}
-              {%- if variant_style == 'swatch' -%}
-                <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
-              {%- endif %}
+              {{ product_option.name | escape }}:
+              <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
             </legend>
             {%- for product_option_value in product_option.values -%}
               {% if product_option_value.size > longest_value and option_id_attribute %}
@@ -108,12 +113,20 @@
                     if featured_media == blank and product_option_value.product_url
                       assign featured_media = product_option_value.variant.product.featured_media
                     endif
+
+                    assign color_fallback = ''
+                    if is_color_option and product_option_value.swatch == blank and featured_media == blank
+                      capture color_fallback
+                        render 'color-fallback', color_name: product_option_value.name
+                      endcapture
+                    endif
                   %}
 
                   {% render 'swatch',
                     swatch: product_option_value.swatch,
                     variant_image: featured_media,
-                    mode: 'unscaled'
+                    mode: 'unscaled',
+                    fallback_color: color_fallback
                   %}
                 {% else %}
                   {% if product_option_value.available == true %}
@@ -267,9 +280,8 @@
   }
 
   .variant-option__swatch-value {
-    padding-inline-start: var(--padding-xs);
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
-  }
+    color: #949494;
+}
 
   @media (prefers-reduced-motion: no-preference) {
     .variant-option__button-label,

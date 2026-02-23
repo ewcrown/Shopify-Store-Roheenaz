@@ -140,14 +140,31 @@
     height: 100%;
   }
 
-  /* Mobile styles */
+  /* Mobile: same as ETHNC – gallery full width on top, product info full width below */
   @media screen and (max-width: 749px) {
-    .product-information__media {
+    .product-information__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
       grid-column: 1 / -1;
+      gap: 0;
+    }
+
+    .product-information__media {
+      grid-column: 1;
+      grid-row: 1;
+      order: 0;
+      width: 100%;
+      min-width: 0;
+      padding-inline: 0;
     }
 
     .product-details {
-      grid-column: 2 / 3;
+      grid-column: 1;
+      grid-row: 2;
+      order: 1;
+      width: 100%;
+      padding-inline: var(--page-margin, 1.5rem);
     }
   }
 
