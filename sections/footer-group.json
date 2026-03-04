@@ -90,7 +90,7 @@
           "name": "t:names.menu",
           "settings": {
             "menu": "footer",
-            "heading": "Collection",
+            "heading": "About",
             "menu_spacing": 12,
             "show_as_accordion": false,
             "accordion_icon": "caret",
@@ -110,8 +110,8 @@
           "type": "menu",
           "name": "t:names.menu",
           "settings": {
-            "menu": "main-menu",
-            "heading": "Roheenaz",
+            "menu": "ft-menu",
+            "heading": "Contact",
             "menu_spacing": 12,
             "show_as_accordion": false,
             "accordion_icon": "caret",

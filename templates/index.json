@@ -15,26 +15,23 @@
         "slide_TWxcTT": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_2.png"
+            "image": "shopify://shop_images/Rectangle_2.png",
+            "mobile_image": "shopify://shop_images/nl.png",
+            "link": "#"
           }
         },
-        "slide_HwqCrV": {
+        "slide_YLYiL3": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_2.png"
-          }
-        },
-        "slide_nKytLz": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/Rectangle_2.png"
+            "image": "shopify://shop_images/Rectangle_2.png",
+            "mobile_image": "shopify://shop_images/nl.png",
+            "link": "#"
           }
         }
       },
       "block_order": [
         "slide_TWxcTT",
-        "slide_HwqCrV",
-        "slide_nKytLz"
+        "slide_YLYiL3"
       ],
       "name": "Hero Banner",
       "settings": {}
@@ -54,6 +51,7 @@
       "settings": {
         "left_image": "shopify://shop_images/Rectangle_704.png",
         "center_image": "shopify://shop_images/Rectangle_705.png",
+        "center_video": "shopify://files/videos/get.mp4",
         "right_image": "shopify://shop_images/Rectangle_706.png"
       }
     },
@@ -234,7 +232,7 @@
           "aangan-chiffon-collection25"
         ],
         "layout_type": "grid",
-        "carousel_on_mobile": false,
+        "carousel_on_mobile": true,
         "columns": 3,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",

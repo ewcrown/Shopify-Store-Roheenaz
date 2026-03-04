@@ -35,6 +35,82 @@ span.menu-drawer__menu-item-text.wrap-text {
 }
 
 
+/* ========================================
+   iOS Safari: prevent blue/colorless icons store-wide
+   -webkit-tap-highlight-color and explicit color
+   so icons/SVGs render correctly on iPhone Safari
+   ======================================== */
+button,
+a,
+label,
+summary,
+select,
+input,
+[role="button"],
+.header-actions__action,
+.header-actions__cart-icon,
+.wishlist-icon__icon--wishlist,
+.svg-wrapper,
+.facets-toggle__button,
+.column-options__option,
+.column-picker,
+.sorting-filter,
+.sorting-filter__select,
+.menu-drawer button,
+.menu-drawer a,
+.header-drawer button,
+.header-drawer a,
+.pagination a,
+.pagination button,
+.quick-add__button,
+.add-to-cart-button,
+.quantity-selector button,
+.cart-drawer button,
+.search-modal button,
+.custom-mega__trigger,
+.localization-form button,
+.filter-remove-buttons button,
+.list-filter button,
+.price-filter button,
+slideshow-controls button,
+slideshow-arrow {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Icon containers: ensure explicit color (not Safari blue) when inside interactive elements */
+.header-actions .svg-wrapper,
+.header-actions button,
+.header-actions .wishlist-icon__icon--wishlist,
+.facets-toggle__button .svg-wrapper,
+.column-picker svg,
+.sorting-filter .icon,
+.close-button .svg-wrapper,
+.button-unstyled .svg-wrapper {
+    color: inherit;
+}
+
+/* Override Safari link blue on icon-only buttons/links */
+.header-actions__action,
+.header-actions button,
+.facets-toggle__button,
+.sorting-filter__select,
+.close-button,
+.button-unstyled:has(.svg-wrapper),
+.menu-drawer button:has(.svg-wrapper),
+.header-drawer button:has(.svg-wrapper),
+.quick-add__button,
+.add-to-cart-button .svg-wrapper,
+.quantity-selector button,
+.cart-drawer__close-button,
+.search-modal button:has(.svg-wrapper),
+.custom-mega__trigger,
+.localization-form button,
+.filter-remove-buttons button,
+slideshow-controls button,
+slideshow-arrow {
+    color: rgb(var(--color-foreground-rgb));
+}
+
 /* Announcement Bar – keep transparent/semi-transparent unless mega menu is open */
 body:not(.custom-mega-open) .announcement-bar {
     background: rgba(0, 0, 0, 0.20);
@@ -57,16 +133,15 @@ body:not(.custom-mega-open) .announcement-bar {
     border-radius: 11.881px;
     background: rgba(255, 255, 255, 0.64);
     display: inline-flex;
-    padding: 9.9px 29.701px;
+    padding: 10px 40px;
     justify-content: center;
     align-items: center;
     gap: 9.9px;
     color: #000;
     text-align: center;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 400;
     line-height: normal;
-    margin-bottom: 9px;
 }
 
 
@@ -371,7 +446,7 @@ body:not(.custom-mega-open) .announcement-bar {
 
 .new--collection__product-price *,
 .Featured-product__price * {
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .cart-items__media-container {
@@ -1222,7 +1297,8 @@ form.Featured-product__form {
 
 .Featured-product__details h3 {
     color: #000;
-    font-size: 18px;
+    font-size: 14px;
+    text-transform: uppercase;
     font-weight: 300;
     line-height: normal;
     margin: 0 !important;
@@ -1379,10 +1455,10 @@ button.Featured-product__action-btn {
     top: -12px;
 }
 
-.price {
+/* .price {
     font-size: 20px;
     font-weight: 500;
-}
+} */
 
 /* Size Chips Styling */
 .size-chips {
@@ -1467,7 +1543,7 @@ rte-formatter {
         margin-top: 0;
         margin-bottom: 0;
         font-size: 14px;
-        font-weight: 300;
+        font-weight: bold;
     }
 
     li,
@@ -1926,6 +2002,10 @@ video {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
+.custom-mega__accordion-icon svg {
+    width: 15px;
+}
+
 .sort-dropdown.active {
     display: block;
 }
@@ -2157,6 +2237,7 @@ video {
     border: none;
     background: none;
     line-height: 1;
+    color: #000 !important;
 }
 
 .filter-accordion__item--mobile {
@@ -2342,6 +2423,13 @@ body.filter-open {
 
 #header-component {
     transition: all .3s ease-in-out;
+}
+
+.rohe-collection-wrapper #sortBtn *,
+.rohe-collection-wrapper #sortBtn,
+.rohe-collection-wrapper #filterToggle *,
+.rohe-collection-wrapper #filterToggle {
+    color: #000 !important;
 }
 
 /* Desktop: keep announcement bar above hero/banner when scrolling */
@@ -2561,7 +2649,6 @@ body.filter-open {
 
 .product-details .accordion {
     border-radius: 20px;
-    background: #EFEFEF;
     padding: 12px 18px;
 }
 
@@ -2875,5 +2962,47 @@ body.filter-open {
 
     .product-variant-drawer__content {
         padding: 0 12px 10px !important;
+    }
+
+    .collection-card__content.layout-panel-flex--column>div {
+        width: 100% !important;
+        padding: 6px !important;
+    }
+
+    /* iOS Safari: prevent blue tap highlight and link-like color on filter/sort bar */
+    .facets-toggle,
+    .facets-toggle__button,
+    .column-options-wrapper,
+    .column-options__option,
+    .column-picker,
+    .sorting-filter,
+    .sorting-filter__select {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .facets-toggle__button,
+    .column-picker,
+    .sorting-filter,
+    .sorting-filter__select {
+        color: rgb(var(--color-foreground-rgb));
+    }
+
+    .header__columns .search-action {
+        justify-content: left !important;
+    }
+
+    .custom-mega__trigger-icon svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .collection-card__content.layout-panel-flex--column>div {
+        padding: 10px !important;
+    }
+    .media-grid-splide .splide__track {
+        padding: 0 !important;
+    }
+    .search-modal__button svg path {
+        stroke: #000 !important;
     }
 }

@@ -33,10 +33,18 @@
       </span>
     </summary>
 
+    <button
+      type="button"
+      class="custom-mega__backdrop"
+      aria-label="{{ 'actions.close' | t }}"
+      data-backdrop
+    ></button>
+
     <div class="custom-mega__panel color-{{ color_scheme }}" data-panel>
       <div class="custom-mega__panel-inner">
         <nav class="custom-mega__nav" aria-label="{{ 'accessibility.menu' | t }}">
-          <div class="custom-mega__grid">
+          {% comment %} Desktop: grid layout {% endcomment %}
+          <div class="custom-mega__grid custom-mega__grid--desktop">
             {% for link in linklist.links %}
               <div class="custom-mega__column">
                 <a href="{{ link.url }}" class="custom-mega__parent">{{ link.title }}</a>
@@ -52,14 +60,48 @@
               </div>
             {% endfor %}
           </div>
+          {% comment %} Mobile: accordion (level 1 = accordion title, level 2 & 3 inside) {% endcomment %}
+          <ul class="custom-mega__accordion list-unstyled" role="list">
+            {% for link in linklist.links %}
+              <li class="custom-mega__accordion-item">
+                {% if link.links != blank %}
+                  <details class="custom-mega__accordion-details">
+                    <summary class="custom-mega__accordion-summary">
+                      <span class="custom-mega__accordion-title">{{ link.title }}</span>
+                      <span class="custom-mega__accordion-icon svg-wrapper">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+                    </summary>
+                    <ul class="custom-mega__accordion-children list-unstyled" role="list">
+                      {% for child in link.links %}
+                        <li>
+                          {% if child.links != blank %}
+                            <details class="custom-mega__accordion-details custom-mega__accordion-details--level2">
+                              <summary class="custom-mega__accordion-summary custom-mega__accordion-summary--level2">
+                                <span class="custom-mega__accordion-title">{{ child.title }}</span>
+                                <span class="custom-mega__accordion-icon svg-wrapper">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+                              </summary>
+                              <ul class="custom-mega__accordion-children list-unstyled" role="list">
+                                {% for grandchild in child.links %}
+                                  <li>
+                                    <a href="{{ grandchild.url }}" class="custom-mega__accordion-link custom-mega__accordion-link--level3">{{ grandchild.title }}</a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                            </details>
+                          {% else %}
+                            <a href="{{ child.url }}" class="custom-mega__accordion-link custom-mega__accordion-link--level2">{{ child.title }}</a>
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </details>
+                {% else %}
+                  <a href="{{ link.url }}" class="custom-mega__accordion-link custom-mega__accordion-link--level1">{{ link.title }}</a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
         </nav>
       </div>
-      <button
-        type="button"
-        class="custom-mega__backdrop"
-        aria-label="{{ 'actions.close' | t }}"
-        data-backdrop
-      ></button>
     </div>
   </details>
 </div>
@@ -112,19 +154,10 @@
 
   .custom-mega__panel {
     position: fixed;
-    top: calc(var(--header-height, 60px) - 1px);
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-height: calc(100dvh - var(--header-height, 60px) + 1px);
     z-index: var(--layer-menu-drawer, 100);
-    background: rgb(var(--color-background));
-    border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    background: #fff;
     overflow-y: auto;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
 
   .custom-mega__details[open] .custom-mega__panel {
@@ -132,27 +165,234 @@
     visibility: visible;
   }
 
-  .custom-mega__panel-inner {
-    max-width: var(--page-width, 1200px);
-    margin: 0 auto;
-    padding: var(--padding-lg, 1.5rem) var(--page-margin, 1.5rem);
-    background: #fff;
+  /* Mobile: left side drawer with accordion menu */
+  @media screen and (max-width: 749px) {
+    /* Don't use position:fixed on body (drawer would move off-screen when scrolled). Don't use overflow:hidden on body (resets scroll). Use overflow on html only + block touch on overlay. */
+    html.custom-mega-open {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .custom-mega__panel {
+      top: 44px;
+      left: 0;
+      width: 85%;
+      max-width: 360px;
+      height: 100vh;
+      transform: translateX(-100%);
+      visibility: hidden;
+      opacity: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      z-index: 101 !important;
+    }
+
+    .custom-mega__details[open] .custom-mega__panel {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    /* Stacking: overlay is injected as first child of body with z 99; header group must sit above it */
+    body.custom-mega-open #header-group {
+      position: relative !important;
+      z-index: 100 !important;
+      isolation: isolate;
+    }
+
+    /* Body-injected overlay – blocks scroll via touch-action, no body position/overflow so page doesn't jump */
+    body.custom-mega-open .custom-mega__backdrop-body {
+      display: block !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 100vh !important;
+      inset: 0 !important;
+      background: rgba(0, 0, 0, 0.55) !important;
+      z-index: 2 !important;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      touch-action: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Original backdrop inside details: hide when menu open (we use body overlay instead) */
+    .custom-mega__details[open] .custom-mega__backdrop {
+      display: none !important;
+    }
+
+    /* Original backdrop when menu closed: invisible, no pointer events */
+    .custom-mega .custom-mega__backdrop {
+      display: block !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 100vh !important;
+      inset: 0 !important;
+      background: rgba(0, 0, 0, 0.55) !important;
+      z-index: 99 !important;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .custom-mega__grid--desktop {
+      display: none;
+    }
+
+    .custom-mega__accordion {
+      display: block;
+      padding: 0;
+      margin: 0;
+    }
+
+    .custom-mega__accordion-item {
+      border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+    }
+
+    .custom-mega__accordion-details {
+      margin: 0;
+    }
+
+    .custom-mega__accordion-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem var(--page-margin, 1.5rem);
+      list-style: none;
+      cursor: pointer;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: rgb(var(--color-foreground-rgb));
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .custom-mega__accordion-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .custom-mega__accordion-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      margin-left: 0.5rem;
+      transition: transform 0.2s ease;
+    }
+
+    .custom-mega__accordion-details[open] .custom-mega__accordion-icon {
+      transform: rotate(-180deg);
+    }
+
+    .custom-mega__accordion-children {
+      padding: 0 0 0.75rem 1rem;
+      margin: 0;
+      border-top: none;
+    }
+
+    .custom-mega__accordion-children li {
+      margin: 0;
+    }
+
+    .custom-mega__accordion-link {
+      display: block;
+      padding: 0.5rem var(--page-margin, 1.5rem);
+      color: rgb(var(--color-foreground-rgb));
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .custom-mega__accordion-link--level2 {
+      padding-left: calc(var(--page-margin, 1.5rem) + 0.5rem);
+      font-size: 12px;
+    }
+
+    .custom-mega__accordion-link--level3 {
+      padding-left: calc(var(--page-margin, 1.5rem) + 1rem);
+      font-size: 12px;
+      color: rgb(var(--color-foreground-rgb) / 0.85);
+    }
+
+    .custom-mega__accordion-details--level2 .custom-mega__accordion-summary--level2 {
+      padding: 0.5rem var(--page-margin, 1.5rem);
+      font-size: 0.95em;
+      font-weight: 400;
+      text-transform: none;
+    }
+
+    .custom-mega__accordion-details--level2 .custom-mega__accordion-children {
+      padding-left: 1.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .custom-mega__panel-inner {
+      padding: 0;
+      background: var(--color-background);
+    }
   }
 
-  .custom-mega__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--gap-lg) var(--gap-xl);
+  /* Desktop: dropdown below header, grid only */
+  @media screen and (min-width: 750px) {
+    .custom-mega__accordion {
+      display: none;
+    }
+
+    .custom-mega__panel {
+      top: calc(var(--header-height, 60px) - 1px);
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-height: calc(100dvh - var(--header-height, 60px) + 1px);
+      transform: none;
+      border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .custom-mega__details[open] .custom-mega__panel {
+      opacity: 1;
+    }
+
+    .custom-mega__backdrop {
+      display: none !important;
+    }
+
+    .custom-mega__panel-inner {
+      max-width: var(--page-width, 1200px);
+      margin: 0 auto;
+      padding: var(--padding-lg, 1.5rem) var(--page-margin, 1.5rem);
+      background: #fff;
+    }
+  }
+
+  /* Grid only on desktop; hidden on mobile so only accordion shows */
+  .custom-mega__grid--desktop {
+    display: none;
   }
 
   @media screen and (min-width: 750px) {
-    .custom-mega__grid {
+    .custom-mega__grid--desktop {
+      display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--gap-lg) var(--gap-xl);
     }
   }
 
   @media screen and (min-width: 990px) {
-    .custom-mega__grid {
+    .custom-mega__grid--desktop {
       grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
     }
   }
@@ -162,15 +402,15 @@
   }
 
   .custom-mega__parent {
-    display: block;
     font-weight: 300;
     text-transform: uppercase;
     letter-spacing: 0;
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.25rem;
     color: #000;
     text-decoration: none;
     line-height: normal;
+    display: block;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
   }
 
   .custom-mega__parent:hover {
@@ -199,9 +439,5 @@
   .custom-mega__child:hover {
     color: rgb(var(--color-foreground));
     text-decoration: underline;
-  }
-
-  .custom-mega__backdrop {
-    display: none !important;
   }
 {% endstylesheet %}

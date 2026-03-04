@@ -1,38 +1,111 @@
 
 <section class="media-grid-section">
-<div class="section section--full-width-margin section--page-width">
-    <div class="media-grid-container">
+  <div class="section section--full-width-margin section--page-width">
+    <div class="splide media-grid-splide" id="media-grid-splide-{{ section.id }}" aria-label="Media grid">
+      <div class="splide__track">
+        <ul class="splide__list media-grid-splide__list">
 
-    {% comment %} --- Left Slot --- {% endcomment %}
-    <div class="media-item">
-        {%- if section.settings.left_video != blank -%}
-        {{ section.settings.left_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
-        {%- elsif section.settings.left_image != blank -%}
-        <img src="{{ section.settings.left_image | img_url: 'master' }}" alt="{{ section.settings.left_image.alt }}">
-        {%- endif -%}
-    </div>
+          {% comment %} --- Left Slot --- {% endcomment %}
+          <li class="splide__slide">
+            <div class="media-item">
+              {%- if section.settings.left_video != blank -%}
+                {{ section.settings.left_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
+              {%- elsif section.settings.left_image != blank -%}
+                <img src="{{ section.settings.left_image | image_url: width: 800 }}" alt="{{ section.settings.left_image.alt | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+          </li>
 
-    {% comment %} --- Center Slot --- {% endcomment %}
-    <div class="media-item">
-        {%- if section.settings.center_video != blank -%}
-        {{ section.settings.center_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
-        {%- elsif section.settings.center_image != blank -%}
-        <img src="{{ section.settings.center_image | img_url: 'master' }}" alt="{{ section.settings.center_image.alt }}">
-        {%- endif -%}
-    </div>
+          {% comment %} --- Center Slot --- {% endcomment %}
+          <li class="splide__slide">
+            <div class="media-item">
+              {%- if section.settings.center_video != blank -%}
+                {{ section.settings.center_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
+              {%- elsif section.settings.center_image != blank -%}
+                <img src="{{ section.settings.center_image | image_url: width: 800 }}" alt="{{ section.settings.center_image.alt | escape }}" loading="eager">
+              {%- endif -%}
+            </div>
+          </li>
 
-    {% comment %} --- Right Slot --- {% endcomment %}
-    <div class="media-item">
-        {%- if section.settings.right_video != blank -%}
-        {{ section.settings.right_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
-        {%- elsif section.settings.right_image != blank -%}
-        <img src="{{ section.settings.right_image | img_url: 'master' }}" alt="{{ section.settings.right_image.alt }}">
-        {%- endif -%}
-    </div>
+          {% comment %} --- Right Slot --- {% endcomment %}
+          <li class="splide__slide">
+            <div class="media-item">
+              {%- if section.settings.right_video != blank -%}
+                {{ section.settings.right_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
+              {%- elsif section.settings.right_image != blank -%}
+                <img src="{{ section.settings.right_image | image_url: width: 800 }}" alt="{{ section.settings.right_image.alt | escape }}" loading="eager">
+              {%- endif -%}
+            </div>
+          </li>
 
+        </ul>
+      </div>
     </div>
-</div>
+  </div>
 </section>
+
+<style>
+  /* Same pattern as featured collection (rohe-feature-product): section-scoped list, no global .media-grid-container */
+  .media-grid-splide .media-grid-splide__list { display: flex; height: 500px; }
+  .media-grid-splide .splide__slide { height: 500px; }
+  .media-grid-splide .media-item {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #f5f5f5;
+  }
+  .media-grid-splide .media-item img,
+  .media-grid-splide .media-item .custom-video,
+  .media-grid-splide .media-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  @media (min-width: 750px) {
+    .media-grid-splide .splide__track { overflow: visible; }
+    .media-grid-splide .media-grid-splide__list { display: flex; gap: 0; transform: none !important; }
+    .media-grid-splide .splide__slide { flex: 1; }
+    .media-grid-splide .splide__arrows { display: none; }
+    .media-grid-splide .splide__pagination { display: none; }
+  }
+  @media (max-width: 749px) {
+    .media-grid-splide,
+    .media-grid-splide .splide__track { width: 100%; }
+    .media-grid-splide .media-grid-splide__list { height: 400px; flex-direction: row; }
+    .media-grid-splide .splide__slide { height: 400px; min-width: 100%; width: 100%; box-sizing: border-box; }
+    .media-grid-splide .splide__track { overflow: hidden; }
+    .media-grid-splide .splide__pagination { bottom: -1.5rem; }
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var el = document.getElementById('media-grid-splide-{{ section.id }}');
+    if (!el || typeof Splide === 'undefined') return;
+    new Splide('#media-grid-splide-{{ section.id }}', {
+      type: 'slide',
+      perPage: 3,
+      perMove: 1,
+      gap: 0,
+      arrows: false,
+      pagination: false,
+      drag: false,
+      breakpoints: {
+        749: {
+          perPage: 1,
+          perMove: 1,
+          pagination: true,
+          drag: true,
+          padding: { right: '15%' }
+        }
+      }
+    }).mount();
+  });
+</script>
 
 {% schema %}
 {

@@ -8,36 +8,71 @@
   const backdropSel = '[data-backdrop]';
   const bodyOpenClass = 'custom-mega-open';
 
+  function addOpenClass() {
+    document.documentElement.classList.add(bodyOpenClass);
+    document.body.classList.add(bodyOpenClass);
+  }
+
+  function removeOpenClass() {
+    document.documentElement.classList.remove(bodyOpenClass);
+    document.body.classList.remove(bodyOpenClass);
+  }
+
+  const bodyBackdropClass = 'custom-mega__backdrop-body';
+  const bodyBackdropAttr = 'data-mega-backdrop-body';
+
+  function createBodyBackdrop(closeFn) {
+    if (document.querySelector(`[${bodyBackdropAttr}]`)) return;
+    const overlay = document.createElement('div');
+    overlay.setAttribute(bodyBackdropAttr, '');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.className = bodyBackdropClass;
+    overlay.addEventListener('click', closeFn);
+    document.body.insertBefore(overlay, document.body.firstChild);
+  }
+
+  function removeBodyBackdrop() {
+    const overlay = document.querySelector(`[${bodyBackdropAttr}]`);
+    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+  }
+
   function init(container) {
     const details = container.querySelector(detailsSel);
     const summary = details?.querySelector('summary');
-    const backdrop = container.querySelector(backdropSel);
 
     if (!details || !summary) return;
 
     function close() {
+      removeBodyBackdrop();
       details.removeAttribute('open');
       summary?.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove(bodyOpenClass);
+      removeOpenClass();
     }
 
     function open() {
       summary?.setAttribute('aria-expanded', 'true');
-      document.body.classList.add(bodyOpenClass);
+      addOpenClass();
     }
 
     function onToggle() {
       if (details.hasAttribute('open')) {
-        document.body.classList.add(bodyOpenClass);
+        addOpenClass();
+        if (window.innerWidth <= 749) createBodyBackdrop(close);
       } else {
-        document.body.classList.remove(bodyOpenClass);
+        removeBodyBackdrop();
+        removeOpenClass();
       }
       summary?.setAttribute('aria-expanded', details.hasAttribute('open'));
     }
 
-    summary?.addEventListener('click', () => {
-      requestAnimationFrame(onToggle);
-    });
+    summary?.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      details.toggleAttribute('open');
+      if (summary === document.activeElement) {
+        summary.blur();
+      }
+    }, true);
 
     details?.addEventListener('toggle', onToggle);
 
@@ -47,7 +82,7 @@
       close();
     });
 
-    backdrop?.addEventListener('click', close);
+    container.querySelectorAll(backdropSel).forEach((el) => el.addEventListener('click', close));
   }
 
   function initAll() {
