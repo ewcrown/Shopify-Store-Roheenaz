@@ -134,12 +134,13 @@ body:not(.custom-mega-open) .announcement-bar {
     background: rgba(255, 255, 255, 0.64);
     display: inline-flex;
     padding: 10px 40px;
+    text-transform: uppercase;
     justify-content: center;
     align-items: center;
     gap: 9.9px;
     color: #000;
     text-align: center;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
     line-height: normal;
 }
@@ -1177,7 +1178,7 @@ header.rohe-main-header {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-left: 10px;
+    margin: 0 10px;
 }
 
 span.svg-wrapper.menu-icon.header-drawer-icon.header-drawer-icon--close {
@@ -2451,10 +2452,10 @@ body.filter-open {
     }
 
     /* Transparent announcement bar on homepage desktop */
-    body.template-index .announcement-bar--transparent-homepage {
+    /* body.template-index .announcement-bar--transparent-homepage {
         background: transparent !important;
         border-bottom-color: transparent;
-    }
+    } */
 }
 
 .custom-mega-open #header-component {

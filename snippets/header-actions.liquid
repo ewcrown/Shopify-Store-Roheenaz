@@ -48,11 +48,11 @@
       </div>
     </anchored-popover-component>
     {% comment %} wishlist icon  {% endcomment %}
-     <div class="wishlist-icon__icon--wishlist">
-        <span class="svg-wrapper wishlist-icon">
-          {{- 'wishlist-icon.svg' | inline_asset_content -}}
-        </span>
-     <div>
+    <a href="/pages/wishlist" class="wishlist-icon__icon--wishlist header-actions__action" aria-label="{{ 'accessibility.wishlist' | t | default: 'Wishlist' }}">
+      <span class="svg-wrapper wishlist-icon">
+        {{- 'wishlist-icon.svg' | inline_asset_content -}}
+      </span>
+    </a>
     <dialog-component
       class="account-drawer"
       {{ block.shopify_attributes }}
