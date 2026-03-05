@@ -60,6 +60,14 @@
   .hero-slider__image--desktop { display: block; }
   .hero-slider__image--mobile { display: none; }
   @media (max-width: 749px) {
+    .hero-slider,
+    .hero-slider .splide__track,
+    .hero-slider .splide__list,
+    .hero-slider .splide__slide,
+    .hero-slider .hero-slide-content {
+      height: 100vh;
+      min-height: 100dvh;
+    }
     .hero-slider__image--desktop { display: none; }
     .hero-slider__image--mobile { display: block; }
   }

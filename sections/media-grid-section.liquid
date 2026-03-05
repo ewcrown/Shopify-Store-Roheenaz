@@ -6,7 +6,7 @@
         <ul class="splide__list media-grid-splide__list">
 
           {% comment %} --- Left Slot --- {% endcomment %}
-          <li class="splide__slide">
+          <li class="splide__slide{% if section.settings.left_video != blank %} splide__slide--has-video{% endif %}">
             <div class="media-item">
               {%- if section.settings.left_video != blank -%}
                 {{ section.settings.left_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
@@ -17,7 +17,7 @@
           </li>
 
           {% comment %} --- Center Slot --- {% endcomment %}
-          <li class="splide__slide">
+          <li class="splide__slide{% if section.settings.center_video != blank %} splide__slide--has-video{% endif %}">
             <div class="media-item">
               {%- if section.settings.center_video != blank -%}
                 {{ section.settings.center_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
@@ -28,7 +28,7 @@
           </li>
 
           {% comment %} --- Right Slot --- {% endcomment %}
-          <li class="splide__slide">
+          <li class="splide__slide{% if section.settings.right_video != blank %} splide__slide--has-video{% endif %}">
             <div class="media-item">
               {%- if section.settings.right_video != blank -%}
                 {{ section.settings.right_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'custom-video' }}
@@ -76,8 +76,8 @@
   @media (max-width: 749px) {
     .media-grid-splide,
     .media-grid-splide .splide__track { width: 100%; }
-    .media-grid-splide .media-grid-splide__list { height: 400px; flex-direction: row; }
-    .media-grid-splide .splide__slide { height: 400px; min-width: 100%; width: 100%; box-sizing: border-box; }
+    .media-grid-splide .media-grid-splide__list { height: 100vh; min-height: 100dvh; flex-direction: row; }
+    .media-grid-splide .splide__slide { height: 100vh; min-height: 100dvh; min-width: 100%; width: 100%; box-sizing: border-box; }
     .media-grid-splide .splide__track { overflow: hidden; }
     .media-grid-splide .splide__pagination { bottom: -1.5rem; }
   }
@@ -86,6 +86,17 @@
   document.addEventListener('DOMContentLoaded', function () {
     var el = document.getElementById('media-grid-splide-{{ section.id }}');
     if (!el || typeof Splide === 'undefined') return;
+
+    // On mobile, remove slides without video so carousel only shows video slides
+    if (window.innerWidth <= 749) {
+      var nonVideoSlides = el.querySelectorAll('.splide__slide:not(.splide__slide--has-video)');
+      nonVideoSlides.forEach(function (slide) { slide.remove(); });
+      if (el.querySelectorAll('.splide__slide').length === 0) {
+        el.closest('.media-grid-section').style.display = 'none';
+        return;
+      }
+    }
+
     new Splide('#media-grid-splide-{{ section.id }}', {
       type: 'slide',
       perPage: 3,

@@ -11,7 +11,7 @@
 ></script>
 
 <aside
-  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}{% if section.settings.custom_background != blank %} announcement-bar--custom-bg{% endif %}"
+  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}{% if section.settings.custom_background != blank %} announcement-bar--custom-bg{% endif %}{% if template.name == 'index' %} announcement-bar--transparent-homepage{% endif %}"
   style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.custom_background != blank %} --announcement-bar-custom-bg: {{ section.settings.custom_background }};{% endif %}"
 >
   {% liquid

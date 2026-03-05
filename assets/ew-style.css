@@ -689,7 +689,7 @@ button.cart-items__remove-btn .svg-wrapper svg {
         font-weight: 300;
         text-transform: uppercase;
         border: none;
-        font-size: 12px;
+        font-size: 16px;
         cursor: pointer;
         font-family: inherit;
         border-right: 1px solid #000;
@@ -2433,6 +2433,7 @@ body.filter-open {
 }
 
 /* Desktop: keep announcement bar above hero/banner when scrolling */
+/* Desktop only: transparent header + announcement bar on homepage */
 @media (min-width: 750px) {
     body.ew-transparent-header #header-group>*:not(.header-section) {
         position: relative;
@@ -2447,6 +2448,12 @@ body.filter-open {
     body.ew-transparent-header .content-for-layout>.shopify-section:first-child {
         position: relative;
         z-index: var(--layer-base);
+    }
+
+    /* Transparent announcement bar on homepage desktop */
+    body.template-index .announcement-bar--transparent-homepage {
+        background: transparent !important;
+        border-bottom-color: transparent;
     }
 }
 
@@ -2814,7 +2821,7 @@ body.filter-open {
         padding: 0 !important;
     }
 
-    #header-component {
+    body:not(.template-index) #header-component {
         padding: 10px;
         background: #fff;
         position: static;
@@ -2828,26 +2835,6 @@ body.filter-open {
     body.ew-transparent-header.template-index .announcement-bar__row .announcement-bar__text--promo,
     body.ew-transparent-header.template-index .announcement-bar__countdown {
         color: #000 !important;
-    }
-
-    body.ew-transparent-header.template-index #header-component,
-    body.ew-transparent-header.template-index #header-component[transparent] {
-        position: static !important;
-        background: #fff !important;
-    }
-
-    body.ew-transparent-header.template-index #header-component .header__row,
-    body.ew-transparent-header.template-index #header-component[transparent] .header__row {
-        background-color: #fff !important;
-    }
-
-    body.ew-transparent-header.template-index .header-logo__svg svg path {
-        fill: #000 !important;
-    }
-
-    body.ew-transparent-header.template-index #header-component .header__column--right svg path,
-    body.ew-transparent-header.template-index .custom-mega__trigger svg path {
-        stroke: #000;
     }
 
     body.ew-transparent-header.template-index .content-for-layout>.shopify-section:first-child {
@@ -2999,10 +2986,16 @@ body.filter-open {
     .collection-card__content.layout-panel-flex--column>div {
         padding: 10px !important;
     }
+
     .media-grid-splide .splide__track {
         padding: 0 !important;
     }
-    .search-modal__button svg path {
+
+    body:not(.template-index) .search-modal__button svg path {
         stroke: #000 !important;
+    }
+
+    #header-component .header__row {
+        padding: 10px !important;
     }
 }
