@@ -60,20 +60,15 @@
     assign results_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
   endif
 
-  assign is_active = true
+  assign is_active = false
   assign should_show_pane = true
   if block_settings.filter_style == 'vertical'
     assign should_show_pane = block_settings.enable_filtering
   endif
 
   assign should_use_select_on_mobile = true
-  if block_settings.enable_filtering == true and block_settings.enable_sorting
-    assign should_use_select_on_mobile = true
-  endif
-
-  assign should_show_vertical_clear_all = true
-  if block_settings.filter_style == 'vertical'
-    assign should_show_vertical_clear_all = false
+  if block_settings.enable_filtering == false and block_settings.enable_sorting
+    assign should_use_select_on_mobile = false
   endif
 -%}
 
@@ -108,7 +103,7 @@
           filter_style: block_settings.filter_style,
           suffix: 'desktop',
           sort_position: 'desktop',
-          should_use_select_on_mobile: true,
+          should_use_select_on_mobile: false,
           section_id: section.id
         %}
       {% endif %}
@@ -226,13 +221,23 @@
                 {% endif %}
               </div>
 
-              {% render 'facets-actions',
-                results_url: results_url,
-                is_active: is_active,
-                products_count: products_count,
-                should_show_clear_all: should_show_vertical_clear_all,
-                clear_all_button_style: 'button-unstyled'
-              %}
+              {% if block_settings.filter_style == 'horizontal' %}
+                <facet-remove-component
+                  class="facets-horizontal-remove {% if is_active %}facets-horizontal-remove--active{% endif %}"
+                  active-class="facets__clear-all-link--active"
+                  data-url="{{ results_url }}"
+                >
+                  <button
+                    type="button"
+                    class="button-unstyled facets__clear-all-link facets__clear-all-link--horizontal {% if is_active %}facets__clear-all-link--active{% endif %}"
+                    ref="clearButton"
+                    on:click="/removeFilter?form="
+                    on:keydown="/removeFilter?form="
+                  >
+                    {{- 'actions.clear_all' | t -}}
+                  </button>
+                </facet-remove-component>
+              {% endif %}
             {% endif %}
             {% if block_settings.filter_style == 'horizontal' %}
               <div
@@ -285,15 +290,7 @@
           type="button"
         >
           <span class="svg-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M3.5 8.16667H7" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M3.5 19.8333H10.5" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 19.8333L24.5 19.8333" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M17.5 8.16667L24.5 8.16667" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M7 8.16667C7 7.07947 7 6.53587 7.17761 6.10707C7.41443 5.53534 7.86867 5.0811 8.44041 4.84428C8.8692 4.66667 9.4128 4.66667 10.5 4.66667C11.5872 4.66667 12.1308 4.66667 12.5596 4.84428C13.1313 5.0811 13.5856 5.53534 13.8224 6.10707C14 6.53587 14 7.07947 14 8.16667C14 9.25386 14 9.79746 13.8224 10.2263C13.5856 10.798 13.1313 11.2522 12.5596 11.4891C12.1308 11.6667 11.5872 11.6667 10.5 11.6667C9.4128 11.6667 8.8692 11.6667 8.44041 11.4891C7.86867 11.2522 7.41443 10.798 7.17761 10.2263C7 9.79746 7 9.25386 7 8.16667Z" stroke="#141B34" stroke-width="1.5"/>
-              <path d="M14 19.8333C14 18.7461 14 18.2025 14.1776 17.7737C14.4144 17.202 14.8687 16.7478 15.4404 16.5109C15.8692 16.3333 16.4128 16.3333 17.5 16.3333C18.5872 16.3333 19.1308 16.3333 19.5596 16.5109C20.1313 16.7478 20.5856 17.202 20.8224 17.7737C21 18.2025 21 18.7461 21 19.8333C21 20.9205 21 21.4641 20.8224 21.8929C20.5856 22.4647 20.1313 22.9189 19.5596 23.1557C19.1308 23.3333 18.5872 23.3333 17.5 23.3333C16.4128 23.3333 15.8692 23.3333 15.4404 23.1557C14.8687 22.9189 14.4144 22.4647 14.1776 21.8929C14 21.4641 14 20.9205 14 19.8333Z" stroke="#141B34" stroke-width="1.5"/>
-            </svg>
-            {% comment %} {{ 'icon-filter.svg' | inline_asset_content }} {% endcomment %}
+            {{ 'icon-filter.svg' | inline_asset_content }}
           </span>
 
           {{ 'actions.show_filters' | t }}
@@ -363,7 +360,7 @@
 {% if block_settings.enable_filtering %}
   <dialog-component
     id="filters-drawer"
-    class="facets-block-wrapper facets-block-wrapper--vertical facets-block-wrapper--drawer color-{{ settings.drawer_color_scheme }}"
+    class="facets-block-wrapper facets-block-wrapper--vertical color-{{ settings.drawer_color_scheme }}"
   >
     <dialog
       ref="dialog"
@@ -475,29 +472,39 @@
         </form>
       </facets-form-component>
 
-      {% render 'facets-actions',
-        results_url: results_url,
-        is_active: is_active,
-        products_count: products_count,
-        form_component: form_component,
-        should_show_clear_all: true,
-        clear_all_button_style: 'button-secondary'
-      %}
+      <div
+        class="facets__drawer-actions"
+      >
+        <facet-remove-component
+          data-url="{{ results_url }}"
+          active-class="facets__clear-all--active"
+        >
+          <button
+            type="button"
+            class="button-secondary facets__clear-all{% if is_active %} facets__clear-all--active{% endif %}"
+            ref="clearButton"
+            on:click="/removeFilter?form={{ form_component }}"
+            on:keydown="/removeFilter?form={{ form_component }}"
+          >
+            {{- 'actions.clear_all' | t -}}
+          </button>
+        </facet-remove-component>
+
+        {% if products_count > 0 %}
+          <button
+            class="button facets__see-results"
+            type="button"
+            on:click="dialog-component/closeDialog"
+          >
+            {{- 'actions.see_items' | t: count: products_count -}}
+          </button>
+        {% endif %}
+      </div>
     </dialog>
   </dialog-component>
 {% endif %}
 
 {% stylesheet %}
-  .collection-wrapper {
-    @media screen and (min-width: 750px) {
-      --facets-vertical-col-width: 6;
-    }
-
-    @media screen and (min-width: 990px) {
-      --facets-vertical-col-width: 5;
-    }
-  }
-
   .facets-block-wrapper {
     @media screen and (min-width: 750px) {
       margin: var(--facets-margin);
@@ -616,16 +623,6 @@
     }
   }
 
-  .variant-option__swatch-wrapper {
-    position: relative;
-    overflow: visible;
-    border-radius: var(--options-border-radius);
-  }
-
-  .variant-option--swatches-disabled .variant-option__swatch-wrapper {
-    overflow: hidden;
-  }
-
   .facets {
     --facets-form-horizontal-gap: 20px;
     --facets-horizontal-max-input-wrapper-height: 230px;
@@ -697,12 +694,6 @@
     }
   }
 
-  .collection-wrapper--grid-full-width .facets--vertical:not(.facets--drawer) {
-    @media screen and (min-width: 750px) {
-      padding-inline-start: max(var(--padding-sm), var(--padding-inline-start));
-    }
-  }
-
   .facets--drawer {
     border-radius: 0;
     border-right: var(--style-border-drawer);
@@ -747,23 +738,12 @@
     overflow: visible;
   }
 
-  .facets--drawer .facets__actions {
-    flex-shrink: 0;
-    background-color: var(--color-background);
-  }
-
   .facets.facets-controls-wrapper {
     @media screen and (min-width: 750px) {
       grid-column: column-1 / column-12;
       color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
       gap: 0 var(--facets-form-horizontal-gap);
       padding-bottom: var(--padding-xs);
-    }
-  }
-
-  .collection-wrapper:has(.product-grid-mobile--large) .facets-mobile-wrapper.facets-controls-wrapper {
-    @media screen and (max-width: 749px) {
-      display: none;
     }
   }
 
@@ -1081,12 +1061,38 @@
 
   /* Facets - Text */
   .facets__label,
-  .facets__clear-all,
+  .facets__clear-all-link,
   .clear-filter {
     text-decoration-color: transparent;
     text-decoration-thickness: 0.075em;
     text-underline-offset: 0.125em;
     transition: text-decoration-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .facets__clear-all-link {
+    display: none;
+    cursor: pointer;
+    padding: var(--padding-xs);
+    color: var(--button-color);
+    transition: text-decoration-color var(--animation-speed) var(--animation-easing),
+      color var(--animation-speed) var(--animation-easing);
+  }
+
+  .facets__clear-all-link:hover {
+    --button-color: var(--color-primary-hover);
+
+    text-decoration: underline;
+    text-decoration-color: var(--button-color);
+  }
+
+  .facets__clear-all-link--horizontal {
+    height: var(--minimum-touch-target);
+    padding-inline: var(--facets-form-horizontal-gap);
+    min-width: var(--facets-clear-all-min-width);
+  }
+
+  .facets__clear-all-link--active {
+    display: block;
   }
 
   .facets__label,
@@ -1098,6 +1104,30 @@
     background-color: transparent;
     box-shadow: none;
     padding: 0;
+  }
+
+  .clear-filter:hover {
+    text-decoration: underline;
+  }
+
+  /* Clear button */
+  .facets__clear {
+    display: none;
+  }
+
+  .facets--horizontal .facets__clear {
+    @media screen and (min-width: 750px) {
+      width: 100%;
+      justify-content: flex-end;
+      padding: 0 var(--facets-clear-padding) var(--facets-clear-padding) 0;
+      cursor: pointer;
+    }
+  }
+
+  .facets__clear--active {
+    @media screen and (min-width: 750px) {
+      display: flex;
+    }
   }
 
   /* Facets - Label */
@@ -1208,10 +1238,73 @@
     }
   }
 
-  .collection-wrapper:has(> .facets--horizontal) .facets__panel[open] {
-    @media screen and (min-width: 750px) {
-      z-index: var(--facets-open-z-index);
+  /* Facets - Actions */
+  .facets__drawer-actions {
+    --to-top-gradient-background: linear-gradient(
+      to top,
+      rgb(var(--color-background-rgb) / var(--opacity-90)),
+      rgb(var(--color-background-rgb) / var(--opacity-80)),
+      rgb(var(--color-background-rgb) / var(--opacity-40)),
+      transparent
+    );
+
+    position: sticky;
+    bottom: 0;
+    z-index: var(--facets-sticky-z-index);
+    order: 1;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: var(--gap-sm);
+    padding-block-start: var(--padding-xs);
+    padding-block-end: var(--padding-md);
+    padding-inline: var(--padding-lg);
+    margin-top: auto;
+    background-image: var(--to-top-gradient-background);
+    background-color: var(--color-background);
+  }
+
+  /* Clear all button */
+  .facets__clear-all {
+    display: none;
+    cursor: pointer;
+    min-width: var(--facets-clear-all-min-width);
+    flex-grow: 1;
+    padding-block: var(--padding-lg);
+    color: var(--button-color, inherit);
+  }
+
+  .facets__clear-all--active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform var(--animation-values), opacity var(--animation-values);
+  }
+
+  @starting-style {
+    .facets__clear-all--active {
+      opacity: 0;
+      transform: translateY(100%);
     }
+  }
+
+  .facets__see-results {
+    min-width: var(--facets-see-results-min-width);
+    flex-grow: 1;
+    padding-block: var(--padding-lg);
+  }
+
+  .facets-horizontal-remove {
+    display: flex;
+    align-items: center;
+  }
+
+  .facets-horizontal-remove--active::before {
+    content: '';
+    border-inline-start: var(--style-border-width) solid var(--color-border);
+    height: var(--font-paragraph--size);
+    position: absolute;
   }
 {% endstylesheet %}
 
@@ -1225,7 +1318,7 @@
       "id": "enable_filtering",
       "label": "t:settings.enable_filtering",
       "info": "t:info.enable_filtering_info",
-      "default": true
+      "default": false
     },
     {
       "type": "select",

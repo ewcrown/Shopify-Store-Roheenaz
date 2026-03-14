@@ -28,6 +28,8 @@
     "inventory_status": "Inventory status",
     "localization_region_and_language": "Region and language selector",
     "menu": "Menu",
+    // This is the label for the header navigation menu when using screen readers, it will read "Primary navigation"
+    "header_navigation_label": "Primary",
     "nested_product": "{{ product_title }} for {{ parent_title }}",
     "new_window": "Opens in a new window.",
     "open_hotspot": "Open hotspot",
@@ -161,7 +163,7 @@
     "cart_title": "Cart",
     "cart_subtotal": "Subtotal",
     "cart_total": "Cart total",
-    "checkout": "Checkout",
+    "checkout": "Check out",
     "collection_placeholder": "Collection title",
     "discount_code": "Discount code",
     "shipping_discount_error": "Shipping discounts are shown at checkout after adding an address",
@@ -309,14 +311,6 @@
     "recipient_form_error": "There was an error with the form submission",
     "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} characters used"
   },
-  "general": {
-    "share": {
-      "share": "Share",
-      "copy_link": "Copy link",
-      "close": "Close",
-      "copied": "Link copied to clipboard!"
-    }
-  },
   "fields": {
     // Separates min and max values in price range filter
     "separator": "to"
@@ -340,7 +334,7 @@
     "search": "Search",
     "product_title": "Product title",
     "collection_title": "Collection title",
-    "blog_posts": "Blog Posts",
+    "blog_posts": "Blog posts",
     "blog_post_title": "Title",
     "blog_post_author": "Author",
     "blog_post_date": "Date",

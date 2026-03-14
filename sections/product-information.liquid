@@ -32,13 +32,12 @@
   %}
 
   <sticky-add-to-cart
-    class="sticky-add-to-cart{% unless current_variant.available %} sticky-add-to-cart--sold-out{% endunless %}"
+    class="sticky-add-to-cart"
     data-variant-available="{{ current_variant.available }}"
     data-product-id="{{ product.id }}"
     data-current-variant-id="{{ current_variant.id }}"
     data-initial-quantity="{{ initial_quantity }}"
     data-default-variant-title="{{ 'products.product.default_title' | t }}"
-    data-section-id="{{ section.id }}"
   >
     <div
       class="sticky-add-to-cart__bar color-{{ settings.popover_color_scheme }}"
@@ -117,17 +116,6 @@
         {% render 'price', product_resource: product, show_sale_price_first: true %}
       </div>
 
-      {% if product.has_only_default_variant == false %}
-        <button
-          type="button"
-          class="sticky-add-to-cart__select-size"
-          data-drawer-open
-          data-drawer-id="product-variant-drawer-{{ section.id }}"
-        >
-          SELECT SIZE
-        </button>
-      {% endif %}
-
       <button
         type="button"
         class="sticky-add-to-cart__button add-to-cart-button button"
@@ -142,7 +130,7 @@
         >
           {% if current_variant.available %}
             <span class="svg-wrapper add-to-cart-icon">
-              {{- 'add-to-cart-icon.svg' | inline_asset_content -}}
+              {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
             </span>
           {% endif %}
           <span class="add-to-cart-text__content">
@@ -178,19 +166,6 @@
     </div>
   </sticky-add-to-cart>
 {% endif %}
-
-<div
-  id="product-variant-drawer-{{ section.id }}"
-  class="product-variant-drawer"
-  data-section-id="{{ section.id }}"
-  aria-hidden="true"
->
-  <div class="product-variant-drawer__overlay" data-drawer-close></div>
-  <div class="product-variant-drawer__panel">
-    <div class="product-variant-drawer__handle" data-drawer-close></div>
-    <div class="product-variant-drawer__content"></div>
-  </div>
-</div>
 
 {% render 'product-information-content',
   product_media_size: closest.product.media.size,

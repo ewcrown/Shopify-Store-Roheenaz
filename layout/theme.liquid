@@ -23,8 +23,6 @@
         id="view-transition-render-blocker"
       >
     {% endif %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
     {%- render 'meta-tags' -%}
     {%- render 'stylesheets' -%}
@@ -38,23 +36,17 @@
     {% endif %}
 
     {{ content_for_header }}
-
-    {{ 'ew-style.css' | asset_url | stylesheet_tag }}
-
-    {% if template == 'index' %}
-      {{ 'index-header.css' | asset_url | stylesheet_tag }}
-    {% endif %}
   </head>
 
-  <body class="page-width-{{ settings.page_width }} template-{{ template.name }} {% if template.name == 'index' %}ew-transparent-header {% else %}ew-transparent-header-false {% endif %} card-hover-effect-{{ settings.card_hover_effect }}">
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
     <div id="header-group">
       {% sections 'header-group' %}
     </div>
 
     <script>
-      // Inline header height calculation to prevent layout shift
-      // Note: Updates in calculateHeaderGroupHeight() and updateTransparentHeaderOffset()utilities.js should be kept in sync with this function
+      // Inline header height and menu style calculations to prevent layout shift
+      // Note: Updates in calculateHeaderGroupHeight(), updateTransparentHeaderOffset() and setHeaderMenuStyle() utilities.js should be kept in sync with this function
       (function setHeaderHeighCustomProperties() {
         /*
          * Header calculation functions for maintaining CSS variables
@@ -66,6 +58,7 @@
 
         if (!header || !headerGroup) return;
 
+        const headerTopRow = header.querySelector('.header__row--top');
         const headerHeight = header.offsetHeight;
 
         // Calculate the total height of the header group
@@ -86,6 +79,12 @@
         document.body.style.setProperty('--header-height', `${headerHeight}px`);
         document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
 
+        if (headerTopRow) {
+          window.requestAnimationFrame(function () {
+            document.body.style.setProperty('--top-row-height', `${headerTopRow.offsetHeight}px`);
+          });
+        }
+
         /**
          * Updates CSS custom properties for transparent header offset calculation
          * Mimic updateTransparentHeaderOffset() in utilities.js
@@ -101,6 +100,16 @@
         const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
         document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
       })();
+
+      (function setHeaderMenuStyle() {
+        const headerComponent = document.querySelector('#header-component');
+        if (headerComponent) {
+          const isTouchDevice = 'ontouchstart' in window && navigator.maxTouchPoints > 0;
+          const overflowList = headerComponent?.querySelector('overflow-list');
+          const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
+          headerComponent.dataset.menuStyle = isTouchDevice || hasReachedMinimum ? 'drawer' : 'menu';
+        }
+      })();
     </script>
 
     <main
@@ -114,14 +123,14 @@
       {{ content_for_layout }}
     </main>
 
-    {% sections 'footer-group' %}
+    <footer>
+      {% sections 'footer-group' %}
+    </footer>
 
     {% render 'search-modal' %}
 
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
-
-    {{ 'ew-script.js' | asset_url | script_tag }}
   </body>
 </html>

@@ -1,5 +1,6 @@
 import { DialogComponent, DialogOpenEvent, DialogCloseEvent } from '@theme/dialog';
 import { CartAddEvent } from '@theme/events';
+import { isMobileBreakpoint } from '@theme/utilities';
 
 /**
  * A custom element that manages a cart drawer.
@@ -13,34 +14,54 @@ class CartDrawerComponent extends DialogComponent {
   /** @type {number} */
   #summaryThreshold = 0.5;
 
+  /** @type {AbortController | null} */
+  #historyAbortController = null;
+
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener(CartAddEvent.eventName, this.#handleCartAdd);
     this.addEventListener(DialogOpenEvent.eventName, this.#updateStickyState);
-    this.addEventListener(DialogOpenEvent.eventName, this.#fadeCartIcon);
-    this.addEventListener(DialogCloseEvent.eventName, this.#unfadeCartIcon);
+    this.addEventListener(DialogOpenEvent.eventName, this.#handleHistoryOpen);
+    this.addEventListener(DialogCloseEvent.eventName, this.#handleHistoryClose);
+
+    if (history.state?.cartDrawerOpen) {
+      history.replaceState(null, '');
+    }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener(CartAddEvent.eventName, this.#handleCartAdd);
     this.removeEventListener(DialogOpenEvent.eventName, this.#updateStickyState);
-    this.removeEventListener(DialogOpenEvent.eventName, this.#fadeCartIcon);
-    this.removeEventListener(DialogCloseEvent.eventName, this.#unfadeCartIcon);
+    this.removeEventListener(DialogOpenEvent.eventName, this.#handleHistoryOpen);
+    this.removeEventListener(DialogCloseEvent.eventName, this.#handleHistoryClose);
+    this.#historyAbortController?.abort();
   }
 
-  #getTrigger() {
-    return this.querySelector('button[data-testid="cart-drawer-trigger"]') || this.querySelector('.header-actions__action');
-  }
+  #handleHistoryOpen = () => {
+    if (!isMobileBreakpoint()) return;
 
-  #fadeCartIcon = () => {
-    const trigger = this.#getTrigger();
-    if (trigger) trigger.classList.add('cart-drawer-trigger--drawer-open');
+    if (!history.state?.cartDrawerOpen) {
+      history.pushState({ cartDrawerOpen: true }, '');
+    }
+
+    this.#historyAbortController = new AbortController();
+    window.addEventListener('popstate', this.#handlePopState, { signal: this.#historyAbortController.signal });
   };
 
-  #unfadeCartIcon = () => {
-    const trigger = this.#getTrigger();
-    if (trigger) trigger.classList.remove('cart-drawer-trigger--drawer-open');
+  #handleHistoryClose = () => {
+    this.#historyAbortController?.abort();
+    if (history.state?.cartDrawerOpen) {
+      history.back();
+    }
+  };
+
+  #handlePopState = async () => {
+    if (this.refs.dialog?.open) {
+      this.refs.dialog.style.setProperty('--dialog-drawer-closing-animation', 'none');
+      await this.closeDialog();
+      this.refs.dialog.style.removeProperty('--dialog-drawer-closing-animation');
+    }
   };
 
   #handleCartAdd = () => {
@@ -50,11 +71,6 @@ class CartDrawerComponent extends DialogComponent {
   };
 
   open() {
-    const trigger = this.#getTrigger();
-    if (trigger) {
-      trigger.classList.add('cart-drawer-trigger--animate');
-      setTimeout(() => trigger.classList.remove('cart-drawer-trigger--animate'), 400);
-    }
     this.showDialog();
 
     /**

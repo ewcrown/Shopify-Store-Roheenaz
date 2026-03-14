@@ -1,10 +1,10 @@
 import { Component } from '@theme/component';
-import { onDocumentLoaded, changeMetaThemeColor } from '@theme/utilities';
+import { onDocumentLoaded, changeMetaThemeColor, setHeaderMenuStyle } from '@theme/utilities';
 
 /**
  * @typedef {Object} HeaderComponentRefs
  * @property {HTMLDivElement} headerDrawerContainer - The header drawer container element
- * @property {HTMLElement} [headerMenu] - The header menu element (optional when desktop menu is "Burger only")
+ * @property {HTMLElement} headerMenu - The header menu element
  * @property {HTMLElement} headerRowTop - The header top row element
  */
 
@@ -19,7 +19,7 @@ import { onDocumentLoaded, changeMetaThemeColor } from '@theme/utilities';
  */
 
 class HeaderComponent extends Component {
-  requiredRefs = ['headerDrawerContainer', 'headerRowTop'];
+  requiredRefs = ['headerDrawerContainer', 'headerMenu', 'headerRowTop'];
 
   /**
    * Width of window when header drawer was hidden
@@ -58,18 +58,6 @@ class HeaderComponent extends Component {
   #scrollRafId = null;
 
   /**
-   * The duration to wait for hiding animation, when sticky behavior is 'scroll-up'
-   * @constant {number}
-   */
-  #animationDelay = 150;
-
-  /**
-   * Body class added when header is sticky (stuck to top). Removed when header is at natural position.
-   * @constant {string}
-   */
-  #bodyStickyClass = 'header-is-sticky';
-
-  /**
    * Keeps the global `--header-height` custom property up to date,
    * which other theme components can then consume
    */
@@ -105,7 +93,6 @@ class HeaderComponent extends Component {
 
       if (alwaysSticky) {
         this.dataset.stickyState = isIntersecting ? 'inactive' : 'active';
-        this.#syncBodyStickyClass();
         if (this.dataset.themeColor) changeMetaThemeColor(this.dataset.themeColor);
       } else {
         this.#offscreen = !isIntersecting || this.dataset.stickyState === 'active';
@@ -129,14 +116,11 @@ class HeaderComponent extends Component {
    */
   #updateMenuVisibility(hideMenu) {
     if (hideMenu) {
-      this.refs.headerDrawerContainer.classList.remove('desktop:hidden');
       this.#menuDrawerHiddenWidth = window.innerWidth;
-      this.refs.headerMenu?.classList.add('hidden');
     } else {
-      this.refs.headerDrawerContainer.classList.add('desktop:hidden');
       this.#menuDrawerHiddenWidth = null;
-      this.refs.headerMenu?.classList.remove('hidden');
     }
+    setHeaderMenuStyle();
   }
 
   #handleWindowScroll = () => {
@@ -146,10 +130,6 @@ class HeaderComponent extends Component {
       this.#scrollRafId = null;
       this.#updateScrollState();
     });
-  };
-
-  #syncBodyStickyClass = () => {
-    document.body.classList.toggle(this.#bodyStickyClass, this.dataset.stickyState === 'active');
   };
 
   #updateScrollState = () => {
@@ -167,7 +147,6 @@ class HeaderComponent extends Component {
     }
 
     if (stickyMode === 'always') {
-      this.dataset.stickyState = isAtTop ? 'inactive' : 'active';
       if (isAtTop) {
         this.dataset.scrollDirection = 'none';
       } else if (isScrollingUp) {
@@ -175,14 +154,12 @@ class HeaderComponent extends Component {
       } else {
         this.dataset.scrollDirection = 'down';
       }
-      this.#syncBodyStickyClass();
+
       this.#lastScrollTop = scrollTop;
       return;
     }
 
     if (isScrollingUp) {
-      this.removeAttribute('data-animating');
-
       if (isAtTop) {
         // reset sticky state when header is scrolled up to natural position
         this.#offscreen = false;
@@ -193,21 +170,13 @@ class HeaderComponent extends Component {
         this.dataset.stickyState = 'active';
         this.dataset.scrollDirection = 'up';
       }
-      this.#syncBodyStickyClass();
     } else if (this.dataset.stickyState === 'active') {
       this.dataset.scrollDirection = 'none';
-      // delay transitioning to idle hidden state for hiding animation
-      this.setAttribute('data-animating', '');
 
-      this.#timeout = setTimeout(() => {
-        this.dataset.stickyState = 'idle';
-        this.removeAttribute('data-animating');
-        this.#syncBodyStickyClass();
-      }, this.#animationDelay);
+      this.dataset.stickyState = 'idle';
     } else {
       this.dataset.scrollDirection = 'none';
       this.dataset.stickyState = 'idle';
-      this.#syncBodyStickyClass();
     }
 
     this.#lastScrollTop = scrollTop;
@@ -225,11 +194,6 @@ class HeaderComponent extends Component {
       if (stickyMode === 'scroll-up' || stickyMode === 'always') {
         document.addEventListener('scroll', this.#handleWindowScroll);
       }
-
-      requestAnimationFrame(() => {
-        this.#updateScrollState();
-        this.#syncBodyStickyClass();
-      });
     }
   }
 
@@ -243,7 +207,6 @@ class HeaderComponent extends Component {
       cancelAnimationFrame(this.#scrollRafId);
       this.#scrollRafId = null;
     }
-    document.body.classList.remove(this.#bodyStickyClass);
     document.body.style.setProperty('--header-height', '0px');
   }
 }
