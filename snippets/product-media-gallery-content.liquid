@@ -521,6 +521,12 @@
       {% endcapture %}
     {% endif %}
 
+    {% liquid
+      assign slideshow_attributes = ''
+      if media_presentation == 'carousel'
+        assign slideshow_attributes = 'mobile-disabled'
+      endif
+    %}
     {% render 'slideshow',
       ref: 'slideshow',
       class: slideshow_class,
@@ -528,7 +534,8 @@
       slide_count: slide_count_for_controls,
       slideshow_arrows: slideshow_arrows,
       arrows_position: icons_position,
-      controls: controls
+      controls: controls,
+      attributes: slideshow_attributes
     %}
 
     {% if media_presentation == 'grid' %}
