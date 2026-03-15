@@ -1,0 +1,205 @@
+
+<section class="Featured-product__collection--section" id="section-{{ section.id }}">
+<div class="section section--full-width-margin section--page-width">
+    {%- if section.settings.header_title != blank -%}
+        <div class="Featured-product__header">
+        <h2 class="Featured-product__main-title">{{ section.settings.header_title }}</h2>
+        </div>
+    {%- endif -%}
+
+{%- assign collection = collections[section.settings.collection] -%}
+
+<div class="splide" id="splide-{{ section.id }}">
+    <div class="splide__track">
+    <ul class="splide__list">
+        {% if collection.products.size > 0 %}
+        {% for product in collection.products limit: section.settings.products_to_show %}
+            <li class="splide__slide">
+            <div class="Featured-product__card">
+                
+                <div class="Featured-product__image-wrapper">
+                {%- if product.available == false -%}
+                    <span class="Featured-product__badge Featured-product__badge--sold-out">Sold Out</span>
+                {%- elsif product.compare_at_price > product.price -%}
+                    <span class="Featured-product__badge Featured-product__badge--sale">Best Seller</span>
+                {%- endif -%}
+
+                <a href="{{ product.url }}" class="Featured-product__link">
+                    <img src="{{ product.featured_image | img_url: '800x' }}" class="Featured-product__img Featured-product__img--primary" alt="{{ product.title }}" loading="lazy">
+                    {% if product.images[1] %}
+                    <img src="{{ product.images[1] | img_url: '800x' }}" class="Featured-product__img Featured-product__img--secondary" alt="{{ product.title }}" loading="lazy">
+                    {% endif %}
+                </a>
+
+                {%- assign product_form_id = 'FeaturedProductForm-' | append: section.id | append: '-' | append: product.id -%}
+                <product-form-component
+                  id="{{ product_form_id }}"
+                  data-section-id="{{ section.id }}"
+                  data-product-id="{{ product.id }}"
+                  data-quantity-default="1"
+                  on:submit="/handleSubmit"
+                  class="Featured-product__form-wrapper"
+                >
+                  <div class="visually-hidden" aria-live="assertive" role="status" aria-atomic="true" ref="liveRegion"></div>
+                  <form id="{{ product_form_id }}-form" method="post" action="{{ routes.cart_add_url }}" data-type="add-to-cart-form" class="Featured-product__form">
+                    <input type="hidden" name="id" ref="variantId" value="{{ product.selected_or_first_available_variant.id }}">
+                    <add-to-cart-component ref="addToCartButtonContainer">
+                      <button type="submit" name="add" ref="addToCartButton" on:click="/handleClick" class="Featured-product__action-btn" {% unless product.available %}disabled{% endunless %}>
+                        <span class="Featured-product__action-btn-content">
+                          <span class="Featured-product__add-text">ADD</span>
+                          {{- 'add-to-cart-icon.svg' | inline_asset_content -}}
+                        </span>
+                        <span class="Featured-product__action-btn-loading" aria-hidden="true">
+                          <span class="Featured-product__action-btn-spinner"></span>
+                        </span>
+                      </button>
+                    </add-to-cart-component>
+                  </form>
+                </product-form-component>
+                </div>
+
+                <div class="Featured-product__info">
+                <div class="Featured-product__details">
+                    <h3 class="Featured-product__title">{{ product.title }}</h3>
+                </div>
+                <div class="Featured-product__price">
+                    {% render 'price', product_resource: product %}
+                </div>
+                </div>
+
+            </div>
+            </li>
+        {% endfor %}
+        {% else %}
+            {% comment %} Placeholder cards for editor preview {% endcomment %}
+            <p style="text-align:center; width:100%;">Please select a collection to display products.</p>
+        {% endif %}
+    </ul>
+    </div>
+</div>
+
+</div>
+</section>
+
+<style>
+  .Featured-product__action-btn {
+    position: relative;
+    transition: opacity 0.25s ease, transform 0.2s ease;
+  }
+  .Featured-product__action-btn:active:not(:disabled) {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+  .Featured-product__action-btn-content,
+  .Featured-product__action-btn-loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+  }
+  .Featured-product__action-btn-loading {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .Featured-product__action-btn.is-loading .Featured-product__action-btn-content {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .Featured-product__action-btn.is-loading .Featured-product__action-btn-loading {
+    opacity: 1;
+  }
+  .Featured-product__action-btn-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: Featured-product-spin 0.6s linear infinite;
+  }
+  @keyframes Featured-product-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var sectionId = '{{ section.id }}';
+  var sectionEl = document.getElementById('section-' + sectionId);
+  if (!sectionEl) return;
+
+  function removeLoading() {
+    sectionEl.querySelectorAll('.Featured-product__action-btn.is-loading').forEach(function(btn) {
+      btn.classList.remove('is-loading');
+    });
+  }
+
+  sectionEl.querySelectorAll('form[data-type="add-to-cart-form"]').forEach(function(form) {
+    form.addEventListener('submit', function() {
+      var btn = form.querySelector('.Featured-product__action-btn');
+      if (btn && !btn.disabled) {
+        btn.classList.add('is-loading');
+        setTimeout(removeLoading, 4000);
+      }
+    });
+  });
+
+  document.addEventListener('cart:update', removeLoading);
+  document.addEventListener('cart:error', removeLoading);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  var sliderId = '#splide-{{ section.id }}';
+  var sliderEl = document.querySelector(sliderId);
+  if (sliderEl) {
+    new Splide(sliderEl, {
+      type   : 'slide',
+      perPage: 5,
+      perMove: 1,
+      gap    : '10px',
+      arrows : false,
+      pagination: false,
+      breakpoints: {
+        1200: { perPage: 3 },
+        900: { perPage: 2 },
+        600: { perPage: 1, padding: { right: '15%' } }
+      }
+    }).mount();
+  }
+});
+</script>
+
+{% schema %}
+{
+"name": "Roheenaz Slider",
+"settings": [
+{
+    "type": "text",
+    "id": "header_title",
+    "label": "Section Title",
+    "default": "Featured Collection"
+},
+{
+    "type": "collection",
+    "id": "collection",
+    "label": "Select Collection"
+},
+{
+    "type": "range",
+    "id": "products_to_show",
+    "min": 4,
+    "max": 20,
+    "step": 1,
+    "default": 8,
+    "label": "Total Products to Show"
+}
+],
+"presets": [
+{
+    "name": "Roheenaz Slider"
+}
+]
+}
+{% endschema %}
