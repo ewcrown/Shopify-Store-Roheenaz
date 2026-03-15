@@ -18,7 +18,10 @@ export class QuickAddComponent extends Component {
     const hotspotProduct = /** @type {import('./product-hotspot').ProductHotspotComponent | null} */ (
       this.closest('product-hotspot-component')
     );
-    const productLink = productCard?.getProductCardLink() || hotspotProduct?.getHotspotProductLink();
+    const productLink =
+      productCard?.getProductCardLink() ||
+      hotspotProduct?.getHotspotProductLink() ||
+      /** @type {HTMLAnchorElement | null} */ (this.querySelector('a[data-quickview-product-link]'));
 
     if (!productLink?.href) return '';
 
@@ -37,12 +40,14 @@ export class QuickAddComponent extends Component {
   }
 
   /**
-   * Gets the currently selected variant ID from the product card
+   * Gets the currently selected variant ID from the product card or form
    * @returns {string | null} The variant ID or null
    */
   #getSelectedVariantId() {
     const productCard = /** @type {import('./product-card').ProductCard | null} */ (this.closest('product-card'));
-    return productCard?.getSelectedVariantId() || null;
+    if (productCard) return productCard.getSelectedVariantId();
+    const variantInput = /** @type {HTMLInputElement | null} */ (this.querySelector('input[name="id"]'));
+    return variantInput?.value || null;
   }
 
   connectedCallback() {

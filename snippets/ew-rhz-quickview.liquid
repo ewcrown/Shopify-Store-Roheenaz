@@ -1,0 +1,44 @@
+{%- comment -%}
+  Quickview button – opens product in modal. Uses quick-add-component for modal.
+  @param {object} product - The product object
+  @param {string} section_id - The section ID
+  @param {object} block - The block object
+  @param {string} label - Button label
+  @param {string} color_scheme - Color scheme
+  @param {string} icon - Icon filename (e.g. 'icon-plus-2.svg' or 'icon-cart-2.svg'). Default: icon-plus-2.svg
+{%- endcomment -%}
+
+{% liquid
+  assign product_form_id = 'QuickView-ProductForm-' | append: product.id | append: '-' | append: block.id
+  assign variant = product.selected_or_first_available_variant
+  assign color_scheme = color_scheme | default: settings.quick_add_color_scheme
+  assign icon_file = icon | default: 'icon-plus-2.svg'
+  unless icon_file contains '.svg'
+    assign icon_file = icon_file | append: '.svg'
+  endunless
+%}
+
+<quick-add-component
+  class="ew-rhz-quickview quick-add color-{{ color_scheme }}"
+  ref="quickAdd"
+  data-product-title="{{ product.title }}"
+  data-quick-add-button="choose"
+  data-product-options-count="{{ product.options.size }}"
+>
+  <a href="{{ product.url }}" class="visually-hidden" data-quickview-product-link aria-hidden="true"></a>
+  <product-form-component
+    data-section-id="{{ section_id }}"
+    data-product-id="{{ product.id }}"
+    on:submit="/handleSubmit"
+  >
+    <input type="hidden" name="id" ref="variantId" value="{{ variant.id }}">
+    <button
+      type="button"
+      class="ew-rhz-quickview__btn ew-rhz-quickview__btn--icon button button-unstyled"
+      on:click="quick-add-component/handleClick"
+      aria-label="{{ label | default: 'Quick view' }}"
+    >
+      <span class="svg-wrapper" aria-hidden="true">{{ icon_file | inline_asset_content }}</span>
+    </button>
+  </product-form-component>
+</quick-add-component>

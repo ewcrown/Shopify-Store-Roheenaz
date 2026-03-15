@@ -424,8 +424,16 @@ export class Slideshow extends Component {
 
     if (current) current.textContent = `${value + 1}`;
 
-    for (const controls of [thumbnails, dots]) {
-      controls?.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
+    if (dots) dots.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
+    if (thumbnails) {
+      thumbnails.forEach((el, i) => {
+        const slideIdx = el.getAttribute('data-slide-index');
+        const isSelected =
+          slideIdx !== null && slideIdx !== undefined
+            ? String(slideIdx).trim() === String(value)
+            : i === value;
+        el.setAttribute('aria-selected', `${isSelected}`);
+      });
     }
 
     if (previous) previous.disabled = Boolean(!this.infinite && value === 0);
@@ -902,7 +910,10 @@ export class Slideshow extends Component {
    * @param {ScrollBehavior} [behavior] - The scroll behavior.
    */
   #centerSelectedThumbnail(index, behavior = 'smooth') {
-    const selectedThumbnail = this.refs.thumbnails?.[index];
+    const thumbnails = this.refs.thumbnails;
+    const selectedThumbnail =
+      thumbnails?.find((el) => el.getAttribute('data-slide-index')?.trim() === String(index)) ??
+      thumbnails?.[index];
     if (!selectedThumbnail) return;
 
     const { thumbnailsContainer } = this.refs;

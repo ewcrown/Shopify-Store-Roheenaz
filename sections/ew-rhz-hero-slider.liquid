@@ -1,0 +1,204 @@
+{% comment %}
+  Hero Slider – Image + Link per slide, powered by Splide JS (loaded in theme.liquid)
+{% endcomment %}
+
+<section
+  class="ew-rhz-hero-slider ew-rhz-hero-slider--{{ section.id }}"
+  id="ew-rhz-hero-slider-{{ section.id }}"
+  aria-label="Hero Slider"
+  style="--ew-rhz-slide-height: {{ section.settings.slide_height }}px; --ew-rhz-slide-height-desktop: {{ section.settings.slide_height_desktop }}px;"
+>
+  <div class="splide" id="ew-rhz-splide-hero-{{ section.id }}">
+    <div class="splide__track">
+      <ul class="splide__list">
+        {% for block in section.blocks %}
+          <li class="splide__slide" {{ block.shopify_attributes }}>
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="ew-rhz-hero-slider__link">
+            {% endif %}
+            <div class="ew-rhz-hero-slider__slide-content">
+              {% if block.settings.image != blank %}
+                <img
+                  class="ew-rhz-hero-slider__image"
+                  src="{{ block.settings.image | image_url: width: 1920 }}"
+                  srcset="{{ block.settings.image | image_url: width: 640 }} 640w,
+                          {{ block.settings.image | image_url: width: 1024 }} 1024w,
+                          {{ block.settings.image | image_url: width: 1920 }} 1920w"
+                  sizes="100vw"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                >
+              {% else %}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'ew-rhz-hero-slider__placeholder' }}
+              {% endif %}
+            </div>
+            {% if block.settings.link != blank %}
+              </a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    function run() {
+      var el = document.getElementById('ew-rhz-splide-hero-{{ section.id }}');
+      if (!el || {{ section.blocks.size }} === 0 || typeof Splide === 'undefined') return;
+
+      new Splide('#ew-rhz-splide-hero-{{ section.id }}', {
+        type: '{{ section.settings.transition_type }}',
+        autoplay: {{ section.settings.autoplay }},
+        interval: {{ section.settings.autoplay_interval | times: 1000 }},
+        arrows: {{ section.settings.show_arrows }},
+        pagination: {{ section.settings.show_pagination }},
+        pauseOnHover: {{ section.settings.pause_on_hover }},
+        speed: {{ section.settings.transition_speed }},
+        rewind: true,
+        perPage: 1,
+        perMove: 1
+      }).mount();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slider",
+  "tag": "section",
+  "class": "ew-rhz-hero-slider-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "slide_height",
+      "label": "Slide height (mobile)",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "default": 400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "slide_height_desktop",
+      "label": "Slide height (desktop)",
+      "min": 300,
+      "max": 900,
+      "step": 20,
+      "default": 500,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "select",
+      "id": "transition_type",
+      "label": "Transition",
+      "options": [
+        { "value": "slide", "label": "Slide" },
+        { "value": "fade", "label": "Fade" },
+        { "value": "loop", "label": "Loop" }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition speed",
+      "min": 200,
+      "max": 1200,
+      "step": 100,
+      "default": 500,
+      "unit": "ms"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_interval",
+      "label": "Autoplay interval",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "s"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "<> Hero Slider",
+      "category": "Banners",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "link": "shopify://collections/all"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "link": "shopify://collections/all"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

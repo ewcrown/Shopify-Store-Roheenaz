@@ -36,6 +36,20 @@
     {% endif %}
 
     {{ content_for_header }}
+
+    {% comment %} Splide {% endcomment %}
+
+    <script src="
+      https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js
+      "></script>
+      <link href="
+      https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
+      " rel="stylesheet">
+    {% comment %} Splide End{% endcomment %}
+
+    {{ 'ew-style.css' | asset_url | stylesheet_tag }}
+    {{ 'ew-style-media-query.css' | asset_url | stylesheet_tag }}
+    {{ 'ew-styles.css' | asset_url | stylesheet_tag }}
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
@@ -104,10 +118,7 @@
       (function setHeaderMenuStyle() {
         const headerComponent = document.querySelector('#header-component');
         if (headerComponent) {
-          const isTouchDevice = 'ontouchstart' in window && navigator.maxTouchPoints > 0;
-          const overflowList = headerComponent?.querySelector('overflow-list');
-          const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
-          headerComponent.dataset.menuStyle = isTouchDevice || hasReachedMinimum ? 'drawer' : 'menu';
+          headerComponent.dataset.menuStyle = 'drawer';
         }
       })();
     </script>
@@ -132,5 +143,6 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+    {{ 'ew-custom.js' | asset_url | script_tag }}
   </body>
 </html>

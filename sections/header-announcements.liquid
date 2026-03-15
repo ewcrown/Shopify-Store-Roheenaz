@@ -1,4 +1,40 @@
+{% liquid
+  assign announcement_transparent = false
+  assign announcement_transparent_scheme = ''
 
+  assign inverse_scheme = section.settings.color_scheme_transparent | default: 'scheme-6'
+
+  if section.settings.enable_transparent_announcement_home and template.name == 'index'
+    assign announcement_transparent = true
+    if section.settings.home_announcement_color_scheme == 'inverse'
+      assign announcement_transparent_scheme = inverse_scheme
+    else
+      assign announcement_transparent_scheme = section.settings.color_scheme_home
+    endif
+  elsif section.settings.enable_transparent_announcement_product and template.name == 'product'
+    assign announcement_transparent = true
+    if section.settings.product_announcement_color_scheme == 'inverse'
+      assign announcement_transparent_scheme = inverse_scheme
+    else
+      assign announcement_transparent_scheme = section.settings.color_scheme_other_pages
+    endif
+  elsif section.settings.enable_transparent_announcement_collection and template.name == 'collection'
+    assign announcement_transparent = true
+    if section.settings.collection_announcement_color_scheme == 'inverse'
+      assign announcement_transparent_scheme = inverse_scheme
+    else
+      assign announcement_transparent_scheme = section.settings.color_scheme_other_pages
+    endif
+  endif
+
+  if announcement_transparent == false
+    if template.name == 'index'
+      assign announcement_transparent_scheme = section.settings.color_scheme_home
+    else
+      assign announcement_transparent_scheme = section.settings.color_scheme_other_pages
+    endif
+  endif
+%}
 
 {% if section.blocks.size > 1 %}
   <script
@@ -8,11 +44,15 @@
   ></script>
 {% endif %}
 
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
-<aside
-  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
-  style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
+<div
+  class="header-announcements-wrapper{% if announcement_transparent %} header-announcements--transparent{% endif %}"
+  {% if announcement_transparent %}data-transparent="true"{% endif %}
 >
+  <div class="section-background color-{{ announcement_transparent_scheme }}"></div>
+  <aside
+    class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ announcement_transparent_scheme }}"
+    style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
+  >
   {% liquid
     assign autoplay = false
     assign show_arrows = false
@@ -36,7 +76,8 @@
       {% content_for 'blocks' %}
     </div>
   </announcement-bar-component>
-</aside>
+  </aside>
+</div>
 
 {% stylesheet %}
   .announcement-bar {
@@ -121,6 +162,16 @@
     position: absolute;
     inset: 0;
   }
+
+  /* Transparent announcement bar */
+  .header-announcements--transparent .section-background {
+    background-color: transparent;
+  }
+
+  .header-announcements--transparent .announcement-bar {
+    background-color: transparent;
+    border-block-end-color: transparent;
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -146,6 +197,72 @@
     },
     {
       "type": "header",
+      "content": "Transparent announcement bar"
+    },
+    {
+      "type": "paragraph",
+      "content": "Show a transparent background on specific pages. Use 'Inverse' for light text over dark hero images."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_announcement_home",
+      "label": "Enable on home page",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "home_announcement_color_scheme",
+      "label": "Home page color scheme",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "inverse", "label": "Inverse (light text)" }
+      ],
+      "default": "inverse",
+      "visible_if": "{{ section.settings.enable_transparent_announcement_home }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_announcement_product",
+      "label": "Enable on product page",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "product_announcement_color_scheme",
+      "label": "Product page color scheme",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "inverse", "label": "Inverse (light text)" }
+      ],
+      "default": "inverse",
+      "visible_if": "{{ section.settings.enable_transparent_announcement_product }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_announcement_collection",
+      "label": "Enable on collection page",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "collection_announcement_color_scheme",
+      "label": "Collection page color scheme",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "inverse", "label": "Inverse (light text)" }
+      ],
+      "default": "inverse",
+      "visible_if": "{{ section.settings.enable_transparent_announcement_collection }}"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme_transparent",
+      "label": "Color scheme (inverse)",
+      "info": "Used when 'Inverse' is selected for transparent pages",
+      "default": "scheme-6"
+    },
+    {
+      "type": "header",
       "content": "t:content.appearance"
     },
     {
@@ -166,9 +283,15 @@
     },
     {
       "type": "color_scheme",
-      "id": "color_scheme",
+      "id": "color_scheme_home",
       "default": "scheme-4",
-      "label": "t:settings.color_scheme"
+      "label": "Color scheme (home page)"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme_other_pages",
+      "default": "scheme-4",
+      "label": "Color scheme (other pages)"
     },
     {
       "type": "range",

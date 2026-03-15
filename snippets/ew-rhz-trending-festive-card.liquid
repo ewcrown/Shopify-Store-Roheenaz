@@ -1,0 +1,123 @@
+{% comment %}
+  Renders a Trending Festive card: vertical layout.
+  Top: large media (image/video), full width.
+  Bottom: white block – thumbnail left; title + price (same row); subtitle + quickview (same row).
+{% endcomment %}
+
+{% assign product = block.settings.product %}
+{% assign media_source = block.settings.media_source %}
+{% assign block_image = block.settings.image %}
+{% assign block_video = block.settings.video %}
+{% assign block_video_url = block.settings.video_url %}
+{% assign thumbnail_image = block.settings.thumbnail_image %}
+
+{% comment %} Top media: video (uploaded) > external video > image > product featured image {% endcomment %}
+{% assign top_media_image = nil %}
+{% assign top_media_video = nil %}
+{% assign top_media_video_url = nil %}
+{% assign top_media_video_type = nil %}
+
+{% if media_source == 'video' and block_video != blank %}
+  {% assign top_media_video = block_video %}
+{% elsif media_source == 'external_video' and block_video_url != blank %}
+  {% assign top_media_video_url = block_video_url.id %}
+  {% assign top_media_video_type = block_video_url.type %}
+{% elsif media_source == 'image' and block_image != blank %}
+  {% assign top_media_image = block_image %}
+{% endif %}
+
+{% if top_media_image == nil and top_media_video == nil and top_media_video_url == nil and product != blank and product.featured_media != blank %}
+  {% if product.featured_media.media_type == 'video' %}
+    {% assign top_media_video = product.featured_media %}
+  {% else %}
+    {% assign top_media_image = product.featured_media.preview_image %}
+  {% endif %}
+{% endif %}
+
+{% assign thumb_img = thumbnail_image | default: product.featured_image | default: product.featured_media.preview_image %}
+
+<div class="ew-rhz-trending-festive-card">
+  <a href="{{ product.url | default: '#' }}" class="ew-rhz-trending-festive-card__media-link">
+    <div class="ew-rhz-trending-festive-card__media">
+      {% if top_media_video != blank %}
+        {% render 'video',
+          video: top_media_video,
+          video_autoplay: true,
+          video_loop: block.settings.video_loop,
+          disable_controls: true,
+          video_class: 'ew-rhz-trending-festive-card__video',
+          section_id: section.id,
+          block: block
+        %}
+      {% elsif top_media_video_url != blank %}
+        {% render 'video',
+          video_from_url: true,
+          video: top_media_video_url,
+          video_type: top_media_video_type,
+          video_autoplay: true,
+          video_loop: block.settings.video_loop,
+          disable_controls: true,
+          video_preview_image: block.settings.video_cover_image,
+          video_class: 'ew-rhz-trending-festive-card__video',
+          section_id: section.id,
+          block: block
+        %}
+      {% elsif top_media_image != blank %}
+        {{
+          top_media_image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'lazy',
+            widths: '400, 600, 800, 1000, 1200',
+            sizes: '(min-width: 750px) 33vw, 80vw',
+            class: 'ew-rhz-trending-festive-card__img'
+        }}
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'ew-rhz-trending-festive-card__placeholder' }}
+      {% endif %}
+    </div>
+  </a>
+
+  <div class="ew-rhz-trending-festive-card__info">
+    {% if thumb_img != blank %}
+      <div class="ew-rhz-trending-festive-card__thumb">
+        <a href="{{ product.url | default: '#' }}">
+          {{
+            thumb_img
+            | image_url: width: 1000
+            | image_tag: loading: 'lazy', class: 'ew-rhz-trending-festive-card__thumb-img', widths: '100, 150, 200', sizes: '80px'
+          }}
+        </a>
+      </div>
+    {% endif %}
+    <div class="ew-rhz-trending-festive-card__text">
+      <div class="ew-rhz-trending-festive-card__title-row">
+        <a href="{{ product.url | default: '#' }}" class="ew-rhz-trending-festive-card__title-link">
+          <h3 class="ew-rhz-trending-festive-card__title">{{ product.title | default: 'Product title' }}</h3>
+        </a>
+        {% if product != blank %}
+          <div class="ew-rhz-trending-festive-card__price">
+            {% render 'price', product_resource: product, show_sale_price_first: true %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="ew-rhz-trending-festive-card__subtitle-row">
+        {% if product.type != blank %}
+          <p class="ew-rhz-trending-festive-card__type">{{ product.type }}</p>
+        {% endif %}
+        {% if product != blank %}
+          <div class="ew-rhz-trending-festive-card__quickview">
+            {% render 'ew-rhz-quickview',
+              product: product,
+              section_id: section.id,
+              block: block,
+              label: 'Quick view',
+              color_scheme: block.settings.quickview_color_scheme,
+              icon: block.settings.quickview_icon
+            %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -26,8 +26,25 @@
         </div>
       {%- endif -%}
     </div>
-    {%  if settings.quick_add or settings.mobile_quick_add %}
+    {% comment %} Show theme quick-add only when quickview is off, so hover shows one cart button {% endcomment %}
+    {% assign show_theme_quick_add = false %}
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% if block.settings.show_quickview == false %}
+        {% assign show_theme_quick_add = true %}
+      {% endif %}
+    {% endif %}
+    {% if show_theme_quick_add %}
       {% render 'quick-add', product: product, section_id: section.id %}
+    {% endif %}
+    {% if block.settings.show_quickview %}
+      {% render 'ew-rhz-quickview',
+        product: product,
+        section_id: section.id,
+        block: block,
+        label: block.settings.quickview_label,
+        color_scheme: block.settings.quickview_color_scheme,
+        icon: block.settings.quickview_icon
+      %}
     {% endif %}
   {% endunless %}
 {% endcapture %}
@@ -121,6 +138,45 @@
       "default": "portrait",
       "label": "t:settings.aspect_ratio",
       "info": "t:info.aspect_ratio_adjusted"
+    },
+    {
+      "type": "checkbox",
+      "id": "uniform_media_height",
+      "label": "Same height for all product images",
+      "default": true,
+      "info": "Keeps all product card images the same height (4:5 ratio) even with different aspect ratios"
+    },
+    {
+      "type": "header",
+      "content": "Quick view"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quickview",
+      "label": "Show quick view button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quickview_label",
+      "label": "Button label",
+      "default": "Quick view"
+    },
+    {
+      "type": "select",
+      "id": "quickview_icon",
+      "label": "Quick view icon",
+      "options": [
+        { "value": "icon-plus-2", "label": "Plus" },
+        { "value": "icon-cart-2", "label": "Cart" }
+      ],
+      "default": "icon-cart-2"
+    },
+    {
+      "type": "color_scheme",
+      "id": "quickview_color_scheme",
+      "label": "Button color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "header",

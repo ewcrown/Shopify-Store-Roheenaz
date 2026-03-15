@@ -1,0 +1,23 @@
+{% comment %}
+  Renders the product share button (copy link + social links).
+  Place in the product details header group next to the product title.
+{% endcomment %}
+{% if closest.product != blank %}
+  <div class="product-share-block" {{ block.shopify_attributes }}>
+    {% render 'product-share', product: closest.product, share_id: block.id %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Share",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Share",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

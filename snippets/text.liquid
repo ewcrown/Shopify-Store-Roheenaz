@@ -131,6 +131,32 @@
     max-inline-size: min(100%, var(--max-width, 100%));
     text-align: var(--text-align, var(--text-align-default));
     text-wrap: var(--text-wrap);
+    text-transform: var(--text-transform, inherit);
+  }
+
+  /* Let block-level --text-transform override preset case (so Text transform works with Heading presets) */
+  .text-block.h1 > * {
+    text-transform: var(--text-transform, var(--font-h1--case));
+  }
+
+  .text-block.h2 > * {
+    text-transform: var(--text-transform, var(--font-h2--case));
+  }
+
+  .text-block.h3 > * {
+    text-transform: var(--text-transform, var(--font-h3--case));
+  }
+
+  .text-block.h4 > * {
+    text-transform: var(--text-transform, var(--font-h4--case));
+  }
+
+  .text-block.h5 > * {
+    text-transform: var(--text-transform, var(--font-h5--case));
+  }
+
+  .text-block.h6 > * {
+    text-transform: var(--text-transform, var(--font-h6--case));
   }
 
   .text-block:not(.text-block--full-width).rte,

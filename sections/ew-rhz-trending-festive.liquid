@@ -1,0 +1,226 @@
+{% comment %}
+  Trending Festive – Vertical product cards: top media (image/video), bottom block with thumbnail, title, price, subtitle, quickview.
+  Carousel on mobile and/or desktop.
+{% endcomment %}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+<section
+  class="ew-rhz-trending-festive section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style gap-style"
+  id="ew-rhz-trending-festive-{{ section.id }}"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    {% render 'gap-style', value: section.settings.cards_gap %}
+    --ew-rhz-header-gap-mobile: {{ section.settings.header_gap_mobile }}px;
+    --ew-rhz-header-gap-desktop: {{ section.settings.header_gap_desktop }}px;
+    --ew-rhz-header-spacing-mobile: {{ section.settings.header_spacing_mobile }}px;
+    --ew-rhz-header-spacing-desktop: {{ section.settings.header_spacing_desktop }}px;
+    --ew-rhz-card-count: {{ section.blocks | where: 'type', 'card' | size }};
+    --ew-rhz-card-height-mobile: {{ section.settings.block_height_mobile }}px;
+    --ew-rhz-card-height-desktop: {{ section.settings.block_height_desktop }}px;
+    {% if section.settings.title_font_size_mobile != blank %}--ew-rhz-title-font-size-mobile: {{ section.settings.title_font_size_mobile }};{% endif %}
+    {% if section.settings.subtitle_font_size_mobile != blank %}--ew-rhz-subtitle-font-size-mobile: {{ section.settings.subtitle_font_size_mobile }};{% endif %}
+  "
+>
+  <div class="ew-rhz-trending-festive__inner">
+    {% if section.settings.title != blank or section.settings.subtitle != blank %}
+      <div class="ew-rhz-trending-festive__header" style="--header-alignment: {{ section.settings.header_alignment }}; --text-align: {{ section.settings.header_alignment | replace: 'flex-start', 'left' | replace: 'flex-end', 'right' | replace: 'center', 'center' }};">
+        {% if section.settings.title != blank %}
+          <h2
+            class="ew-rhz-trending-festive__title text-block {{ section.settings.title_preset }}"
+            style="{% render 'typography-style', settings: section.settings, preset: section.settings.title_preset %}{% if section.settings.title_color != blank %} color: {{ section.settings.title_color }};{% endif %}"
+          >
+            <span>{{ section.settings.title | escape }}</span>
+          </h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p
+            class="ew-rhz-trending-festive__subtitle text-block {{ section.settings.subtitle_preset }}"
+            style="{% render 'typography-style', settings: section.settings, preset: section.settings.subtitle_preset %}{% if section.settings.subtitle_color != blank %} color: {{ section.settings.subtitle_color }};{% endif %}"
+          >
+            <span>{{ section.settings.subtitle | escape }}</span>
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% assign card_blocks = section.blocks | where: 'type', 'card' %}
+    {% assign carousel_on_mobile = section.settings.carousel_on_mobile %}
+    {% assign carousel_on_desktop = section.settings.carousel_on_desktop %}
+
+    {% capture cards_html %}
+      {% for block in card_blocks %}
+        <div class="ew-rhz-trending-festive__card" {{ block.shopify_attributes }}>
+          {% render 'ew-rhz-trending-festive-card', block: block, section: section %}
+        </div>
+      {% endfor %}
+    {% endcapture %}
+
+    {% comment %} Grid: hidden when carousel on that viewport {% endcomment %}
+    <div class="ew-rhz-trending-festive__grid ew-rhz-trending-festive__grid--desktop{% if carousel_on_desktop %} ew-rhz-trending-festive__grid--hide-desktop{% endif %} ew-rhz-trending-festive__grid--mobile{% if carousel_on_mobile %} ew-rhz-trending-festive__grid--hide-mobile{% endif %}">
+      {{ cards_html }}
+    </div>
+
+    {% if carousel_on_mobile or carousel_on_desktop %}
+      <div class="ew-rhz-trending-festive__carousel{% if carousel_on_mobile %} ew-rhz-trending-festive__carousel--mobile{% endif %}{% if carousel_on_desktop %} ew-rhz-trending-festive__carousel--desktop{% endif %}" id="ew-rhz-trending-festive-splide-{{ section.id }}">
+        <div class="splide" id="ew-rhz-trending-splide-{{ section.id }}">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {% for block in card_blocks %}
+                <li class="splide__slide" {{ block.shopify_attributes }}>
+                  <div class="ew-rhz-trending-festive__card">
+                    {% render 'ew-rhz-trending-festive-card', block: block, section: section %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var splideInstance = null;
+          var selector = '#ew-rhz-trending-splide-{{ section.id }}';
+          var cardCount = {{ card_blocks | size }};
+          var resizeTimeout;
+
+          function onResize() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function () {
+              if (splideInstance && typeof splideInstance.refresh === 'function') splideInstance.refresh();
+            }, 150);
+          }
+
+          function init() {
+            var el = document.querySelector(selector);
+            if (!el || cardCount === 0 || typeof Splide === 'undefined') return;
+            window.removeEventListener('resize', onResize);
+            if (splideInstance) { try { splideInstance.destroy(); } catch (_) {} splideInstance = null; }
+            var perPageDesktop = {{ section.settings.carousel_per_page_desktop | default: 3 }};
+            var perPageMobile = {{ section.settings.carousel_per_page_mobile | default: 1 }};
+            splideInstance = new Splide(selector, {
+              type: 'slide',
+              perPage: perPageDesktop,
+              perMove: 1,
+              gap: '{{ section.settings.carousel_gap }}px',
+              trimSpace: false,
+              arrows: {{ section.settings.carousel_arrows }},
+              pagination: {{ section.settings.carousel_pagination }},
+              autoplay: {{ section.settings.carousel_autoplay }},
+              interval: {{ section.settings.carousel_autoplay_interval | times: 1000 }},
+              rewind: true,
+              breakpoints: {
+                749: {
+                  perPage: perPageMobile
+                }
+              }
+            }).mount();
+            window.addEventListener('resize', onResize);
+          }
+
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+          else init();
+          document.addEventListener('shopify:section:load', function (e) {
+            if (e.target && e.target.querySelector && e.target.querySelector(selector)) init();
+          });
+        })();
+      </script>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trending Festive",
+  "tag": "section",
+  "class": "ew-rhz-trending-festive-section",
+  "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Trending Festive" },
+    { "type": "select", "id": "title_preset", "label": "Title preset", "options": [
+      { "value": "h1", "label": "H1" }, { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" },
+      { "value": "h4", "label": "H4" }, { "value": "h5", "label": "H5" }, { "value": "h6", "label": "H6" },
+      { "value": "paragraph", "label": "Paragraph" }
+    ], "default": "h2" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Styles selected with you in mind. Explore the latest trends." },
+    { "type": "select", "id": "subtitle_preset", "label": "Subtitle preset", "options": [
+      { "value": "h1", "label": "H1" }, { "value": "h2", "label": "H2" }, { "value": "h3", "label": "H3" },
+      { "value": "h4", "label": "H4" }, { "value": "h5", "label": "H5" }, { "value": "h6", "label": "H6" },
+      { "value": "paragraph", "label": "Paragraph" }
+    ], "default": "paragraph" },
+    { "type": "color", "id": "title_color", "label": "Title color" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color" },
+    { "type": "select", "id": "title_font_size_mobile", "label": "Title font size (mobile)", "options": [
+      { "value": "", "label": "Default" }, { "value": "0.75rem", "label": "12px" }, { "value": "0.875rem", "label": "14px" },
+      { "value": "1rem", "label": "16px" }, { "value": "1.125rem", "label": "18px" }, { "value": "1.25rem", "label": "20px" },
+      { "value": "1.5rem", "label": "24px" }
+    ], "default": "" },
+    { "type": "select", "id": "subtitle_font_size_mobile", "label": "Subtitle font size (mobile)", "options": [
+      { "value": "", "label": "Default" }, { "value": "0.75rem", "label": "12px" }, { "value": "0.875rem", "label": "14px" },
+      { "value": "1rem", "label": "16px" }, { "value": "1.125rem", "label": "18px" }
+    ], "default": "" },
+    { "type": "select", "id": "header_alignment", "label": "Header alignment", "options": [
+      { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "flex-end", "label": "Right" }
+    ], "default": "center" },
+    { "type": "range", "id": "header_gap_mobile", "label": "Title–subtitle gap (mobile)", "min": 0, "max": 60, "step": 4, "default": 8, "unit": "px" },
+    { "type": "range", "id": "header_gap_desktop", "label": "Title–subtitle gap (desktop)", "min": 0, "max": 80, "step": 4, "default": 12, "unit": "px" },
+    { "type": "range", "id": "header_spacing_mobile", "label": "Header–cards spacing (mobile)", "min": 0, "max": 120, "step": 4, "default": 32, "unit": "px" },
+    { "type": "range", "id": "header_spacing_desktop", "label": "Header–cards spacing (desktop)", "min": 0, "max": 160, "step": 4, "default": 48, "unit": "px" },
+    { "type": "header", "content": "Layout" },
+    { "type": "header", "content": "Top video / image height" },
+    { "type": "paragraph", "content": "Controls the height of the top media area (image or video) on all cards. Set once for the whole section." },
+    { "type": "range", "id": "block_height_mobile", "label": "Height (mobile)", "min": 200, "max": 600, "step": 20, "default": 320, "unit": "px" },
+    { "type": "range", "id": "block_height_desktop", "label": "Height (desktop)", "min": 240, "max": 600, "step": 20, "default": 400, "unit": "px" },
+    { "type": "checkbox", "id": "carousel_on_mobile", "label": "Carousel on mobile", "default": true },
+    { "type": "checkbox", "id": "carousel_on_desktop", "label": "Carousel on desktop", "default": false },
+    { "type": "range", "id": "carousel_per_page_mobile", "label": "Cards visible (mobile)", "min": 1, "max": 3, "step": 1, "default": 1 },
+    { "type": "range", "id": "carousel_per_page_desktop", "label": "Cards visible (desktop)", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "checkbox", "id": "carousel_arrows", "label": "Carousel arrows", "default": true },
+    { "type": "checkbox", "id": "carousel_pagination", "label": "Carousel pagination", "default": true },
+    { "type": "checkbox", "id": "carousel_autoplay", "label": "Carousel autoplay", "default": false },
+    { "type": "range", "id": "carousel_autoplay_interval", "label": "Autoplay interval (seconds)", "min": 3, "max": 10, "step": 1, "default": 5 },
+    { "type": "range", "id": "carousel_gap", "label": "Carousel gap", "min": 0, "max": 32, "step": 4, "default": 12, "unit": "px" },
+    { "type": "range", "id": "cards_gap", "label": "Gap between cards (grid)", "min": 0, "max": 48, "step": 4, "default": 12, "unit": "px" },
+    { "type": "select", "id": "section_width", "label": "Width", "options": [
+      { "value": "full-width", "label": "Full width" }, { "value": "page-width", "label": "Page width" }
+    ], "default": "page-width" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding-inline-start", "label": "Left padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "Right padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "header", "content": "Top media" },
+        { "type": "paragraph", "content": "If no media is set, the product featured image will be used." },
+        { "type": "select", "id": "media_source", "label": "Media type", "options": [
+          { "value": "image", "label": "Image" }, { "value": "video", "label": "Video (uploaded)" }, { "value": "external_video", "label": "External video (YouTube/Vimeo)" }
+        ], "default": "image" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Used when Media type is Image" },
+        { "type": "video", "id": "video", "label": "Video", "info": "Used when Media type is Video (uploaded)" },
+        { "type": "video_url", "id": "video_url", "label": "External video URL", "accept": ["youtube", "vimeo"], "info": "Used when Media type is External video" },
+        { "type": "image_picker", "id": "video_cover_image", "label": "Video cover image", "info": "Optional for external video" },
+        { "type": "checkbox", "id": "video_loop", "label": "Video loop", "default": true },
+        { "type": "header", "content": "Bottom thumbnail" },
+        { "type": "image_picker", "id": "thumbnail_image", "label": "Thumbnail image", "info": "Overrides product image. Leave blank to use product image." },
+        { "type": "header", "content": "Quick view" },
+        { "type": "select", "id": "quickview_icon", "label": "Quick view icon", "options": [
+          { "value": "icon-plus-2", "label": "Plus" }, { "value": "icon-cart-2", "label": "Cart" }
+        ], "default": "icon-plus-2" },
+        { "type": "color_scheme", "id": "quickview_color_scheme", "label": "Quick view button color", "default": "scheme-1" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Trending Festive", "category": "Media", "blocks": [
+      { "type": "card" }, { "type": "card" }, { "type": "card" }
+    ]}
+  ]
+}
+{% endschema %}

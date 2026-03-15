@@ -74,6 +74,18 @@
     },
     {
       "type": "select",
+      "id": "slideshow_images_per_frame",
+      "label": "Images per frame",
+      "info": "Show 1 or 2 images in each slider frame (desktop carousel only).",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1",
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' }}"
+    },
+    {
+      "type": "select",
       "id": "icons_style",
       "label": "t:settings.icons",
       "options": [

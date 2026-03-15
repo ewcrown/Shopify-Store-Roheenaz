@@ -44,16 +44,20 @@
   endif
 
   assign ratio = '1'
-  case block_settings.image_ratio
-    when 'landscape'
-      assign ratio = '16 / 9'
-    when 'portrait'
-      assign ratio = '4 / 5'
-    when 'square'
-      assign ratio = '1'
-    when 'adapt'
-      assign ratio = product.featured_media.preview_image.aspect_ratio | default: '1'
-  endcase
+  if block_settings.uniform_media_height
+    assign ratio = '4 / 5'
+  else
+    case block_settings.image_ratio
+      when 'landscape'
+        assign ratio = '16 / 9'
+      when 'portrait'
+        assign ratio = '4 / 5'
+      when 'square'
+        assign ratio = '1'
+      when 'adapt'
+        assign ratio = product.featured_media.preview_image.aspect_ratio | default: '1'
+    endcase
+  endif
 
   if block_settings.image_ratio == 'adapt' and block_settings.constrain_to_viewport
     if block_settings.constrain_to_viewport != ''

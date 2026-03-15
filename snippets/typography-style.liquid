@@ -15,6 +15,9 @@
 {% assign preset = preset | default: settings.type_preset %}
 
 {%- capture variables -%}
+  {%- if settings.text_transform != blank and settings.text_transform != 'none' -%}
+    --text-transform: {{ settings.text_transform }};
+  {%- endif -%}
   {%- if preset != 'rte' and settings.color != "" -%}
     --color: {{ settings.color }};
   {%- endif -%}
@@ -65,7 +68,11 @@
       --font-weight: {{ settings.font | replace: 'family', 'weight' }};
     {%- endif -%}
     --font-family: {{ settings.font }};
-    --text-transform: {{ settings.case }};
+    {%- if settings.text_transform == blank or settings.text_transform == 'none' -%}
+      {%- if settings.case != blank and settings.case != 'none' -%}
+        --text-transform: {{ settings.case }};
+      {%- endif -%}
+    {%- endif -%}
     --text-wrap: {{ settings.wrap | default: 'pretty' }};
     {% if settings.type_preset == 'custom' and settings.font_size == blank %}
       --line-height--display: var(--line-height--display-{{ settings.line_height }});

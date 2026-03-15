@@ -1342,6 +1342,20 @@ results-list[initialized] {
   animation: var(--dialog-drawer-closing-animation) var(--animation-speed) var(--animation-easing);
 }
 
+.dialog-drawer--left[open] {
+  --start-x: -100%;
+  --start-opacity: 1;
+}
+
+.dialog-drawer--left[open].dialog-closing {
+  --start-x: 0px;
+  --end-x: -100%;
+  --start-opacity: 1;
+  --end-opacity: 1;
+
+  animation: var(--dialog-drawer-closing-animation) var(--animation-speed) var(--animation-easing);
+}
+
 /* Buttons */
 .button,
 .button-secondary,

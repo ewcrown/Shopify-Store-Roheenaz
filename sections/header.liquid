@@ -43,6 +43,20 @@
     endif
   endif
 
+  comment
+    Effective color schemes: use home schemes on index when not transparent, else use default top/bottom.
+  endcomment
+  if transparent
+    assign effective_scheme_top = section.settings.color_scheme_top
+    assign effective_scheme_bottom = section.settings.color_scheme_bottom
+  elsif template.name == 'index'
+    assign effective_scheme_top = section.settings.home_color_scheme_top | default: section.settings.color_scheme_top
+    assign effective_scheme_bottom = section.settings.home_color_scheme_bottom | default: section.settings.color_scheme_bottom
+  else
+    assign effective_scheme_top = section.settings.color_scheme_top
+    assign effective_scheme_bottom = section.settings.color_scheme_bottom
+  endif
+
   capture logo
     content_for 'block', type: '_header-logo', id: 'header-logo'
   endcapture
@@ -144,7 +158,7 @@
     assign header_height_class = ' header--compact'
   endif
 
-  if bottom_row_blocks.size > 0 and section.settings.color_scheme_top.settings.background.rgb == section.settings.color_scheme_bottom.settings.background.rgb and section.settings.divider_width == 0
+  if bottom_row_blocks.size > 0 and effective_scheme_top.settings.background.rgb == effective_scheme_bottom.settings.background.rgb and section.settings.divider_width == 0
     assign collapse_header_paddings_class = 'header--collapse-row-paddings'
   endif
 
@@ -166,11 +180,11 @@
   assign top_transparent = false
   assign bottom_transparent = false
 
-  if section.settings.color_scheme_top.settings.background.alpha != 1
+  if effective_scheme_top.settings.background.alpha != 1
     assign top_transparent = true
   endif
 
-  if section.settings.color_scheme_bottom.settings.background.alpha != 1
+  if effective_scheme_bottom.settings.background.alpha != 1
     assign bottom_transparent = true
   endif
 
@@ -292,7 +306,7 @@
 <header-component
   id="header-component"
   class="{{ class }}"
-  data-theme-color="rgb({{ section.settings.color_scheme_top.settings.background.rgb }})"
+  data-theme-color="rgb({{ effective_scheme_top.settings.background.rgb }})"
   {% if transparent %}
     transparent="{{ transparent }}"
   {% endif %}
@@ -308,8 +322,8 @@
     data-transparent-color-scheme="{{ transparent_color_scheme_value }}"
   {% endif %}
   style="
-    --color-scheme-top-row: rgba({{ section.settings.color_scheme_top.settings.background.rgba }});
-    --color-scheme-bottom-row: rgba({{ section.settings.color_scheme_bottom.settings.background.rgba }});
+    --color-scheme-top-row: rgba({{ effective_scheme_top.settings.background.rgba }});
+    --color-scheme-bottom-row: rgba({{ effective_scheme_bottom.settings.background.rgba }});
     {% if section.settings.actions_display_style == 'text' %}
       --header-actions-font-size: {{ section.settings.actions_font_size | default: '1rem' }};
       --header-actions-font-family: var(--font-{{ section.settings.actions_font | default: 'heading' }}--family);
@@ -327,8 +341,12 @@
   {%- endif -%}
   {% for row in rows %}
     {% liquid
-      assign scheme = 'color_scheme_' | append: row
-      assign class = 'header__row header__row--[row] color-[row_scheme] section section--full-width-margin section--[section-width]' | replace: '[row]', row | replace: '[row_scheme]', section.settings[scheme] | replace: '[section-width]', section.settings.section_width
+      if row == 'top'
+        assign row_scheme = effective_scheme_top
+      else
+        assign row_scheme = effective_scheme_bottom
+      endif
+      assign class = 'header__row header__row--[row] color-[row_scheme] section section--full-width-margin section--[section-width]' | replace: '[row]', row | replace: '[row_scheme]', row_scheme | replace: '[section-width]', section.settings.section_width
 
       case row
         when 'top'
@@ -1570,6 +1588,21 @@
       "id": "enable_transparent_header_home",
       "label": "t:settings.transparent_background",
       "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "home_color_scheme_top",
+      "label": "Color scheme – top row (home page)",
+      "default": "primary",
+      "info": "Used when transparent background is off. Other pages use the default colors above."
+    },
+    {
+      "type": "color_scheme",
+      "id": "home_color_scheme_bottom",
+      "label": "Color scheme – bottom row (home page)",
+      "default": "primary",
+      "visible_if": "{{ section.settings.menu_row == 'bottom' or section.settings.localization_row == 'bottom' or section.settings.search_row == 'bottom' }}",
+      "info": "Used when transparent background is off."
     },
     {
       "type": "select",
