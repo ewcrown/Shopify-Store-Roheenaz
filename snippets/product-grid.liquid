@@ -62,18 +62,7 @@
 
     /* When zoomed out, fit as many 100px-wide columns as possible */
     .product-grid--{{ section.id }}[product-grid-view='zoom-out'] {
-      --product-grid-columns-desktop: repeat(auto-fill, minmax(6.25rem, 1fr));
-    }
-
-    .product-grid--{{ section.id }}[product-grid-view='zoom-out'] .product-grid-view-zoom-out--details {
-      display: block;
-    }
-
-    .product-grid--{{ section.id }}[product-grid-view='zoom-out'] .product-grid__card {
-      padding-inline-start: var(--zoom-out-padding-inline-start, 0);
-      padding-inline-end: var(--zoom-out-padding-inline-end, 0);
-      padding-block-start: var(--zoom-out-padding-block-start, 0);
-      padding-block-end: var(--zoom-out-padding-block-end, 0);
+      --product-grid-columns-desktop: repeat(auto-fill, minmax(14.25rem, 1fr));
     }
   }
 {% endstyle %}

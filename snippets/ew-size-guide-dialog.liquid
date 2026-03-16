@@ -1,0 +1,46 @@
+{% comment %}
+  Size guide popup – shows product metafield custom.size_guide_image (image).
+  Rendered once per product section; buttons (desktop block + mobile in variant picker) open this dialog.
+  @param product - Product object
+  @param section_id - Section ID for dialog-component id
+{% endcomment %}
+
+{% liquid
+  assign size_guide_image = product.metafields.custom.size_guide_image.value
+  if size_guide_image == blank and product.metafields.custom.size_guide_image != blank
+    assign size_guide_image = product.metafields.custom.size_guide_image
+  endif
+%}
+
+{% if size_guide_image != blank %}
+  <script src="{{ 'dialog.js' | asset_url }}" type="module"></script>
+  <dialog-component id="ew-size-guide-{{ section_id }}" class="ew-size-guide-dialog">
+    <dialog
+      ref="dialog"
+      class="ew-size-guide-dialog__content dialog-modal color-{{ settings.popover_color_scheme | default: 'scheme-1' }}"
+      scroll-lock
+      aria-labelledby="ew-size-guide-heading-{{ section_id }}"
+    >
+      <h2 id="ew-size-guide-heading-{{ section_id }}" class="visually-hidden">
+        {{ 'products.product.size_guide' | t | default: 'Size guide' }}
+      </h2>
+      <div class="ew-size-guide-dialog__inner">
+        <img
+          src="{{ size_guide_image | image_url: width: 1200 }}"
+          alt="{{ 'products.product.size_guide' | t | default: 'Size guide' }}"
+          class="ew-size-guide-dialog__image"
+          loading="lazy"
+        >
+      </div>
+      <button
+        ref="closeButton"
+        on:click="/closeDialog"
+        type="button"
+        class="button button-unstyled close-button ew-size-guide-dialog__close"
+        aria-label="{{ 'accessibility.close_dialog' | t }}"
+      >
+        {{ 'icon-close.svg' | inline_asset_content }}
+      </button>
+    </dialog>
+  </dialog-component>
+{% endif %}

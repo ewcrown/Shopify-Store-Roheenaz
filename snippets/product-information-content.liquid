@@ -76,40 +76,73 @@
   endcase
 %}
 
-<div class="section-background color-{{ settings.color_scheme }}"></div>
-<div
-  class="product-information section section--{{ content_width }} spacing-style color-{{ settings.color_scheme }} relative"
-  style="{% render 'spacing-style', settings: settings %} --gap: {{ settings.gap }}px;"
-  data-testid="product-information"
->
-  {% if settings.desktop_media_position == 'left' and product_has_media and request.page_type == 'product' %}
-    {% assign product_href = '#ProductInformation-' | append: section_id %}
-    {% render 'skip-to-content-link', href: product_href, text: 'accessibility.skip_to_product_info' %}
-  {% endif %}
+<div id="product-information-{{ section_id }}" class="ew-product-information-wrapper">
+  <div class="section-background color-{{ settings.color_scheme }}"></div>
   <div
-    class="{{ product_grid_class }}"
-    data-product-grid-content
+    class="product-information section section--{{ content_width }} spacing-style color-{{ settings.color_scheme }} relative"
+    style="{% render 'spacing-style', settings: settings %} --gap: {{ settings.gap }}px;"
+    data-testid="product-information"
   >
-    {% assign render_order_array = render_order | split: ',' %}
-    {% capture media %}
-      <div
-        class="product-information__media"
-        data-testid="product-information-media"
-      >
-        {{ media_gallery }}
-      </div>
-    {% endcapture %}
+    {% if settings.desktop_media_position == 'left' and product_has_media and request.page_type == 'product' %}
+      {% assign product_href = '#ProductInformation-' | append: section_id %}
+      {% render 'skip-to-content-link', href: product_href, text: 'accessibility.skip_to_product_info' %}
+    {% endif %}
+    <div
+      class="{{ product_grid_class }}"
+      data-product-grid-content
+    >
+      {% assign render_order_array = render_order | split: ',' %}
+      {% capture media %}
+        <div
+          class="product-information__media"
+          data-testid="product-information-media"
+        >
+          {{ media_gallery }}
+        </div>
+      {% endcapture %}
 
-    {% for block in render_order_array %}
-      {% if block == 'media' and product_has_media %}
-        {{ media }}
-      {% elsif block == 'product-details' %}
-        {{ product_details }}
-      {% endif %}
-    {% endfor %}
+      {% for block in render_order_array %}
+        {% if block == 'media' and product_has_media %}
+          {{ media }}
+        {% elsif block == 'product-details' %}
+          {{ product_details }}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {{ additional_blocks }}
+    {% if product != blank and product.metafields.custom.size_guide_image != blank %}
+      {% render 'ew-size-guide-dialog', product: product, section_id: section_id %}
+    {% endif %}
+    <script>
+      (function() {
+        var sectionId = {{ section_id | json }};
+        function maybeMoveVariantPicker() {
+          if (!window.matchMedia('(max-width: 749px)').matches) return;
+          var outer = document.getElementById('ew-variant-picker-outer-' + sectionId);
+          var grid = document.querySelector('#product-information-' + sectionId + ' .product-information__grid');
+          if (!outer || !grid) return;
+          var picker = grid.querySelector('variant-picker');
+          if (picker) outer.appendChild(picker);
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', maybeMoveVariantPicker);
+        } else {
+          maybeMoveVariantPicker();
+        }
+      })();
+    </script>
   </div>
 
-  {{ additional_blocks }}
+  {% comment %} Overlay (backdrop + size drawer + sticky bar) outside product-information and grid {% endcomment %}
+  {% if mobile_bar_content != blank %}
+    <div class="ew-product-mobile-overlay" aria-hidden="true">
+      <div class="ew-variant-picker-outer" id="ew-variant-picker-outer-{{ section_id }}"></div>
+      {{ mobile_bar_content }}
+    </div>
+  {% else %}
+    <div class="ew-variant-picker-outer" id="ew-variant-picker-outer-{{ section_id }}"></div>
+  {% endif %}
 </div>
 
 {% stylesheet %}

@@ -2,10 +2,17 @@
   Renders a default variant picker, used to display the variant picker in the variants block.
 
   @param {object} product_resource - The product object.
+  @param {string} [section_id] - Section ID for size guide dialog trigger (mobile).
   @param {object} [block] - The block object
 {%- enddoc -%}
 
 {% assign block_settings = block.settings %}
+{% liquid
+  assign size_guide_image = product_resource.metafields.custom.size_guide_image.value
+  if size_guide_image == blank and product_resource.metafields.custom.size_guide_image != blank
+    assign size_guide_image = product_resource.metafields.custom.size_guide_image
+  endif
+%}
 
 {% unless product_resource.has_only_default_variant %}
   {% liquid
@@ -218,6 +225,18 @@
       <script type="application/json">
         {{ product_resource.selected_or_first_available_variant | json }}
       </script>
+      {% if section_id != blank and size_guide_image != blank %}
+        <div class="ew-size-guide-variant">
+          <button
+            type="button"
+            on:click="#ew-size-guide-{{ section_id }}/showDialog"
+            class="button button-unstyled ew-size-guide-variant__button link"
+            aria-label="{{ 'products.product.size_guide' | t | default: 'Size guide' }}"
+          >
+            {{ 'products.product.size_guide' | t | default: 'Size guide' }}
+          </button>
+        </div>
+      {% endif %}
     </form>
   </variant-picker>
 {% endunless %}

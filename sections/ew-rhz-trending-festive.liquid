@@ -8,6 +8,8 @@
 <section
   class="ew-rhz-trending-festive section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style gap-style"
   id="ew-rhz-trending-festive-{{ section.id }}"
+  {% assign trending_card_count = section.blocks | where: 'type', 'card' | size %}
+  {% if trending_card_count > 5 %}{% assign trending_desktop_columns = 5 %}{% else %}{% assign trending_desktop_columns = trending_card_count %}{% endif %}
   style="
     {% render 'spacing-style', settings: section.settings %}
     {% render 'gap-style', value: section.settings.cards_gap %}
@@ -15,7 +17,8 @@
     --ew-rhz-header-gap-desktop: {{ section.settings.header_gap_desktop }}px;
     --ew-rhz-header-spacing-mobile: {{ section.settings.header_spacing_mobile }}px;
     --ew-rhz-header-spacing-desktop: {{ section.settings.header_spacing_desktop }}px;
-    --ew-rhz-card-count: {{ section.blocks | where: 'type', 'card' | size }};
+    --ew-rhz-card-count: {{ trending_card_count }};
+    --ew-rhz-desktop-columns: {{ trending_desktop_columns }};
     --ew-rhz-card-height-mobile: {{ section.settings.block_height_mobile }}px;
     --ew-rhz-card-height-desktop: {{ section.settings.block_height_desktop }}px;
     {% if section.settings.title_font_size_mobile != blank %}--ew-rhz-title-font-size-mobile: {{ section.settings.title_font_size_mobile }};{% endif %}
@@ -96,7 +99,7 @@
             if (!el || cardCount === 0 || typeof Splide === 'undefined') return;
             window.removeEventListener('resize', onResize);
             if (splideInstance) { try { splideInstance.destroy(); } catch (_) {} splideInstance = null; }
-            var perPageDesktop = {{ section.settings.carousel_per_page_desktop | default: 3 }};
+            var perPageDesktop = {{ section.settings.carousel_per_page_desktop | default: 5 }};
             var perPageMobile = {{ section.settings.carousel_per_page_mobile | default: 1 }};
             splideInstance = new Splide(selector, {
               type: 'slide',
@@ -174,7 +177,7 @@
     { "type": "checkbox", "id": "carousel_on_mobile", "label": "Carousel on mobile", "default": true },
     { "type": "checkbox", "id": "carousel_on_desktop", "label": "Carousel on desktop", "default": false },
     { "type": "range", "id": "carousel_per_page_mobile", "label": "Cards visible (mobile)", "min": 1, "max": 3, "step": 1, "default": 1 },
-    { "type": "range", "id": "carousel_per_page_desktop", "label": "Cards visible (desktop)", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "range", "id": "carousel_per_page_desktop", "label": "Cards visible (desktop)", "min": 1, "max": 6, "step": 1, "default": 5 },
     { "type": "checkbox", "id": "carousel_arrows", "label": "Carousel arrows", "default": true },
     { "type": "checkbox", "id": "carousel_pagination", "label": "Carousel pagination", "default": true },
     { "type": "checkbox", "id": "carousel_autoplay", "label": "Carousel autoplay", "default": false },

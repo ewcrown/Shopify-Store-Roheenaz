@@ -9,6 +9,8 @@
 <section
   class="ew-rhz-curated-cards section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style gap-style"
   id="ew-rhz-curated-cards-{{ section.id }}"
+  {% assign curated_card_count = section.blocks | where: 'type', 'card' | size %}
+  {% if curated_card_count > 5 %}{% assign curated_desktop_columns = 5 %}{% else %}{% assign curated_desktop_columns = curated_card_count %}{% endif %}
   style="
     {% render 'spacing-style', settings: section.settings %}
     {% render 'gap-style', value: section.settings.cards_gap %}
@@ -16,7 +18,8 @@
     --ew-rhz-header-gap-desktop: {{ section.settings.header_gap_desktop }}px;
     --ew-rhz-header-spacing-mobile: {{ section.settings.header_spacing_mobile }}px;
     --ew-rhz-header-spacing-desktop: {{ section.settings.header_spacing_desktop }}px;
-    --ew-rhz-card-count: {{ section.blocks | where: 'type', 'card' | size }};
+    --ew-rhz-card-count: {{ curated_card_count }};
+    --ew-rhz-desktop-columns: {{ curated_desktop_columns }};
     --ew-rhz-card-height-mobile: {{ section.settings.block_height_mobile }}px;
     --ew-rhz-card-height-desktop: {{ section.settings.block_height_desktop }}px;
     {% if section.settings.title_font_size_mobile != blank %}--ew-rhz-title-font-size-mobile: {{ section.settings.title_font_size_mobile }};{% endif %}

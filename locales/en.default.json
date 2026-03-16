@@ -108,7 +108,8 @@
     "sign_up": "Sign up",
     "submit": "Submit",
     "view_store_information": "View store information",
-    "sort": "Sort"
+    "sort": "Sort",
+    "sort_by": "Sort by"
   },
   "blocks": {
     "contact_form": {
@@ -329,6 +330,14 @@
       "expired": "Expired"
     }
   },
+  "general": {
+    "share": {
+      "share": "Share",
+      "close": "Close",
+      "copy_link": "Copy link",
+      "copied": "Link copied to clipboard!"
+    }
+  },
   "placeholders": {
     "password": "Password",
     "search": "Search",
@@ -348,6 +357,8 @@
       "add_to_cart_error": "Error adding to cart",
       "quantity_error_max": "This item has a maximum of {{ maximum }}",
       "sold_out": "Sold out",
+      "select_size": "Select size",
+      "size_guide": "Size guide",
       "unavailable": "Unavailable",
       "quantity": "Quantity",
       "quantity_increments": "Increments of {{ increment }}",
@@ -355,6 +366,7 @@
       "quantity_maximum": "Maximum of {{ maximum }}",
       "in_cart": "in cart",
       "default_title": "Default Title",
+      "sku": "SKU",
       "sticky_add_to_cart": "Quick add to cart bar"
     }
   }

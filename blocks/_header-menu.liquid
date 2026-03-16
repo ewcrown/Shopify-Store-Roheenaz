@@ -413,11 +413,12 @@
   .overflow-menu::part(overflow-list) {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(auto, 200px) 1fr;
+    grid-template-columns: minmax(200px, 280px) 1fr;
     grid-template-areas: 'left right';
     grid-template-rows: max-content;
     grid-gap: 0;
     grid-column: 2;
+    align-items: start;
   }
 
   .menu-list__list-item:is([slot='overflow']) {
@@ -441,17 +442,40 @@
       grid-area: right;
       grid-row-end: span calc(var(--overflow-count) + 1);
       padding-inline-start: var(--menu-horizontal-gap);
+      min-width: 0;
+      overflow: visible;
     }
 
     .menu-list__submenu-inner {
       transform: none;
       grid-column: unset;
-      padding-block: 0;
+      padding-block: var(--padding-md) 0;
+      padding-inline-start: 0;
+      min-height: 120px;
+      display: block;
     }
 
     .menu-list__link[aria-expanded='true'] + .menu-list__submenu {
       visibility: visible;
     }
+  }
+
+  /* Ensure right-panel mega menu content is visible (subitems) */
+  .menu-list__list-item:is([slot='overflow']) .menu-list__submenu .mega-menu__grid {
+    display: grid;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .menu-list__list-item:is([slot='overflow']) .menu-list__submenu .mega-menu__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column: 1 / -1;
+    gap: var(--menu-vertical-gap, 0.75rem) 0;
+  }
+
+  .menu-list__list-item:is([slot='overflow']) .menu-list__submenu .mega-menu__column {
+    grid-column: 1;
   }
 
   .header-menu {

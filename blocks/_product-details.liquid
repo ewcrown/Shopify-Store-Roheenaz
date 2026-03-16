@@ -14,6 +14,10 @@
     data-view-transition-type="product-details"
   {% endif %}
 >
+  {%- liquid
+    assign selected_variant = closest.product.selected_or_first_available_variant
+    assign variant_sku = selected_variant.sku
+  -%}
   {% capture children %}
     <div class="view-product-title">
       <a
@@ -23,7 +27,28 @@
         {{- closest.product.title }}
       </a>
     </div>
-    {% content_for 'blocks' %}
+
+    <div class="product-details__header">
+      <h1 class="product-details__title h2">{{ closest.product.title }}</h1>
+      <div class="product-details__share">
+        {% render 'product-share', product: closest.product, share_id: 'product-details-share' %}
+      </div>
+    </div>
+
+    {% if variant_sku != blank %}
+      <div class="product-details__sku">
+        <span class="product-details__sku-label">{{ 'products.product.sku' | t | default: 'SKU' }}:</span>
+        {% render 'sku', product_resource: closest.product %}
+      </div>
+    {% endif %}
+
+    <div class="product-details__price">
+      {% render 'price', product_resource: closest.product, show_sale_price_first: true %}
+    </div>
+
+    <div class="product-details__rest">
+      {% content_for 'blocks' %}
+    </div>
   {% endcapture %}
 
   {% render 'group', children: children, settings: block_settings, shopify_attributes: block.shopify_attributes %}
@@ -39,6 +64,68 @@
 
   .view-product-title {
     display: none;
+  }
+
+  /* Product details header: title left, share right */
+  .product-details__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .product-details__title {
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .product-details__share {
+    flex-shrink: 0;
+  }
+
+  .product-details__sku {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .product-details__sku-label {
+    font-size: var(--font-size--xs, 0.875rem);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text, 0.7));
+  }
+
+  .product-details__sku .sku {
+    font-size: var(--font-size--xs, 0.875rem);
+  }
+
+  /* On mobile: show price before SKU (swap order) */
+  @media screen and (max-width: 749px) {
+    .product-details__header { order: 0; }
+    .product-details__price { order: 1; }
+    .product-details__sku { order: 2; margin-bottom: 20px !important; }
+    .product-details__rest { order: 3; }
+
+    .delivery-text-rhnz h6 {
+    font-size: 16px;
+    }
+    .delivery-text-rhnz p {
+    font-size: 12px;
+  }
+  .facets-drawer__filters .sorting-filter{
+    display: none !important;
+  }
+  }
+
+
+  /* Hide duplicate title, share, SKU, price from theme blocks output */
+  .product-details__rest .text-block:has(h1),
+  .product-details__rest .text-block:has(h2),
+  .product-details__rest .product-share-block,
+  .product-details__rest product-sku-component,
+  .product-details__rest product-price {
+    display: none !important;
   }
 
   /* Container styles */
@@ -107,6 +194,9 @@
     },
     {
       "type": "variant-picker"
+    },
+    {
+      "type": "size-guide"
     },
     {
       "type": "buy-buttons"

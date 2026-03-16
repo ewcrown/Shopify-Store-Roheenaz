@@ -8,11 +8,12 @@
   aria-label="Hero Slider"
   style="--ew-rhz-slide-height: {{ section.settings.slide_height }}px; --ew-rhz-slide-height-desktop: {{ section.settings.slide_height_desktop }}px;"
 >
-  <div class="splide" id="ew-rhz-splide-hero-{{ section.id }}">
-    <div class="splide__track">
-      <ul class="splide__list">
+  <div class="ew-rhz-hero-slider__viewport">
+    <div class="splide" id="ew-rhz-splide-hero-{{ section.id }}">
+      <div class="splide__track">
+        <ul class="splide__list">
         {% for block in section.blocks %}
-          <li class="splide__slide" {{ block.shopify_attributes }}>
+          <li class="splide__slide" data-mobile-header-style="{{ block.settings.mobile_header_style | default: 'default' }}" {{ block.shopify_attributes }}>
             {% if block.settings.link != blank %}
               <a href="{{ block.settings.link }}" class="ew-rhz-hero-slider__link">
             {% endif %}
@@ -39,18 +40,49 @@
             {% endif %}
           </li>
         {% endfor %}
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <script>
   (function () {
-    function run() {
-      var el = document.getElementById('ew-rhz-splide-hero-{{ section.id }}');
-      if (!el || {{ section.blocks.size }} === 0 || typeof Splide === 'undefined') return;
+    var splideId = 'ew-rhz-splide-hero-{{ section.id }}';
+    var numSlides = {{ section.blocks.size }};
+    var mounted = null;
+    var lastMobile = null;
 
-      new Splide('#ew-rhz-splide-hero-{{ section.id }}', {
+    function isMobile() {
+      return window.innerWidth <= 749;
+    }
+
+    function setMobileHeaderStyle(el) {
+      if (!el) return;
+      if (window.innerWidth > 749) {
+        document.body.removeAttribute('data-mobile-header-style');
+        return;
+      }
+      var slide = el.querySelector('.splide__slide.is-active');
+      var style = slide ? (slide.getAttribute('data-mobile-header-style') || 'default') : '';
+      if (style && style !== 'default') {
+        document.body.setAttribute('data-mobile-header-style', style);
+      } else {
+        document.body.removeAttribute('data-mobile-header-style');
+      }
+    }
+
+    function run() {
+      var el = document.getElementById(splideId);
+      if (!el || numSlides === 0 || typeof Splide === 'undefined') return;
+
+      if (mounted) {
+        mounted.destroy();
+        mounted = null;
+      }
+
+      var mobile = isMobile();
+      var opts = {
         type: '{{ section.settings.transition_type }}',
         autoplay: {{ section.settings.autoplay }},
         interval: {{ section.settings.autoplay_interval | times: 1000 }},
@@ -61,7 +93,31 @@
         rewind: true,
         perPage: 1,
         perMove: 1
-      }).mount();
+      };
+      if (mobile) {
+        opts.direction = 'ttb';
+        opts.height = '100vh';
+        opts.drag = true;
+      }
+
+      var splide = new Splide('#' + splideId, opts);
+      splide.on('moved', function () {
+        setMobileHeaderStyle(el);
+      });
+      splide.mount();
+      mounted = splide;
+      lastMobile = mobile;
+      setMobileHeaderStyle(el);
+    }
+
+    function onResize() {
+      var el = document.getElementById(splideId);
+      var mobile = isMobile();
+      if (el && mobile !== lastMobile) {
+        run();
+      } else if (el) {
+        setMobileHeaderStyle(el);
+      }
     }
 
     if (document.readyState === 'loading') {
@@ -69,6 +125,7 @@
     } else {
       run();
     }
+    window.addEventListener('resize', onResize);
   })();
 </script>
 
@@ -172,10 +229,26 @@
           "id": "image",
           "label": "Image"
         },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
         {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
+          "type": "header",
+          "content": "Mobile header & announcement"
+        },
+        {
+          "type": "select",
+          "id": "mobile_header_style",
+          "label": "Header & announcement style (mobile only)",
+          "info": "Override header and announcement bar colors on mobile when this slide is active.",
+          "options": [
+            { "value": "default", "label": "Default" },
+            { "value": "light", "label": "Light (white background, black text)" },
+            { "value": "dark", "label": "Dark (black background, white text)" }
+          ],
+          "default": "default"
         }
       ]
     }

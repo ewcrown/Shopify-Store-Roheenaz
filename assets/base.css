@@ -1062,10 +1062,6 @@ body:has(.header[transparent]) #header-group > *:not(.header-section) {
   overflow: hidden;
 }
 
-[product-grid-view='zoom-out'] .product-grid__card {
-  row-gap: var(--padding-xs);
-}
-
 [product-grid-view='default'] {
   --product-grid-gap: 16px;
   --padding-block-start: 24px;
@@ -1089,24 +1085,6 @@ body:has(.header[transparent]) #header-group > *:not(.header-section) {
   @media screen and (max-width: 749px) {
     flex-direction: column;
   }
-}
-
-ul[product-grid-view='zoom-out'] .product-grid__card > * {
-  display: none;
-}
-
-ul[product-grid-view='zoom-out'] .product-grid__card .card-gallery {
-  display: block;
-}
-
-[product-grid-view='zoom-out']
-  .card-gallery
-  > :is(quick-add-component, .product-badges, slideshow-component > slideshow-controls) {
-  display: none;
-}
-
-ul[product-grid-view='zoom-out'] .card-gallery > img {
-  display: block;
 }
 
 [product-grid-view='zoom-out'] {
@@ -4675,15 +4653,6 @@ text-component {
   html {
     scroll-behavior: smooth;
   }
-}
-
-/* Product card title truncation - applied only to zoom-out view */
-[product-grid-view='zoom-out'] :is(.product-card, .product-grid__card) :is(h4, .h4) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
 }
 
 /* Product card title truncation - applied on mobile regardless of view */

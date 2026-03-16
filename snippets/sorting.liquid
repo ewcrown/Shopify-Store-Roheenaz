@@ -93,10 +93,11 @@
           class="facets__label"
           id="sort-label-{{ section_id }}"
         >
-          {{- 'actions.sort' | t -}}
+          {{- 'actions.sort_by' | t | default: 'Sort by' -}}
         </span>
         <span
-          class="facets__status h6 desktop:hidden"
+          class="facets__status h6 desktop:hidden visually-hidden"
+          aria-hidden="true"
         >
           {{- status -}}
         </span>
