@@ -88,6 +88,20 @@ export class QuickAddComponent extends Component {
   }
 
   /**
+   * Get the product grid element from a fetched product page document.
+   * Tries multiple selectors for theme compatibility.
+   * @param {Document} html - Parsed product page document
+   * @returns {Element | null}
+   */
+  #getProductGridFromDocument(html) {
+    return (
+      html.querySelector('[data-product-grid-content]') ||
+      html.querySelector('.product-information__grid') ||
+      html.querySelector('[data-testid="product-information"] .product-information__grid')
+    );
+  }
+
+  /**
    * Handles quick add button click
    * @param {Event} event - The click event
    */
@@ -95,6 +109,8 @@ export class QuickAddComponent extends Component {
     event.preventDefault();
 
     const currentUrl = this.productPageUrl;
+    const modalContent = document.getElementById('quick-add-modal-content');
+    if (!modalContent) return;
 
     // Check if we have cached content for this URL
     let productGrid = this.#cachedContent.get(currentUrl);
@@ -103,7 +119,7 @@ export class QuickAddComponent extends Component {
       // Fetch and cache the content
       const html = await this.fetchProductPage(currentUrl);
       if (html) {
-        const gridElement = html.querySelector('[data-product-grid-content]');
+        const gridElement = this.#getProductGridFromDocument(html);
         if (gridElement) {
           // Cache the cloned element to avoid modifying the original
           productGrid = /** @type {Element} */ (gridElement.cloneNode(true));
@@ -117,6 +133,30 @@ export class QuickAddComponent extends Component {
       const freshContent = /** @type {Element} */ (productGrid.cloneNode(true));
       await this.updateQuickAddModal(freshContent);
       this.#updateVariantPicker(productGrid);
+    } else {
+      // No grid found: show fallback with title and link to full product page
+      const title = this.dataset.productTitle || 'Product';
+      const fallback = document.createElement('div');
+      fallback.className = 'quick-add-modal__fallback';
+      const inner = document.createElement('div');
+      inner.className = 'quick-add-modal__fallback-inner';
+      const heading = document.createElement('h2');
+      heading.className = 'quick-add-modal__fallback-title';
+      const titleLink = document.createElement('a');
+      titleLink.href = currentUrl;
+      titleLink.textContent = title;
+      heading.appendChild(titleLink);
+      const text = document.createElement('p');
+      text.className = 'quick-add-modal__fallback-text';
+      const ctaLink = document.createElement('a');
+      ctaLink.href = currentUrl;
+      ctaLink.className = 'button button--primary';
+      ctaLink.textContent = 'View full product details';
+      text.appendChild(ctaLink);
+      inner.appendChild(heading);
+      inner.appendChild(text);
+      fallback.appendChild(inner);
+      morph(modalContent, fallback);
     }
 
     this.#openQuickAddModal();
@@ -178,6 +218,7 @@ export class QuickAddComponent extends Component {
     try {
       const response = await fetch(productPageUrl, {
         signal: this.#abortController.signal,
+        headers: { Accept: 'text/html' },
       });
 
       if (!response.ok) {

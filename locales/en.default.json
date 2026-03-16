@@ -331,6 +331,7 @@
     }
   },
   "general": {
+    "open_menu": "Open {{ menu }}",
     "share": {
       "share": "Share",
       "close": "Close",

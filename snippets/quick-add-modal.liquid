@@ -375,50 +375,7 @@
     text-align: left;
   }
 
-  .quick-add-modal__content
-    .product-details
-    *:not(
-      .group-block,
-      .group-block-content,
-      .buy-buttons-block,
-      .buy-buttons-block *,
-      .view-product-title,
-      .view-product-title *,
-      variant-picker,
-      variant-picker *,
-      product-price,
-      product-price *,
-      product-inventory,
-      product-inventory *,
-      .view-more-details__wrapper,
-      .view-more-details__wrapper *
-    ) {
-    @media screen and (min-width: 750px) {
-      /* stylelint-disable-next-line declaration-no-important */
-      display: none !important;
-    }
-  }
-
-  .quick-add-modal__content
-    .group-block:not(
-      :has(
-          .buy-buttons-block,
-          .buy-buttons-block *,
-          .view-product-title,
-          .view-product-title *,
-          variant-picker,
-          variant-picker *,
-          product-price,
-          product-price *,
-          product-inventory,
-          product-inventory *,
-          .view-more-details__wrapper,
-          .view-more-details__wrapper *
-        ),
-      .buy-buttons-block
-    ) {
-    display: none;
-  }
+  /* Show all product details in quick view (price, description, options, etc.) */
 
   @media screen and (min-width: 750px) {
     .quick-add-modal__content .group-block-content {
