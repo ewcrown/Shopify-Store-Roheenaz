@@ -569,20 +569,20 @@ product-price {
 @media (max-width: 749px) {
   .ew-rhz-hero-slider,
   .ew-rhz-hero-slider__viewport {
-    height: var(--ew-rhz-slide-height, 400px);
-    min-height: var(--ew-rhz-slide-height, 400px);
+    height: 100vh;
+    min-height: 100vh;
   }
 
   .ew-rhz-hero-slider .splide__track,
   .ew-rhz-hero-slider .splide__list,
   .ew-rhz-hero-slider .splide__slide {
-    height: var(--ew-rhz-slide-height, 400px);
+    height: 100vh;
   }
 
   .ew-rhz-hero-slider__slide-content,
   .ew-rhz-hero-slider__image,
   .ew-rhz-hero-slider__placeholder {
-    min-height: var(--ew-rhz-slide-height, 400px);
+    min-height: 100vh;
   }
 }
 
