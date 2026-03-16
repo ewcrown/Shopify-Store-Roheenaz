@@ -47,6 +47,7 @@
 <div
   class="header-announcements-wrapper{% if announcement_transparent %} header-announcements--transparent{% endif %}"
   {% if announcement_transparent %}data-transparent="true"{% endif %}
+  data-announcement-default-color="{{ announcement_transparent_scheme }}"
 >
   <div class="section-background color-{{ announcement_transparent_scheme }}"></div>
   <aside

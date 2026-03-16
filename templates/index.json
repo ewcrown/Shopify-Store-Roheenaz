@@ -16,16 +16,18 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Rectangle_2_1.png",
+            "mobile_image": "shopify://shop_images/SoleilBlanc_6_18a45ba3-8bf8-4b1d-b5ed-c88aa45fca1d.jpg",
             "link": "shopify://collections/all",
-            "mobile_header_style": "default"
+            "mobile_header_style": "light"
           }
         },
         "slide_xdnMAG": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_2_1.png",
+            "image": "shopify://shop_images/desktop_shopnow.jpg",
+            "mobile_image": "shopify://shop_images/mobile_shopnow.jpg",
             "link": "shopify://collections/all",
-            "mobile_header_style": "default"
+            "mobile_header_style": "dark"
           }
         }
       },
@@ -35,12 +37,12 @@
       ],
       "name": "<> Hero Slider",
       "settings": {
-        "slide_height": 400,
-        "slide_height_desktop": 500,
+        "slide_height": 1200,
+        "slide_height_desktop": 1500,
         "transition_type": "fade",
-        "transition_speed": 500,
+        "transition_speed": 1200,
         "autoplay": true,
-        "autoplay_interval": 5,
+        "autoplay_interval": 10,
         "pause_on_hover": true,
         "show_arrows": false,
         "show_pagination": true
@@ -446,7 +448,7 @@
       ],
       "name": "<> Trending Festive",
       "settings": {
-        "title": "Trending Festive",
+        "title": "TRENDING FESTIVE",
         "title_preset": "h3",
         "subtitle": "Styles selected with you in mind. Explore the latest trends.",
         "subtitle_preset": "paragraph",

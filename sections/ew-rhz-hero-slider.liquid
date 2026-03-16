@@ -18,7 +18,34 @@
               <a href="{{ block.settings.link }}" class="ew-rhz-hero-slider__link">
             {% endif %}
             <div class="ew-rhz-hero-slider__slide-content">
-              {% if block.settings.image != blank %}
+              {% if block.settings.mobile_image != blank and block.settings.image != blank %}
+                {% comment %} Desktop image {% endcomment %}
+                <img
+                  class="ew-rhz-hero-slider__image ew-rhz-hero-slider__image--desktop"
+                  src="{{ block.settings.image | image_url: width: 1920 }}"
+                  srcset="{{ block.settings.image | image_url: width: 640 }} 640w,
+                          {{ block.settings.image | image_url: width: 1024 }} 1024w,
+                          {{ block.settings.image | image_url: width: 1920 }} 1920w"
+                  sizes="100vw"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                >
+                {% comment %} Mobile image {% endcomment %}
+                <img
+                  class="ew-rhz-hero-slider__image ew-rhz-hero-slider__image--mobile"
+                  src="{{ block.settings.mobile_image | image_url: width: 800 }}"
+                  srcset="{{ block.settings.mobile_image | image_url: width: 480 }} 480w,
+                          {{ block.settings.mobile_image | image_url: width: 750 }} 750w,
+                          {{ block.settings.mobile_image | image_url: width: 800 }} 800w"
+                  sizes="100vw"
+                  alt="{{ block.settings.mobile_image.alt | default: block.settings.image.alt | escape }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  width="{{ block.settings.mobile_image.width }}"
+                  height="{{ block.settings.mobile_image.height }}"
+                >
+              {% elsif block.settings.image != blank %}
                 <img
                   class="ew-rhz-hero-slider__image"
                   src="{{ block.settings.image | image_url: width: 1920 }}"
@@ -30,6 +57,19 @@
                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
+                >
+              {% elsif block.settings.mobile_image != blank %}
+                <img
+                  class="ew-rhz-hero-slider__image"
+                  src="{{ block.settings.mobile_image | image_url: width: 800 }}"
+                  srcset="{{ block.settings.mobile_image | image_url: width: 480 }} 480w,
+                          {{ block.settings.mobile_image | image_url: width: 750 }} 750w,
+                          {{ block.settings.mobile_image | image_url: width: 800 }} 800w"
+                  sizes="100vw"
+                  alt="{{ block.settings.mobile_image.alt | escape }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  width="{{ block.settings.mobile_image.width }}"
+                  height="{{ block.settings.mobile_image.height }}"
                 >
               {% else %}
                 {{ 'lifestyle-1' | placeholder_svg_tag: 'ew-rhz-hero-slider__placeholder' }}
@@ -57,19 +97,77 @@
       return window.innerWidth <= 749;
     }
 
-    function setMobileHeaderStyle(el) {
-      if (!el) return;
-      if (window.innerWidth > 749) {
-        document.body.removeAttribute('data-mobile-header-style');
-        return;
-      }
-      var slide = el.querySelector('.splide__slide.is-active');
-      var style = slide ? (slide.getAttribute('data-mobile-header-style') || 'default') : '';
-      if (style && style !== 'default') {
+    /**
+     * Get the active slide's header style: 'light' | 'dark' | ''
+     * Uses splide.index when provided so we get the right slide even before .is-active is set.
+     */
+    function getActiveSlideStyle(el, splide) {
+      if (!el) return '';
+      var slides = el.querySelectorAll('.splide__slide');
+      if (!slides.length) return '';
+      var idx = splide && typeof splide.index === 'number' ? splide.index : -1;
+      var slide = idx >= 0 && idx < slides.length
+        ? slides[idx]
+        : el.querySelector('.splide__slide.is-active');
+      if (!slide) return '';
+      var style = (slide.getAttribute('data-mobile-header-style') || 'default').trim().toLowerCase();
+      return (style === 'light' || style === 'dark') ? style : '';
+    }
+
+    function applyHeaderStyle(style) {
+      if (style === 'light' || style === 'dark') {
         document.body.setAttribute('data-mobile-header-style', style);
       } else {
         document.body.removeAttribute('data-mobile-header-style');
       }
+      updateAnnouncementBarColor(style);
+      updateHeaderComponentColor(style);
+    }
+
+    /** Light = color-scheme-6, Dark = color-inverse. Default = restore theme default. */
+    function updateHeaderComponentColor(style) {
+      var header = document.getElementById('header-component');
+      if (!header) return;
+      var targetClass;
+      if (style === 'dark') {
+        targetClass = 'color-inverse';
+      } else if (style === 'light') {
+        targetClass = 'color-scheme-6';
+      } else {
+        var defaultScheme = header.getAttribute('data-default-color-scheme') || 'scheme-6';
+        targetClass = defaultScheme.indexOf('color-') === 0 ? defaultScheme : 'color-' + defaultScheme;
+      }
+      var nodes = [header].concat(Array.prototype.slice.call(header.querySelectorAll('.header__row, .header__navigation-bar-row')));
+      nodes.forEach(function (node) {
+        var list = node.classList;
+        for (var i = list.length - 1; i >= 0; i--) {
+          if (list[i].indexOf('color-') === 0) list.remove(list[i]);
+        }
+        list.add(targetClass);
+      });
+    }
+
+    /** Light = color-scheme-6, Dark = color-inverse. Default = theme default. */
+    function updateAnnouncementBarColor(style) {
+      var wrapper = document.querySelector('.header-announcements-wrapper');
+      if (!wrapper) return;
+      var defaultScheme = wrapper.getAttribute('data-announcement-default-color') || 'scheme-6';
+      var targetClass;
+      if (style === 'dark') {
+        targetClass = 'color-inverse';
+      } else if (style === 'light') {
+        targetClass = 'color-scheme-6';
+      } else {
+        targetClass = defaultScheme.indexOf('color-') === 0 ? defaultScheme : 'color-' + defaultScheme;
+      }
+      [wrapper.querySelector('.section-background'), wrapper.querySelector('.announcement-bar')].forEach(function (node) {
+        if (!node) return;
+        var list = node.classList;
+        for (var i = list.length - 1; i >= 0; i--) {
+          if (list[i].indexOf('color-') === 0) list.remove(list[i]);
+        }
+        list.add(targetClass);
+      });
     }
 
     function run() {
@@ -81,7 +179,6 @@
         mounted = null;
       }
 
-      var mobile = isMobile();
       var opts = {
         type: '{{ section.settings.transition_type }}',
         autoplay: {{ section.settings.autoplay }},
@@ -94,20 +191,17 @@
         perPage: 1,
         perMove: 1
       };
-      if (mobile) {
-        opts.direction = 'ttb';
-        opts.height = '100vh';
-        opts.drag = true;
-      }
 
       var splide = new Splide('#' + splideId, opts);
       splide.on('moved', function () {
-        setMobileHeaderStyle(el);
+        applyHeaderStyle(getActiveSlideStyle(el, splide));
+      });
+      splide.on('mounted', function () {
+        applyHeaderStyle(getActiveSlideStyle(el, splide));
       });
       splide.mount();
       mounted = splide;
-      lastMobile = mobile;
-      setMobileHeaderStyle(el);
+      lastMobile = isMobile();
     }
 
     function onResize() {
@@ -115,8 +209,8 @@
       var mobile = isMobile();
       if (el && mobile !== lastMobile) {
         run();
-      } else if (el) {
-        setMobileHeaderStyle(el);
+      } else if (el && mounted) {
+        applyHeaderStyle(getActiveSlideStyle(el, mounted));
       }
     }
 
@@ -144,7 +238,7 @@
       "id": "slide_height",
       "label": "Slide height (mobile)",
       "min": 200,
-      "max": 800,
+      "max": 2000,
       "step": 20,
       "default": 400,
       "unit": "px"
@@ -154,7 +248,7 @@
       "id": "slide_height_desktop",
       "label": "Slide height (desktop)",
       "min": 300,
-      "max": 900,
+      "max": 2000,
       "step": 20,
       "default": 500,
       "unit": "px"
@@ -227,13 +321,19 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image (desktop)"
         },
-    {
-      "type": "url",
-      "id": "link",
-      "label": "Link"
-    },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Image (mobile)",
+          "info": "Optional. Shown on screens under 750px. Uses desktop image if blank."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
         {
           "type": "header",
           "content": "Mobile header & announcement"

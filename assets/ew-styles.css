@@ -554,27 +554,35 @@ product-price {
   display: block;
 }
 
+/* Desktop/mobile image visibility when both are set */
 @media (max-width: 749px) {
+  .ew-rhz-hero-slider__image--desktop {
+    display: none !important;
+  }
+}
+@media (min-width: 750px) {
+  .ew-rhz-hero-slider__image--mobile {
+    display: none !important;
+  }
+}
 
+@media (max-width: 749px) {
   .ew-rhz-hero-slider,
   .ew-rhz-hero-slider__viewport {
-    min-height: 100vh;
-    height: 100vh;
-    overflow: hidden;
+    height: var(--ew-rhz-slide-height, 400px);
+    min-height: var(--ew-rhz-slide-height, 400px);
   }
 
-  .ew-rhz-hero-slider__viewport .splide__track,
-  .ew-rhz-hero-slider__viewport .splide__list,
-  .ew-rhz-hero-slider__viewport .splide__slide {
-    min-height: 100vh;
-    height: 100vh;
+  .ew-rhz-hero-slider .splide__track,
+  .ew-rhz-hero-slider .splide__list,
+  .ew-rhz-hero-slider .splide__slide {
+    height: var(--ew-rhz-slide-height, 400px);
   }
 
-  .ew-rhz-hero-slider__viewport .ew-rhz-hero-slider__slide-content,
-  .ew-rhz-hero-slider__viewport .ew-rhz-hero-slider__image,
-  .ew-rhz-hero-slider__viewport .ew-rhz-hero-slider__placeholder {
-    min-height: 100vh;
-    height: 100vh;
+  .ew-rhz-hero-slider__slide-content,
+  .ew-rhz-hero-slider__image,
+  .ew-rhz-hero-slider__placeholder {
+    min-height: var(--ew-rhz-slide-height, 400px);
   }
 }
 
@@ -589,11 +597,25 @@ product-price {
   height: 100%;
 }
 
+/* Desktop: fixed height so all slides are equal */
 @media (min-width: 750px) {
+  .ew-rhz-hero-slider,
+  .ew-rhz-hero-slider__viewport {
+    height: var(--ew-rhz-slide-height-desktop, 500px);
+    min-height: var(--ew-rhz-slide-height-desktop, 500px);
+  }
+
+  .ew-rhz-hero-slider .splide__track,
+  .ew-rhz-hero-slider .splide__list,
+  .ew-rhz-hero-slider .splide__slide {
+    height: var(--ew-rhz-slide-height-desktop, 500px);
+    min-height: var(--ew-rhz-slide-height-desktop, 500px);
+  }
 
   .ew-rhz-hero-slider__slide-content,
   .ew-rhz-hero-slider__image,
   .ew-rhz-hero-slider__placeholder {
+    height: var(--ew-rhz-slide-height-desktop, 500px);
     min-height: var(--ew-rhz-slide-height-desktop, 500px);
   }
 }
@@ -620,6 +642,50 @@ product-price {
   #header-component[data-menu-style='drawer'] .header__column--right .search-action {
     grid-area: rightA;
   }
+}
+
+/* Hero slider: which logo shows per slide (overrides transparent header when body has data-mobile-header-style).
+   Inverted: Light slide → inverse logo. Dark slide → original logo. */
+body[data-mobile-header-style='light'] #header-component {
+  --header-logo-display: none !important;
+  --header-logo-inverse-display: block !important;
+}
+body[data-mobile-header-style='dark'] #header-component {
+  --header-logo-display: block !important;
+  --header-logo-inverse-display: none !important;
+}
+
+/* Sticky header: always show dark (original) logo for contrast on solid bar */
+body[data-mobile-header-style='light'] #header-component[data-sticky-state='active'],
+body[data-mobile-header-style='dark'] #header-component[data-sticky-state='active'] {
+  --header-logo-display: block !important;
+  --header-logo-inverse-display: none !important;
+}
+
+/* Hero slider: apply color scheme on sticky header (override theme’s transparent sticky inherit). */
+body[data-mobile-header-style='light'] #header-component[data-sticky-state='active'],
+body[data-mobile-header-style='light'] #header-component[data-sticky-state='active'] .header__row,
+body[data-mobile-header-style='light'] #header-component[data-sticky-state='active'] .header__navigation-bar-row {
+  --color-foreground: unset;
+  --color-foreground-rgb: unset;
+  --color-background: unset;
+  --color-background-rgb: unset;
+  --color-border: unset;
+  --color-border-rgb: unset;
+  --color-primary-button-background: unset;
+  --color-primary-button-text: unset;
+}
+body[data-mobile-header-style='dark'] #header-component[data-sticky-state='active'],
+body[data-mobile-header-style='dark'] #header-component[data-sticky-state='active'] .header__row,
+body[data-mobile-header-style='dark'] #header-component[data-sticky-state='active'] .header__navigation-bar-row {
+  --color-foreground: unset;
+  --color-foreground-rgb: unset;
+  --color-background: unset;
+  --color-background-rgb: unset;
+  --color-border: unset;
+  --color-border-rgb: unset;
+  --color-primary-button-background: unset;
+  --color-primary-button-text: unset;
 }
 
 /* ew-rhz Quickview button – bottom right over product card media */
@@ -817,6 +883,9 @@ product-price {
 }
 
 @media (max-width: 749px) {
+  .cart-page {
+    max-width: 100% !important;
+  }
   .ew-rhz-curated-cards__title {
     font-size: var(--ew-rhz-title-font-size-mobile, inherit);
   }
@@ -1418,6 +1487,10 @@ product-price {
  .product-information .media-gallery--two-per-frame .media-gallery__frame--two {
     grid-template-columns: 1fr !important;
   }
+}
+
+.cart__continue-shopping-button{
+  width: 100%;
 }
 
 .variant-picker__form {
