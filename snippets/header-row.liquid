@@ -33,6 +33,16 @@
     case item
       when 'actions'
         assign item_column = 'right'
+      when 'search'
+        comment
+          Desktop: search on the right. (search is hidden on mobile; drawer_search is shown on mobile.)
+        endcomment
+        assign item_column = 'right'
+      when 'drawer_search'
+        comment
+          Mobile: search on the left. (drawer_search is hidden on desktop.)
+        endcomment
+        assign item_column = 'left'
     endcase
 
     if item_row == row

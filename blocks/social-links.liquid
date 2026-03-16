@@ -67,42 +67,37 @@
     %}
 
     {% comment %}
-      Only render the social icon if:
-      1. In editor mode (always show, but may be disabled)
-      2. On storefront AND has a valid profile link
+      Show social icon whenever a URL is set (customizer and live).
+      When URL is a placeholder (e.g. "#" or domain-only), show icon but make link non-clickable on live.
     {% endcomment %}
     {% if link_url != blank %}
-      {% if request.design_mode or has_profile %}
-        <div
-          class="social-icons__icon-wrapper{% unless has_profile %} social-icons__icon-wrapper--disabled{% endunless %}"
+      <div
+        class="social-icons__icon-wrapper{% unless has_profile %} social-icons__icon-wrapper--disabled{% endunless %}"
+      >
+        <a
+          href="{% if has_profile %}{{ link_url }}{% else %}#{% endif %}"
+          target="{% if has_profile %}_blank{% endif %}"
+          rel="{% if has_profile %}noopener noreferrer{% endif %}"
+          aria-label="{{ platform | capitalize }}"
+          {% unless has_profile %}
+            onclick="return false;"
+            aria-disabled="true"
+          {% endunless %}
         >
-          <a
-            href="{{ link_url }}"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="{{ platform | capitalize }}"
-            {% unless has_profile %}
-              {% if request.design_mode %}
-                onclick="return false;"
-                aria-disabled="true"
-              {% endif %}
-            {% endunless %}
-          >
-            <span class="social-icons__icon-label">{{ platform | capitalize }}</span>
-            {% if render_icon %}
-              <svg
-                class="social-icons__icon icon-default"
-                aria-hidden="true"
-                focusable="false"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                {%- render 'icon', icon: platform -%}
-              </svg>
-            {% endif %}
-          </a>
-        </div>
-      {% endif %}
+          <span class="social-icons__icon-label">{{ platform | capitalize }}</span>
+          {% if render_icon %}
+            <svg
+              class="social-icons__icon icon-default"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              {%- render 'icon', icon: platform -%}
+            </svg>
+          {% endif %}
+        </a>
+      </div>
     {% endif %}
   {% endfor %}
 </div>
@@ -150,14 +145,18 @@
     }
   }
 
-  /* Disabled state for editor */
-  .shopify-design-mode .social-icons__icon-wrapper--disabled {
-    opacity: var(--disabled-opacity, 0.5);
-    cursor: not-allowed;
+  /* Disabled/placeholder state: in editor and on storefront */
+  .social-icons__icon-wrapper--disabled {
+    opacity: var(--disabled-opacity, 0.7);
+    cursor: default;
   }
 
-  .shopify-design-mode .social-icons__icon-wrapper--disabled a {
+  .social-icons__icon-wrapper--disabled a {
     pointer-events: none;
+  }
+
+  .shopify-design-mode .social-icons__icon-wrapper--disabled {
+    cursor: not-allowed;
   }
 {% endstylesheet %}
 

@@ -23,6 +23,7 @@
     --ew-rhz-card-height-desktop: {{ section.settings.block_height_desktop }}px;
     {% if section.settings.title_font_size_mobile != blank %}--ew-rhz-title-font-size-mobile: {{ section.settings.title_font_size_mobile }};{% endif %}
     {% if section.settings.subtitle_font_size_mobile != blank %}--ew-rhz-subtitle-font-size-mobile: {{ section.settings.subtitle_font_size_mobile }};{% endif %}
+    --ew-rhz-mobile-card-size: {{ section.settings.mobile_card_size | default: '75vw' }};
   "
 >
   <div class="ew-rhz-trending-festive__inner">
@@ -100,7 +101,7 @@
             window.removeEventListener('resize', onResize);
             if (splideInstance) { try { splideInstance.destroy(); } catch (_) {} splideInstance = null; }
             var perPageDesktop = {{ section.settings.carousel_per_page_desktop | default: 5 }};
-            var perPageMobile = {{ section.settings.carousel_per_page_mobile | default: 1 }};
+            var mobileCardSize = '{{ section.settings.mobile_card_size | default: "75vw" }}';
             splideInstance = new Splide(selector, {
               type: 'slide',
               perPage: perPageDesktop,
@@ -114,7 +115,8 @@
               rewind: true,
               breakpoints: {
                 749: {
-                  perPage: perPageMobile
+                  fixedWidth: mobileCardSize,
+                  perPage: 1
                 }
               }
             }).mount();
@@ -175,6 +177,11 @@
     { "type": "range", "id": "block_height_mobile", "label": "Height (mobile)", "min": 200, "max": 600, "step": 20, "default": 320, "unit": "px" },
     { "type": "range", "id": "block_height_desktop", "label": "Height (desktop)", "min": 240, "max": 600, "step": 20, "default": 400, "unit": "px" },
     { "type": "checkbox", "id": "carousel_on_mobile", "label": "Carousel on mobile", "default": true },
+    { "type": "select", "id": "mobile_card_size", "label": "Mobile card size", "info": "Match Curated section for consistent card size on mobile.", "options": [
+      { "value": "85vw", "label": "Large (1 card)" },
+      { "value": "75vw", "label": "Medium" },
+      { "value": "60vw", "label": "Small (1.5 visible)" }
+    ], "default": "75vw" },
     { "type": "checkbox", "id": "carousel_on_desktop", "label": "Carousel on desktop", "default": false },
     { "type": "range", "id": "carousel_per_page_mobile", "label": "Cards visible (mobile)", "min": 1, "max": 3, "step": 1, "default": 1 },
     { "type": "range", "id": "carousel_per_page_desktop", "label": "Cards visible (desktop)", "min": 1, "max": 6, "step": 1, "default": 5 },

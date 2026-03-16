@@ -284,7 +284,7 @@ rte-formatter {
   }
 
   .ew-mobile-product-bar__select-size-label {
-    font-size: 16px;
+    font-size: 20px;
     color: var(--color-foreground-secondary, #666);
   }
 
@@ -464,6 +464,10 @@ rte-formatter {
   max-width: 100%;
 }
 
+.menu-drawer__utility-links {
+  display: none !important;
+}
+
 /* Product card: uniform media height and price alignment */
 .product-grid .card-gallery .product-media-container img,
 .product-grid .card-gallery .product-media-container video,
@@ -480,6 +484,26 @@ rte-formatter {
 
 product-price {
   margin-top: -20px !important;
+}
+
+.menu-drawer__menu-item {
+  font-size: 16px !important;
+}
+
+/* Third-level: same look as level 2 (same padding, font, row height), no arrow */
+.menu-drawer__menu--grandchildlist {
+  padding-inline: var(--drawer-padding);
+}
+
+.menu-drawer__menu--grandchildlist .menu-drawer__menu-item--child {
+  font-family: var(--menu-parent-font-family);
+  font-style: var(--menu-parent-font-style);
+  font-weight: var(--menu-parent-font-weight);
+  font-size: var(--menu-parent-font-size);
+  line-height: var(--menu-parent-font-line-height);
+  text-transform: var(--menu-parent-font-case);
+  color: var(--menu-parent-font-color);
+  min-height: calc(2 * var(--padding-lg) + var(--icon-size-xs));
 }
 
 .product-grid .product-grid__card .group-block:has(.card-gallery),
@@ -802,7 +826,7 @@ product-price {
 
 @media (max-width: 749px) {
   .ew-rhz-curated-cards__grid--hide-mobile {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -992,6 +1016,10 @@ product-price {
 @media (max-width: 749px) {
   .ew-rhz-trending-festive__carousel--mobile {
     display: block;
+  }
+
+  .ew-rhz-trending-festive__carousel--mobile .ew-rhz-trending-festive__card {
+    width: 100%;
   }
 }
 
@@ -1388,4 +1416,9 @@ summary.menu__heading.h3 {
 
 .product-details__title {
   font-size: 30px;
+}
+
+.resource-list__carousel slideshow-slides {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }

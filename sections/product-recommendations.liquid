@@ -104,9 +104,9 @@
       <div
         class="
           resource-list
-          {% if section.settings.layout_type == 'carousel' %}
+          {% comment %} {% if section.settings.layout_type == 'carousel' %}
             force-full-width
-          {% endif %}
+          {% endif %} {% endcomment %}
           {% if section.settings.carousel_on_mobile and section.settings.layout_type != 'carousel' %}
             hidden--mobile
           {% endif %}

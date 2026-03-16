@@ -64,6 +64,10 @@
     .product-grid--{{ section.id }}[product-grid-view='zoom-out'] {
       --product-grid-columns-desktop: repeat(auto-fill, minmax(14.25rem, 1fr));
     }
+
+    .product-grid--{{ section.id }}[product-grid-view='zoom-out'] .product-grid-view-zoom-out--details {
+      display: block;
+    }
   }
 {% endstyle %}
 <div

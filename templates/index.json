@@ -16,14 +16,16 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Rectangle_2_1.png",
-            "link": "shopify://collections/all"
+            "link": "shopify://collections/all",
+            "mobile_header_style": "default"
           }
         },
         "slide_xdnMAG": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Rectangle_2_1.png",
-            "link": "shopify://collections/all"
+            "link": "shopify://collections/all",
+            "mobile_header_style": "default"
           }
         }
       },
@@ -271,7 +273,7 @@
       "name": "<> Media Panels",
       "settings": {
         "block_height": 400,
-        "block_height_desktop": 400,
+        "block_height_desktop": 600,
         "section_width": "page-width",
         "color_scheme": "scheme-2",
         "padding-block-start": 0,
@@ -344,8 +346,8 @@
         "block_height_desktop": 520,
         "carousel_on_mobile": true,
         "mobile_card_size": "75vw",
-        "carousel_arrows": true,
-        "carousel_pagination": true,
+        "carousel_arrows": false,
+        "carousel_pagination": false,
         "carousel_autoplay": false,
         "carousel_autoplay_interval": 5,
         "carousel_gap": 12,
@@ -460,6 +462,7 @@
         "block_height_mobile": 400,
         "block_height_desktop": 520,
         "carousel_on_mobile": true,
+        "mobile_card_size": "75vw",
         "carousel_on_desktop": true,
         "carousel_per_page_mobile": 2,
         "carousel_per_page_desktop": 4,

@@ -98,9 +98,9 @@
 <div
   class="
     resource-list
-    {% if settings.layout_type == 'carousel' %}
+    {% comment %} {% if settings.layout_type == 'carousel' %}
       force-full-width
-    {% endif %}
+    {% endif %} {% endcomment %}
     {% if settings.carousel_on_mobile and settings.layout_type != 'carousel' %}
       hidden--mobile
     {% endif %}
@@ -153,7 +153,7 @@
       resource-list
       hidden--desktop
       resource-list__carousel
-      force-full-width
+      {% comment %} force-full-width {% endcomment %}
     "
     style="
       --resource-list-column-gap-desktop: {{ mobile_carousel_gap }}px;
