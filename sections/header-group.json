@@ -13,41 +13,11 @@
   "sections": {
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
-      "blocks": {
-        "announcement_BxgCk9": {
-          "type": "_announcement",
-          "settings": {
-            "text": "Any Unstitched-To-Stitched orders placed after 22ⁿᵈ February will be processed after Eid.",
-            "link": "",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
-            "weight": "",
-            "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
-        },
-        "announcement_kDzqmQ": {
-          "type": "_announcement",
-          "settings": {
-            "text": "Any Unstitched-To-Stitched orders placed after 22ⁿᵈ February will be processed after Eid.",
-            "link": "",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
-            "weight": "",
-            "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "announcement_BxgCk9",
-        "announcement_kDzqmQ"
-      ],
       "name": "t:names.announcement_bar",
       "settings": {
-        "speed": 5,
+        "announcement_text": "Any order placed now will be delivered after Eid. - Any order placed now will be delivered after Eid.- Any order placed now will be delivered after Eid.",
+        "announcement_link": "#",
+        "speed": 10,
         "enable_transparent_announcement_home": true,
         "home_announcement_color_scheme": "default",
         "enable_transparent_announcement_product": false,
@@ -55,7 +25,7 @@
         "enable_transparent_announcement_collection": false,
         "collection_announcement_color_scheme": "inverse",
         "color_scheme_transparent": "scheme-1",
-        "section_width": "page-width",
+        "section_width": "full-width",
         "color_scheme_home": "scheme-6",
         "color_scheme_other_pages": "scheme-2",
         "divider_width": 1,

@@ -1,0 +1,44 @@
+{%- comment -%}
+  Renders a single announcement block for the marquee (expects: block, section).
+  Always outputs one slide per block so block count is visible; shows block text or space.
+{%- endcomment -%}
+{%- assign block_settings = block.settings -%}
+{%- assign slide_text = block_settings.text | default: '' -%}
+
+<span
+  class="
+    announcement-bar__slide
+    text-block
+    text-block--{{ block.id }}
+    text-block--align-center
+    custom-typography
+    {% if block_settings.font_size != "" %}custom-font-size{% endif %}
+    {% if block_settings.weight != "" %}custom-font-weight{% endif %}
+  "
+  style="
+    {% render 'typography-style', settings: block_settings, preset: 'custom' %}
+    --width: max-content;
+    --text-align: center;
+    --line-height: 1;
+    width: max-content;
+    white-space: nowrap;
+  "
+  {{ block.shopify_attributes }}
+>
+  <p class="announcement-bar__text">
+    {%- if slide_text != blank -%}
+      {{ slide_text }}
+    {%- else -%}
+      &nbsp;
+    {%- endif -%}
+  </p>
+
+  {%- if block_settings.link != blank and slide_text != blank -%}
+    <a
+      class="announcement-bar__link"
+      href="{{ block_settings.link }}"
+    >
+      <span class="visually-hidden">{{ slide_text | strip_html }}</span>
+    </a>
+  {%- endif -%}
+</span>

@@ -36,132 +36,76 @@
   endif
 %}
 
-{% if section.blocks.size > 1 %}
-  <script
-    src="{{ 'announcement-bar.js' | asset_url }}"
-    type="module"
-    fetchpriority="low"
-  ></script>
-{% endif %}
-
 <div
   class="header-announcements-wrapper{% if announcement_transparent %} header-announcements--transparent{% endif %}"
-  {% if announcement_transparent %}data-transparent="true"{% endif %}
+  {% if announcement_transparent %}
+    data-transparent="true"
+  {% endif %}
   data-announcement-default-color="{{ announcement_transparent_scheme }}"
 >
   <div class="section-background color-{{ announcement_transparent_scheme }}"></div>
   <aside
     class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ announcement_transparent_scheme }}"
-    style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;"
+    style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px; --announcement-marquee-duration: {{ 24 | divided_by: section.settings.speed }}s;"
   >
-  {% liquid
-    assign autoplay = false
-    assign show_arrows = false
-    if section.blocks.size > 1
-      assign autoplay = true
-      assign show_arrows = true
-    endif
-  %}
-
-  <announcement-bar-component
-    class="announcement-bar__slider"
-    {% if autoplay == true %}
-      autoplay="{{ section.settings.speed }}" aria-live="polite"
-    {% endif %}
-  >
-    {% if show_arrows %}
-      {% render 'slideshow-arrows', icon_style: 'chevron' %}
-    {% endif %}
-
-    <div class="announcement-bar__slides">
-      {% content_for 'blocks' %}
-    </div>
-  </announcement-bar-component>
+    <marquee
+      class="announcement-bar__marquee announcement-bar__marquee--legacy"
+      width="100%"
+      direction="right"
+      behavior="scroll"
+      scrollamount="{{ section.settings.speed | default: 5 }}"
+    >
+      {%- assign announcement_text = section.settings.announcement_text | strip -%}
+      {%- if announcement_text != blank -%}
+        {%- if section.settings.announcement_link != blank -%}
+          <a class="announcement-bar__link-inline" href="{{ section.settings.announcement_link }}">{{ announcement_text }}</a>
+        {%- else -%}
+          <span class="announcement-bar__text-inline">{{ announcement_text }}</span>
+        {%- endif -%}
+      {%- else -%}
+        <span class="announcement-bar__text-inline">&nbsp;</span>
+      {%- endif -%}
+    </marquee>
   </aside>
 </div>
 
 {% stylesheet %}
   .announcement-bar {
     border-block-end: var(--border-bottom-width) solid var(--color-border);
-  }
-
-  .announcement-bar__slider {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    min-height: 2.5rem;
     position: relative;
-
-    @media screen and (max-width: 749px) {
-      grid-column: 1 / -1;
-    }
+    z-index: var(--layer-base, 0);
   }
 
-  .announcement-bar__slides {
-    display: grid;
-    grid: [stack] auto / [stack] auto;
-    width: calc(100% - var(--button-size) * 2);
-    max-width: 680px;
-    margin-inline: auto;
-  }
-
-  .announcement-bar__slides > * {
-    grid-area: stack;
-  }
-
-  .announcement-bar__slide {
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    content-visibility: visible;
-
-    &[aria-hidden='true'] {
-      opacity: 0;
-      visibility: hidden;
-    }
-  }
-
-  .announcement-bar__slider slideshow-arrows {
-    padding: 0;
-    mix-blend-mode: normal;
-  }
-
-  .announcement-bar__slider slideshow-arrows .slideshow-control {
-    color: var(--color-foreground);
-  }
-
-  .announcement-bar__slider .slideshow-control {
+  .announcement-bar__marquee--legacy {
+    width: 100%;
+    padding-inline: var(--button-size, 44px);
+    min-height: 2.5rem;
     display: flex;
-    padding: 0;
-    width: var(--button-size);
-    height: var(--button-size);
     align-items: center;
-    justify-content: center;
-    opacity: 1;
-    animation: none;
-
-    @media screen and (min-width: 750px) {
-      --slideshow-control-offset: calc((var(--button-size) - var(--icon-size-xs)) / 2);
-
-      .section--page-width &.slideshow-control--previous {
-        transform: translateX(var(--slideshow-control-offset));
-      }
-    }
+    color: var(--color-foreground, #1a1a1a);
+    font-size: 0.875rem;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
   }
 
-  .announcement-bar__slider .slideshow-control .svg-wrapper {
-    width: var(--icon-size-xs);
-    height: var(--icon-size-xs);
+  .announcement-bar__marquee .announcement-bar__divider {
+    padding-inline: 1rem;
+    opacity: 0.8;
+    user-select: none;
+    pointer-events: none;
+    color: var(--color-foreground, inherit);
   }
 
-  .announcement-bar__slide {
-    place-content: center;
+  .announcement-bar__marquee--legacy .announcement-bar__text-inline,
+  .announcement-bar__marquee--legacy .announcement-bar__link-inline {
+    color: inherit;
+    font: inherit;
   }
 
-  .announcement-bar__text:first-child {
-    margin: 0;
-  }
-
-  .announcement-bar__link {
-    position: absolute;
-    inset: 0;
+  .announcement-bar__marquee--legacy .announcement-bar__link-inline {
+    text-decoration: none;
   }
 
   /* Transparent announcement bar */
@@ -170,23 +114,38 @@
   }
 
   .header-announcements--transparent .announcement-bar {
-    background-color: transparent;
+    /* Keep announcements readable over hero imagery */
+    background-color: rgb(0 0 0 / 0.45);
     border-block-end-color: transparent;
+  }
+
+  .header-announcements--transparent .announcement-bar__marquee--legacy {
+    color: #fff;
+  }
+
+  .header-announcements--transparent .announcement-bar__divider {
+    color: #fff;
   }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:names.announcement_bar",
-  "blocks": [
-    {
-      "type": "_announcement"
-    }
-  ],
   "enabled_on": {
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Welcome to our store!"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Announcement link (optional)"
+    },
     {
       "type": "range",
       "id": "speed",
@@ -332,12 +291,9 @@
   "presets": [
     {
       "name": "t:names.announcement_bar",
-      "blocks": {
-        "announcement_1": {
-          "type": "_announcement"
-        }
-      },
-      "block_order": ["announcement_1"]
+      "settings": {
+        "announcement_text": "Welcome to our store!"
+      }
     }
   ]
 }
