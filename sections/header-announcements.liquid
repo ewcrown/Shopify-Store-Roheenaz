@@ -48,24 +48,66 @@
     class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-{{ announcement_transparent_scheme }}"
     style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px; --announcement-marquee-duration: {{ 24 | divided_by: section.settings.speed }}s;"
   >
-    <marquee
-      class="announcement-bar__marquee announcement-bar__marquee--legacy"
-      width="100%"
-      direction="right"
-      behavior="scroll"
-      scrollamount="{{ section.settings.speed | default: 5 }}"
+    {%- assign announcement_text = section.settings.announcement_text | strip -%}
+    <div
+      class="announcement-bar__ticker"
+      aria-label="{{ announcement_text | strip_html | escape }}"
+      role="marquee"
     >
-      {%- assign announcement_text = section.settings.announcement_text | strip -%}
-      {%- if announcement_text != blank -%}
-        {%- if section.settings.announcement_link != blank -%}
-          <a class="announcement-bar__link-inline" href="{{ section.settings.announcement_link }}">{{ announcement_text }}</a>
-        {%- else -%}
-          <span class="announcement-bar__text-inline">{{ announcement_text }}</span>
-        {%- endif -%}
-      {%- else -%}
-        <span class="announcement-bar__text-inline">&nbsp;</span>
-      {%- endif -%}
-    </marquee>
+      <div class="announcement-bar__track" id="announcement-track-{{ section.id }}">
+        <span class="announcement-bar__item">
+          {%- if announcement_text != blank -%}
+            {%- if section.settings.announcement_link != blank -%}
+              <a class="announcement-bar__link-inline" href="{{ section.settings.announcement_link }}">{{ announcement_text }}</a>
+            {%- else -%}
+              <span class="announcement-bar__text-inline">{{ announcement_text }}</span>
+            {%- endif -%}
+          {%- else -%}
+            <span class="announcement-bar__text-inline">&nbsp;</span>
+          {%- endif -%}
+          <span class="announcement-bar__sep" aria-hidden="true">&nbsp;&nbsp;✦&nbsp;&nbsp;</span>
+        </span>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var track = document.getElementById('announcement-track-{{ section.id }}');
+        if (!track) return;
+
+        function init() {
+          var original = track.querySelector('.announcement-bar__item');
+          if (!original) return;
+
+          var itemWidth = original.getBoundingClientRect().width;
+          if (itemWidth === 0) return;
+
+          // Fill at least 3× the viewport width so there are no gaps
+          var copies = Math.ceil((window.innerWidth * 3) / itemWidth);
+          for (var i = 1; i < copies; i++) {
+            track.appendChild(original.cloneNode(true));
+          }
+
+          // Duplicate the full set — animation goes from 0 to -50% for seamless loop
+          track.innerHTML = track.innerHTML + track.innerHTML;
+
+          // Calculate duration based on content length & speed setting
+          var halfWidth = track.scrollWidth / 2;
+          var speed = {{ section.settings.speed | default: 5 }};
+          var pxPerSecond = speed * 20; // speed 2–10 → 40–200 px/s
+          var duration = (halfWidth / pxPerSecond).toFixed(2);
+
+          track.style.setProperty('--marquee-duration', duration + 's');
+          track.classList.add('announcement-bar__track--running');
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
+    </script>
   </aside>
 </div>
 
@@ -77,35 +119,63 @@
     z-index: var(--layer-base, 0);
   }
 
-  .announcement-bar__marquee--legacy {
-    width: 100%;
-    padding-inline: var(--button-size, 44px);
-    min-height: 2.5rem;
+  /* Ticker container */
+  .announcement-bar__ticker {
+    overflow: hidden;
     display: flex;
     align-items: center;
-    color: var(--color-foreground, #1a1a1a);
-    font-size: 0.875rem;
-    white-space: nowrap;
+    min-height: 2.5rem;
+    width: 100%;
     position: relative;
     z-index: 1;
   }
 
-  .announcement-bar__marquee .announcement-bar__divider {
-    padding-inline: 1rem;
-    opacity: 0.8;
-    user-select: none;
-    pointer-events: none;
-    color: var(--color-foreground, inherit);
+  /* Scrolling track */
+  .announcement-bar__track {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    will-change: transform;
   }
 
-  .announcement-bar__marquee--legacy .announcement-bar__text-inline,
-  .announcement-bar__marquee--legacy .announcement-bar__link-inline {
+  @keyframes announcement-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .announcement-bar__track--running {
+    animation: announcement-scroll var(--marquee-duration, 20s) linear infinite;
+  }
+
+  /* Pause on hover/focus for accessibility */
+  .announcement-bar__ticker:hover .announcement-bar__track--running,
+  .announcement-bar__ticker:focus-within .announcement-bar__track--running {
+    animation-play-state: paused;
+  }
+
+  /* Each repeated item */
+  .announcement-bar__item {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 0.5rem;
+    color: var(--color-foreground, #1a1a1a);
+    font-size: 0.875rem;
+  }
+
+  .announcement-bar__text-inline,
+  .announcement-bar__link-inline {
     color: inherit;
     font: inherit;
   }
 
-  .announcement-bar__marquee--legacy .announcement-bar__link-inline {
+  .announcement-bar__link-inline {
     text-decoration: none;
+  }
+
+  .announcement-bar__sep {
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.6;
   }
 
   /* Transparent announcement bar */
@@ -114,16 +184,11 @@
   }
 
   .header-announcements--transparent .announcement-bar {
-    /* Keep announcements readable over hero imagery */
     background-color: rgb(0 0 0 / 0.45);
     border-block-end-color: transparent;
   }
 
-  .header-announcements--transparent .announcement-bar__marquee--legacy {
-    color: #fff;
-  }
-
-  .header-announcements--transparent .announcement-bar__divider {
+  .header-announcements--transparent .announcement-bar__item {
     color: #fff;
   }
 {% endstylesheet %}

@@ -181,7 +181,7 @@
         </button>
       {% endif %}
       <button type="submit" form="{{ product_form_id }}" class="ew-mobile-product-bar__add-to-cart button" aria-label="{% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-        <span class="svg-wrapper ew-mobile-product-bar__cart-icon" aria-hidden="true">{{ 'icon-add-to-cart.svg' | inline_asset_content }}</span>
+        <span class="svg-wrapper ew-mobile-product-bar__cart-icon" aria-hidden="true">ADD TO CART</span>
       </button>
     </div>
     <script>

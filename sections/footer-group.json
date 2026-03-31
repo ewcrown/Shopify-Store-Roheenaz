@@ -40,7 +40,7 @@
           "name": "t:names.menu",
           "settings": {
             "menu": "footer-menu-2",
-            "heading": "Contact",
+            "heading": "Info",
             "menu_spacing": 12,
             "show_as_accordion": false,
             "accordion_icon": "caret",
@@ -61,7 +61,7 @@
           "name": "t:names.menu",
           "settings": {
             "menu": "footer-menu-3",
-            "heading": "Policy",
+            "heading": "Terms & Conditions",
             "menu_spacing": 12,
             "show_as_accordion": false,
             "accordion_icon": "caret",

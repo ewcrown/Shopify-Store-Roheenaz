@@ -36,6 +36,12 @@ accordion-custom summary:hover {
     z-index: var(--layer-flat, 1);
   }
 
+  /* ✅ ADD THIS RULE */
+  .product-information__grid:not(.product-information--media-none) .product-details {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
   .product-information__grid .product-details.sticky-content--desktop {
     position: relative;
     top: auto;
@@ -182,7 +188,7 @@ rte-formatter {
   }
 
   .mobile-column {
-    gap: 0 !important;
+    gap: 5PX !important;
   }
 
   .product-information__media .media-gallery--carousel slideshow-arrows,
@@ -233,6 +239,7 @@ rte-formatter {
     min-height: 200px;
     visibility: visible;
     pointer-events: auto;
+    padding-bottom: 50px;
   }
 
   .ew-product-information-wrapper variant-picker .variant-picker__form,
@@ -295,7 +302,7 @@ rte-formatter {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: 8px 12px;
+    padding: 6px 12px;
     background: var(--color-background-secondary, #f5f5f5);
     border: none;
     border-radius: 0;
@@ -338,7 +345,7 @@ rte-formatter {
   .ew-mobile-product-bar__add-to-cart {
     flex-shrink: 0;
     min-height: 35px;
-    min-width: 38px;
+    min-width: 50%;
     padding: 0;
     display: inline-flex;
     align-items: center;
@@ -347,7 +354,7 @@ rte-formatter {
   }
 
   .ew-mobile-product-bar__cart-icon {
-    width: var(--icon-size-md, 24px);
+    width: 100%;
     height: var(--icon-size-md, 24px);
   }
 
@@ -399,12 +406,26 @@ rte-formatter {
   .ew-size-guide-variant {
     display: block;
     margin-top: 8px;
+    margin-bottom: 4px;
   }
 
   .ew-size-guide-variant__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 6px 14px;
+    border: 1.5px solid currentColor;
+    border-radius: 20px;
+    text-decoration: none;
+    opacity: 0.85;
+  }
+
+  .ew-size-guide-variant__button::before {
+    content: '📏';
     font-size: 14px;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
   }
 }
 
@@ -1425,7 +1446,7 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
 
 .product-information__media slideshow-slides img,
 .product-information__media slideshow-slides video {
-  object-fit: cover !important;
+  object-fit: contain;
 }
 
 .product-details .group-block {
@@ -1455,9 +1476,7 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
   display: none;
 }
 
-#quick-add-modal-content .ew-size-guide-variant {
-  display: none !important;
-}
+/* .ew-size-guide-variant is intentionally shown in quick-add modal */
 
 /* Hide delivery/payment text and policy accordions in quick view */
 #quick-add-modal-content .delivery-text-rhnz,
@@ -1564,12 +1583,13 @@ summary.menu__heading.h3 {
 
 .delivery-text-rhnz h6 {
   margin: 0 0 10px;
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .delivery-text-rhnz p {
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   color: #5e5e5e;
 }
 
@@ -1593,3 +1613,50 @@ summary.menu__heading.h3 {
 .cart__ctas * {
   text-transform: uppercase;
 }
+
+/* ── Product page gallery improvements ─────────────────────────────────── */
+@media screen and (min-width: 750px) {
+  /* Override thumbnail width (schema cap is 72px, we need wider) */
+  .product-information__media .media-gallery--carousel slideshow-controls[pagination-position='left'] {
+    --thumbnail-width: 96px;
+    padding-inline-end: 10px;
+  }
+
+  /* Vertical gap between thumbnails */
+  .product-information__media .media-gallery--carousel slideshow-controls[pagination-position='left'] .slideshow-controls__thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Thumbnail images: rounded corners + smooth aspect ratio */
+  .product-information__media .media-gallery--carousel slideshow-controls[pagination-position='left'] .slideshow-controls__thumbnail {
+    width: var(--thumbnail-width, 96px);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: opacity 0.18s ease, outline 0.18s ease;
+  }
+
+  /* Dim unselected thumbnails */
+  .product-information__media .media-gallery--carousel slideshow-controls[pagination-position='left'] .slideshow-controls__thumbnail:not([aria-selected='true']) {
+    opacity: 0.55;
+  }
+
+  /* Highlight active thumbnail */
+  .product-information__media .media-gallery--carousel slideshow-controls[pagination-position='left'] .slideshow-controls__thumbnail[aria-selected='true'] {
+    opacity: 1;
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 2px;
+  }
+
+  /* Restore full opacity on hover */
+  .product-information__media .media-gallery--carousel slideshow-controls[pagination-position='left'] .slideshow-controls__thumbnail:hover {
+    opacity: 1;
+  }
+
+  /* Main image: use contain so full garment is always visible */
+  .product-information__media slideshow-slides img {
+    background-color: var(--color-background);
+  }
+}
+

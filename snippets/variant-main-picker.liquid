@@ -65,12 +65,12 @@
             class="variant-option"
             data-testid="variant-option-single"
           >
-            {{- product_option.name | escape -}}
+            {{- product_option.name | escape -}}:
             <span
               class="variant-option__swatch-value"
               data-testid="variant-option-single-value"
             >
-              {{- product_option.selected_value -}}
+             {{- product_option.selected_value -}}
             </span>
           </div>
         {%- elsif variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
@@ -220,23 +220,23 @@
             </div>
           </div>
         {%- endif -%}
+        {% if forloop.last and section_id != blank and size_guide_image != blank %}
+          <div class="ew-size-guide-variant">
+            <button
+              type="button"
+              on:click="#ew-size-guide-{{ section_id }}/showDialog"
+              class="button button-unstyled ew-size-guide-variant__button link"
+              aria-label="{{ 'products.product.size_guide' | t | default: 'Size guide' }}"
+            >
+              {{ 'products.product.size_guide' | t | default: 'Size guide' }}
+            </button>
+          </div>
+        {% endif %}
       {%- endfor -%}
 
       <script type="application/json">
         {{ product_resource.selected_or_first_available_variant | json }}
       </script>
-      {% if section_id != blank and size_guide_image != blank %}
-        <div class="ew-size-guide-variant">
-          <button
-            type="button"
-            on:click="#ew-size-guide-{{ section_id }}/showDialog"
-            class="button button-unstyled ew-size-guide-variant__button link"
-            aria-label="{{ 'products.product.size_guide' | t | default: 'Size guide' }}"
-          >
-            {{ 'products.product.size_guide' | t | default: 'Size guide' }}
-          </button>
-        </div>
-      {% endif %}
     </form>
   </variant-picker>
 {% endunless %}

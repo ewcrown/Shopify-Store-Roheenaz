@@ -27,30 +27,53 @@
   "
 >
   <div class="ew-rhz-trending-festive__inner">
-    {% if section.settings.title != blank or section.settings.subtitle != blank %}
-      <div class="ew-rhz-trending-festive__header" style="--header-alignment: {{ section.settings.header_alignment }}; --text-align: {{ section.settings.header_alignment | replace: 'flex-start', 'left' | replace: 'flex-end', 'right' | replace: 'center', 'center' }};">
-        {% if section.settings.title != blank %}
-          <h2
-            class="ew-rhz-trending-festive__title text-block {{ section.settings.title_preset }}"
-            style="{% render 'typography-style', settings: section.settings, preset: section.settings.title_preset %}{% if section.settings.title_color != blank %} color: {{ section.settings.title_color }};{% endif %}"
-          >
-            <span>{{ section.settings.title | escape }}</span>
-          </h2>
-        {% endif %}
-        {% if section.settings.subtitle != blank %}
-          <p
-            class="ew-rhz-trending-festive__subtitle text-block {{ section.settings.subtitle_preset }}"
-            style="{% render 'typography-style', settings: section.settings, preset: section.settings.subtitle_preset %}{% if section.settings.subtitle_color != blank %} color: {{ section.settings.subtitle_color }};{% endif %}"
-          >
-            <span>{{ section.settings.subtitle | escape }}</span>
-          </p>
-        {% endif %}
-      </div>
-    {% endif %}
-
     {% assign card_blocks = section.blocks | where: 'type', 'card' %}
     {% assign carousel_on_mobile = section.settings.carousel_on_mobile %}
     {% assign carousel_on_desktop = section.settings.carousel_on_desktop %}
+    <div class="ew-rhz-trending-festive__header-row">
+      {% if section.settings.title != blank or section.settings.subtitle != blank %}
+        <div class="ew-rhz-trending-festive__header" style="--header-alignment: {{ section.settings.header_alignment }}; --text-align: {{ section.settings.header_alignment | replace: 'flex-start', 'left' | replace: 'flex-end', 'right' | replace: 'center', 'center' }};">
+          {% if section.settings.title != blank %}
+            <h2
+              class="ew-rhz-trending-festive__title text-block {{ section.settings.title_preset }}"
+              style="{% render 'typography-style', settings: section.settings, preset: section.settings.title_preset %}{% if section.settings.title_color != blank %} color: {{ section.settings.title_color }};{% endif %}"
+            >
+              <span>{{ section.settings.title | escape }}</span>
+            </h2>
+          {% endif %}
+          {% if section.settings.subtitle != blank %}
+            <p
+              class="ew-rhz-trending-festive__subtitle text-block {{ section.settings.subtitle_preset }}"
+              style="{% render 'typography-style', settings: section.settings, preset: section.settings.subtitle_preset %}{% if section.settings.subtitle_color != blank %} color: {{ section.settings.subtitle_color }};{% endif %}"
+            >
+              <span>{{ section.settings.subtitle | escape }}</span>
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+      {% if carousel_on_mobile or carousel_on_desktop %}
+        {% if section.settings.carousel_arrows %}
+          <div class="ew-rhz-trending-festive__nav" aria-label="Carousel navigation">
+            <button
+              class="ew-rhz-trending-festive__nav-btn ew-rhz-trending-festive__nav-btn--prev"
+              data-splide-prev="{{ section.id }}"
+              aria-label="Previous"
+              type="button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button
+              class="ew-rhz-trending-festive__nav-btn ew-rhz-trending-festive__nav-btn--next"
+              data-splide-next="{{ section.id }}"
+              aria-label="Next"
+              type="button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
 
     {% capture cards_html %}
       {% for block in card_blocks %}
@@ -95,6 +118,20 @@
             }, 150);
           }
 
+          function updateNavState() {
+            if (!splideInstance) return;
+            var sectionEl = document.getElementById('ew-rhz-trending-festive-{{ section.id }}');
+            if (!sectionEl) return;
+            var prevBtn = sectionEl.querySelector('[data-splide-prev="{{ section.id }}"]');
+            var nextBtn = sectionEl.querySelector('[data-splide-next="{{ section.id }}"]');
+            if (!prevBtn || !nextBtn) return;
+            var index = splideInstance.index;
+            var total = splideInstance.length;
+            var perPage = splideInstance.options.perPage || 1;
+            prevBtn.disabled = !splideInstance.options.rewind && index === 0;
+            nextBtn.disabled = !splideInstance.options.rewind && index >= total - perPage;
+          }
+
           function init() {
             var el = document.querySelector(selector);
             if (!el || cardCount === 0 || typeof Splide === 'undefined') return;
@@ -108,7 +145,7 @@
               perMove: 1,
               gap: '{{ section.settings.carousel_gap }}px',
               trimSpace: false,
-              arrows: {{ section.settings.carousel_arrows }},
+              arrows: false,
               pagination: {{ section.settings.carousel_pagination }},
               autoplay: {{ section.settings.carousel_autoplay }},
               interval: {{ section.settings.carousel_autoplay_interval | times: 1000 }},
@@ -120,6 +157,20 @@
                 }
               }
             }).mount();
+
+            splideInstance.on('moved', updateNavState);
+            updateNavState();
+
+            {% if section.settings.carousel_arrows %}
+            var sectionEl = document.getElementById('ew-rhz-trending-festive-{{ section.id }}');
+            if (sectionEl) {
+              var prevBtn = sectionEl.querySelector('[data-splide-prev="{{ section.id }}"]');
+              var nextBtn = sectionEl.querySelector('[data-splide-next="{{ section.id }}"]');
+              if (prevBtn) prevBtn.addEventListener('click', function () { splideInstance.go('<'); });
+              if (nextBtn) nextBtn.addEventListener('click', function () { splideInstance.go('>'); });
+            }
+            {% endif %}
+
             window.addEventListener('resize', onResize);
           }
 
@@ -133,6 +184,72 @@
     {% endif %}
   </div>
 </section>
+
+{% stylesheet %}
+  .ew-rhz-trending-festive__header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: var(--ew-rhz-header-spacing-mobile, 32px);
+  }
+
+  @media screen and (min-width: 750px) {
+    .ew-rhz-trending-festive__header-row {
+      align-items: center;
+      margin-bottom: var(--ew-rhz-header-spacing-desktop, 48px);
+    }
+  }
+  @media screen and (max-width: 750px) {
+    .ew-rhz-trending-festive__header-row {
+    display:none;
+    }
+  }
+
+  .ew-rhz-trending-festive__header {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .ew-rhz-trending-festive__nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .ew-rhz-trending-festive__nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: currentColor;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+    padding: 0;
+  }
+
+  .ew-rhz-trending-festive__nav-btn:hover:not(:disabled) {
+    background: currentColor;
+  }
+
+  .ew-rhz-trending-festive__nav-btn:hover:not(:disabled) svg {
+    stroke: var(--color-background, #fff);
+  }
+
+  .ew-rhz-trending-festive__nav-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .ew-rhz-trending-festive__nav-btn svg {
+    display: block;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

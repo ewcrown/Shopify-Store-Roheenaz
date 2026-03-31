@@ -89,17 +89,17 @@
   .product-share__icon { width: 1.125rem; height: 1.125rem; }
   .product-share__fallback {
     display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 0.5rem;
-    min-width: 500px;
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(360px, calc(100vw - 2rem));
     padding: 1rem;
     background: var(--color-background, #fff);
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    z-index: 10;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    z-index: 9999;
   }
   .product-share__fallback.is-open { display: block; }
   .product-share__header {
@@ -152,30 +152,3 @@
   .product-share__link .icon { width: 1.125rem; height: 1.125rem; }
 </style>
 
-<script>
-  (function() {
-    document.querySelectorAll('[data-product-share]').forEach(function(el) {
-      var trigger = el.querySelector('[data-share-trigger]');
-    var fallback = el.querySelector('[data-share-fallback]');
-    var closeBtn = el.querySelector('[data-share-close]');
-    var copyBtn = el.querySelector('[data-share-copy]');
-    var urlInput = el.querySelector('[data-share-url]');
-    var messageEl = el.querySelector('[data-share-message]');
-    function open() { fallback.classList.add('is-open'); fallback.setAttribute('aria-hidden', 'false'); if (trigger) trigger.setAttribute('aria-expanded', 'true'); }
-    function close() { fallback.classList.remove('is-open'); fallback.setAttribute('aria-hidden', 'true'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); }
-    function copyUrl() {
-      if (!urlInput) return;
-      urlInput.select();
-      urlInput.setSelectionRange(0, 99999);
-      try {
-        navigator.clipboard.writeText(urlInput.value);
-        if (messageEl) { messageEl.classList.remove('hidden'); setTimeout(function() { messageEl.classList.add('hidden'); }, 2500); }
-      } catch (e) {}
-    }
-    if (trigger) trigger.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); fallback.classList.contains('is-open') ? close() : open(); });
-    if (closeBtn) closeBtn.addEventListener('click', close);
-    if (copyBtn) copyBtn.addEventListener('click', copyUrl);
-    document.addEventListener('click', function(e) { if (el.contains(e.target)) return; close(); });
-    });
-  })();
-</script>

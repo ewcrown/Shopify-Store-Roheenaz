@@ -18,7 +18,7 @@
           "settings": {
             "media_presentation": "carousel",
             "media_columns": "two",
-            "image_gap": 4,
+            "image_gap": 8,
             "large_first_image": false,
             "slideshow_images_per_frame": "2",
             "icons_style": "chevron",
@@ -26,7 +26,7 @@
             "slideshow_mobile_controls_style": "dots",
             "thumbnail_position": "left",
             "thumbnail_width": 72,
-            "thumbnail_radius": 0,
+            "thumbnail_radius": 4,
             "aspect_ratio": "adapt",
             "constrain_to_viewport": true,
             "media_fit": "contain",

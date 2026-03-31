@@ -108,12 +108,11 @@
           {{ product_details }}
         {% endif %}
       {% endfor %}
+      {% if product != blank and product.metafields.custom.size_guide_image != blank %}
+        {% render 'ew-size-guide-dialog', product: product, section_id: section_id %}
+      {% endif %}
+      {{ additional_blocks }}
     </div>
-
-    {{ additional_blocks }}
-    {% if product != blank and product.metafields.custom.size_guide_image != blank %}
-      {% render 'ew-size-guide-dialog', product: product, section_id: section_id %}
-    {% endif %}
     <script>
       (function() {
         var sectionId = {{ section_id | json }};

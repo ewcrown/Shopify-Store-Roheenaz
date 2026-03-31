@@ -1745,7 +1745,7 @@ zoom-dialog dialog {
   top: var(--margin-lg);
   right: var(--margin-lg);
   width: var(--minimum-touch-target);
-  height: var(--minimum-touch-target);
+  height: 31px;
   z-index: var(--layer-flat);
   background-color: transparent;
   display: flex;
@@ -2231,7 +2231,7 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
 }
 
 .variant-option__swatch-value {
-  padding-inline-start: var(--padding-xs);
+  padding-inline-start: 0.2rem;
   color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
 }
 

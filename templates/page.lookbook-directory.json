@@ -1,0 +1,114 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    
+    "lookbook_blocki_3xYG3F": {
+      "type": "lookbook-gallery",
+      "blocks": {
+        "image_nTnHV8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2026-02-28_at_1.53.32_PM.png",
+            "img_url": "shopify://pages/veil-of-summer"
+          }
+        },
+        "image_NCDWDj": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Cover_page_c65baac6-ca00-4316-a945-bd42878e3746.png",
+            "img_url": "shopify://pages/summer-in-bloom-printed-lawn"
+          }
+        },
+        "image_LBnKCE": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/cover_image.png",
+            "img_url": "shopify://pages/summer-reverie-1"
+          }
+        },
+        "image_PnLHia": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Whispered_Florals.png",
+            "img_url": "shopify://pages/whispered-florals"
+          }
+        },
+        "image_Dnzkd9": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/cover_page.png",
+            "img_url": "shopify://pages/rosette"
+          }
+        },
+        "image_JziJwG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2nd.webp",
+            "img_url": "shopify://pages/lookbook"
+          }
+        },
+        "image_EJPwHT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/3rd.webp",
+            "img_url": "shopify://pages/aliera"
+          }
+        },
+        "image_hMVfUJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/4rd.webp",
+            "img_url": "shopify://pages/garden-veil"
+          }
+        },
+        "image_R4xAni": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/5th.webp",
+            "img_url": "shopify://pages/aezel"
+          }
+        },
+        "image_ULanJc": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/6th.webp",
+            "img_url": "shopify://pages/pareesa-cambric"
+          }
+        },
+        "image_C4rU8W": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/7th.webp",
+            "img_url": "shopify://pages/summer-reverie"
+          }
+        }
+      },
+      "block_order": [
+        "image_nTnHV8",
+        "image_NCDWDj",
+        "image_LBnKCE",
+        "image_PnLHia",
+        "image_Dnzkd9",
+        "image_JziJwG",
+        "image_EJPwHT",
+        "image_hMVfUJ",
+        "image_R4xAni",
+        "image_ULanJc",
+        "image_C4rU8W"
+      ],
+      "name": "Lookbook Gallery",
+      "settings": {}
+    }
+  },
+  "order": [
+    "lookbook_blocki_3xYG3F"
+  ]
+}

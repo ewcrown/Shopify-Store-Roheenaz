@@ -55,13 +55,15 @@
   .accordion--plus .icon-caret {
     display: none;
   }
-
+details-content p {
+    font-size: 12px;
+}
   /* because we can't pass apply a specific class on a block based on its parent block setting */
   .accordion .details__header {
     font-family: var(--summary-font-family);
     font-style: var(--summary-font-style);
-    font-weight: var(--summary-font-weight);
-    font-size: var(--summary-font-size);
+    font-weight: 600;
+    font-size: 0.95rem;
     line-height: var(--summary-font-line-height);
     text-transform: var(--summary-font-case);
     min-height: var(--minimum-touch-target);

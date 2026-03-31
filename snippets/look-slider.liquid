@@ -1,0 +1,71 @@
+<style>
+  .look-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .look-grid__items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .look-grid__item {
+    overflow: hidden;
+    border-radius: 4px;
+    background: #f5f5f5;
+  }
+
+  .look-grid__item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: opacity 0.4s ease;
+    opacity: 0.94;
+  }
+
+  .look-grid__item:hover img {
+    opacity: 1;
+  }
+
+  .look-grid__empty {
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    padding: 48px 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .look-grid {
+      padding: 0 12px;
+    }
+
+    .look-grid__items {
+      gap: 6px;
+    }
+  }
+</style>
+
+<div class="look-grid section-padding">
+  {% assign lookbook_images = page.metafields.custom.img.value %}
+
+  <div class="look-grid__items">
+    {% if lookbook_images %}
+      {% for img in lookbook_images %}
+        <div class="look-grid__item">
+          <img
+            src="{{ img | image_url: width: 1080 }}"
+            alt="Lookbook {{ forloop.index }}"
+            loading="lazy"
+            width="1080"
+            height="1000">
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="look-grid__empty">No images added yet. Add them via metafields → custom.img</p>
+    {% endif %}
+  </div>
+</div>
