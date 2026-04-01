@@ -182,6 +182,20 @@
         })();
       </script>
     {% endif %}
+
+    {% if section.settings.show_view_all and section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+      <div
+        class="ew-rhz-trending-festive__footer"
+        style="--ew-rhz-view-all-align: {{ section.settings.view_all_alignment }}; --ew-rhz-view-all-spacing-top: {{ section.settings.view_all_spacing_top }}px;"
+      >
+        <a
+          href="{{ section.settings.view_all_link }}"
+          class="ew-rhz-trending-festive__view-all button{% if section.settings.view_all_style == 'secondary' %} button-secondary{% endif %}"
+        >
+          {{ section.settings.view_all_label | escape }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 </section>
 
@@ -249,6 +263,17 @@
   .ew-rhz-trending-festive__nav-btn svg {
     display: block;
   }
+
+  .ew-rhz-trending-festive__footer {
+    display: flex;
+    justify-content: var(--ew-rhz-view-all-align, center);
+    width: 100%;
+    margin-top: var(--ew-rhz-view-all-spacing-top, 24px);
+  }
+
+  .ew-rhz-trending-festive__view-all {
+    text-decoration: none;
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -308,6 +333,20 @@
     { "type": "range", "id": "carousel_autoplay_interval", "label": "Autoplay interval (seconds)", "min": 3, "max": 10, "step": 1, "default": 5 },
     { "type": "range", "id": "carousel_gap", "label": "Carousel gap", "min": 0, "max": 32, "step": 4, "default": 12, "unit": "px" },
     { "type": "range", "id": "cards_gap", "label": "Gap between cards (grid)", "min": 0, "max": 48, "step": 4, "default": 12, "unit": "px" },
+    { "type": "header", "content": "View all" },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show View all button", "default": true },
+    { "type": "text", "id": "view_all_label", "label": "Button label", "default": "View all", "visible_if": "{{ section.settings.show_view_all }}" },
+    { "type": "url", "id": "view_all_link", "label": "Link", "visible_if": "{{ section.settings.show_view_all }}" },
+    { "type": "select", "id": "view_all_style", "label": "Button style", "options": [
+      { "value": "primary", "label": "Primary" },
+      { "value": "secondary", "label": "Secondary" }
+    ], "default": "secondary", "visible_if": "{{ section.settings.show_view_all }}" },
+    { "type": "select", "id": "view_all_alignment", "label": "Button alignment", "options": [
+      { "value": "flex-start", "label": "Left" },
+      { "value": "center", "label": "Center" },
+      { "value": "flex-end", "label": "Right" }
+    ], "default": "center", "visible_if": "{{ section.settings.show_view_all }}" },
+    { "type": "range", "id": "view_all_spacing_top", "label": "Space above button", "min": 0, "max": 80, "step": 4, "default": 24, "unit": "px", "visible_if": "{{ section.settings.show_view_all }}" },
     { "type": "select", "id": "section_width", "label": "Width", "options": [
       { "value": "full-width", "label": "Full width" }, { "value": "page-width", "label": "Page width" }
     ], "default": "page-width" },

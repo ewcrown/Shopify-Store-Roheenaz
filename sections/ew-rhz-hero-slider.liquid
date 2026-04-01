@@ -6,14 +6,17 @@
   class="ew-rhz-hero-slider ew-rhz-hero-slider--{{ section.id }}"
   id="ew-rhz-hero-slider-{{ section.id }}"
   aria-label="Hero Slider"
-  style="--ew-rhz-slide-height: {{ section.settings.slide_height }}px; --ew-rhz-slide-height-desktop: {{ section.settings.slide_height_desktop }}px;"
 >
   <div class="ew-rhz-hero-slider__viewport">
     <div class="splide" id="ew-rhz-splide-hero-{{ section.id }}">
       <div class="splide__track">
         <ul class="splide__list">
         {% for block in section.blocks %}
-          <li class="splide__slide" data-mobile-header-style="{{ block.settings.mobile_header_style | default: 'default' }}" {{ block.shopify_attributes }}>
+          <li
+            class="splide__slide"
+            data-hero-header-style="{{ block.settings.mobile_header_style | default: 'default' }}"
+            {{ block.shopify_attributes }}
+          >
             {% if block.settings.link != blank %}
               <a href="{{ block.settings.link }}" class="ew-rhz-hero-slider__link">
             {% endif %}
@@ -110,8 +113,23 @@
         ? slides[idx]
         : el.querySelector('.splide__slide.is-active');
       if (!slide) return '';
-      var style = (slide.getAttribute('data-mobile-header-style') || 'default').trim().toLowerCase();
+      var raw = slide.getAttribute('data-hero-header-style') || slide.getAttribute('data-mobile-header-style') || 'default';
+      var style = raw.trim().toLowerCase();
       return (style === 'light' || style === 'dark') ? style : '';
+    }
+
+    /** When the header is pinned/sticky (data-sticky-state="active"), force dark for contrast over content. */
+    function isHeaderStickyActive() {
+      var header = document.getElementById('header-component');
+      return !!(header && header.getAttribute('data-sticky-state') === 'active');
+    }
+
+    /**
+     * Final style: slide choice on all viewports; sticky header always uses dark.
+     */
+    function getResolvedHeaderStyle(el, splide) {
+      if (isHeaderStickyActive()) return 'dark';
+      return getActiveSlideStyle(el, splide);
     }
 
     function applyHeaderStyle(style) {
@@ -120,7 +138,6 @@
       } else {
         document.body.removeAttribute('data-mobile-header-style');
       }
-      updateAnnouncementBarColor(style);
       updateHeaderComponentColor(style);
     }
 
@@ -139,29 +156,6 @@
       }
       var nodes = [header].concat(Array.prototype.slice.call(header.querySelectorAll('.header__row, .header__navigation-bar-row')));
       nodes.forEach(function (node) {
-        var list = node.classList;
-        for (var i = list.length - 1; i >= 0; i--) {
-          if (list[i].indexOf('color-') === 0) list.remove(list[i]);
-        }
-        list.add(targetClass);
-      });
-    }
-
-    /** Light = color-scheme-6, Dark = color-inverse. Default = theme default. */
-    function updateAnnouncementBarColor(style) {
-      var wrapper = document.querySelector('.header-announcements-wrapper');
-      if (!wrapper) return;
-      var defaultScheme = wrapper.getAttribute('data-announcement-default-color') || 'scheme-6';
-      var targetClass;
-      if (style === 'dark') {
-        targetClass = 'color-inverse';
-      } else if (style === 'light') {
-        targetClass = 'color-scheme-6';
-      } else {
-        targetClass = defaultScheme.indexOf('color-') === 0 ? defaultScheme : 'color-' + defaultScheme;
-      }
-      [wrapper.querySelector('.section-background'), wrapper.querySelector('.announcement-bar')].forEach(function (node) {
-        if (!node) return;
         var list = node.classList;
         for (var i = list.length - 1; i >= 0; i--) {
           if (list[i].indexOf('color-') === 0) list.remove(list[i]);
@@ -189,19 +183,42 @@
         speed: {{ section.settings.transition_speed }},
         rewind: true,
         perPage: 1,
-        perMove: 1
+        perMove: 1,
+        autoHeight: true
       };
 
       var splide = new Splide('#' + splideId, opts);
       splide.on('moved', function () {
-        applyHeaderStyle(getActiveSlideStyle(el, splide));
+        applyHeaderStyle(getResolvedHeaderStyle(el, splide));
       });
       splide.on('mounted', function () {
-        applyHeaderStyle(getActiveSlideStyle(el, splide));
+        applyHeaderStyle(getResolvedHeaderStyle(el, splide));
       });
       splide.mount();
       mounted = splide;
+
+      bindHeaderStickyObserver(el);
+
+      el.querySelectorAll('img').forEach(function (img) {
+        if (img.complete) return;
+        img.addEventListener('load', function () {
+          splide.refresh();
+        });
+      });
       lastMobile = isMobile();
+    }
+
+    function bindHeaderStickyObserver(heroSplideRoot) {
+      var header = document.getElementById('header-component');
+      if (!header || header.dataset.ewRhzHeroStickyBound === '1') return;
+      header.dataset.ewRhzHeroStickyBound = '1';
+      var obs = new MutationObserver(function () {
+        if (!mounted) return;
+        var root = document.getElementById(splideId);
+        if (!root) return;
+        applyHeaderStyle(getResolvedHeaderStyle(root, mounted));
+      });
+      obs.observe(header, { attributes: true, attributeFilter: ['data-sticky-state'] });
     }
 
     function onResize() {
@@ -210,7 +227,7 @@
       if (el && mobile !== lastMobile) {
         run();
       } else if (el && mounted) {
-        applyHeaderStyle(getActiveSlideStyle(el, mounted));
+        applyHeaderStyle(getResolvedHeaderStyle(el, mounted));
       }
     }
 
@@ -229,30 +246,6 @@
   "tag": "section",
   "class": "ew-rhz-hero-slider-section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "range",
-      "id": "slide_height",
-      "label": "Slide height (mobile)",
-      "min": 200,
-      "max": 2000,
-      "step": 20,
-      "default": 400,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "slide_height_desktop",
-      "label": "Slide height (desktop)",
-      "min": 300,
-      "max": 2000,
-      "step": 20,
-      "default": 500,
-      "unit": "px"
-    },
     {
       "type": "header",
       "content": "Slider"
@@ -336,17 +329,17 @@
         },
         {
           "type": "header",
-          "content": "Mobile header & announcement"
+          "content": "Header over hero"
         },
         {
           "type": "select",
           "id": "mobile_header_style",
-          "label": "Header & announcement style (mobile only)",
-          "info": "Override header and announcement bar colors on mobile when this slide is active.",
+          "label": "Header style",
+          "info": "Adjusts header colors (logo, menu, icons) for this slide on all screen sizes. When the header is sticky/pinned (data-sticky-state active), it always uses the Dark treatment for contrast.",
           "options": [
-            { "value": "default", "label": "Default" },
-            { "value": "light", "label": "Light (white background, black text)" },
-            { "value": "dark", "label": "Dark (black background, white text)" }
+            { "value": "default", "label": "Default (theme)" },
+            { "value": "light", "label": "Light (white background, dark text)" },
+            { "value": "dark", "label": "Dark (dark background, light text)" }
           ],
           "default": "default"
         }

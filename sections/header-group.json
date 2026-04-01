@@ -26,7 +26,7 @@
         "collection_announcement_color_scheme": "inverse",
         "color_scheme_transparent": "scheme-1",
         "section_width": "full-width",
-        "color_scheme_home": "scheme-5",
+        "color_scheme_home": "scheme-1",
         "color_scheme_other_pages": "scheme-2",
         "divider_width": 1,
         "padding-block-start": 15,
@@ -71,6 +71,10 @@
           "blocks": {}
         }
       },
+      "custom_css": [
+        "li.menu-drawer__list-item:last-child {border: none;}",
+        "#header-component[data-menu-style=drawer] .header__columns .search-action {position: relative; left: -15px;}"
+      ],
       "settings": {
         "logo_position": "center",
         "menu_position": "left",

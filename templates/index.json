@@ -18,7 +18,7 @@
             "image": "shopify://shop_images/Rectangle_2_1.png",
             "mobile_image": "shopify://shop_images/SoleilBlanc_6_18a45ba3-8bf8-4b1d-b5ed-c88aa45fca1d.jpg",
             "link": "shopify://collections/aezel-unstitched-emb-cambric",
-            "mobile_header_style": "dark"
+            "mobile_header_style": "light"
           }
         },
         "slide_xdnMAG": {
@@ -38,8 +38,6 @@
       ],
       "name": "<> Hero Slider",
       "settings": {
-        "slide_height": 620,
-        "slide_height_desktop": 660,
         "transition_type": "fade",
         "transition_speed": 1200,
         "autoplay": true,
@@ -52,13 +50,28 @@
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
+        "button_tEiqm9": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Shop now",
+            "link": "shopify://collections/new-arrivals",
+            "open_in_new_tab": false,
+            "style_class": "button-secondary",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        },
         "static-header": {
           "type": "_product-list-content",
           "name": "t:names.header",
           "static": true,
           "settings": {
             "content_direction": "row",
-            "vertical_on_mobile": false,
+            "vertical_on_mobile": true,
             "horizontal_alignment": "center",
             "vertical_alignment": "center",
             "align_baseline": true,
@@ -213,6 +226,9 @@
           ]
         }
       },
+      "block_order": [
+        "button_tEiqm9"
+      ],
       "name": "Featured collection",
       "settings": {
         "collection": "new-arrivals",
@@ -221,17 +237,19 @@
         "max_products": 8,
         "columns": 5,
         "mobile_columns": "2",
-        "mobile_card_size": "44cqw",
+        "mobile_card_size": "85cqw",
         "columns_gap": 8,
         "rows_gap": 24,
         "icons_style": "none",
         "icons_shape": "none",
         "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
+        "horizontal_alignment": "center",
         "gap": 28,
         "color_scheme": "scheme-2",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "header_heading_font_size_mobile": "",
+        "header_paragraph_font_size_mobile": "",
+        "padding-block-start": 44,
+        "padding-block-end": 44
       }
     },
     "ew_rhz_media_panels_i98wtN": {
@@ -279,8 +297,14 @@
         "block_height_desktop": 600,
         "section_width": "page-width",
         "color_scheme": "scheme-2",
+        "show_view_all": false,
+        "view_all_label": "View all",
+        "view_all_link": "shopify://collections/all",
+        "view_all_style": "secondary",
+        "view_all_alignment": "center",
+        "view_all_spacing_top": 24,
         "padding-block-start": 0,
-        "padding-block-end": 60,
+        "padding-block-end": 0,
         "padding-inline-start": 0,
         "padding-inline-end": 0
       }
@@ -304,7 +328,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/Rectangle_717_1.png",
-            "link": "shopify://collections/luxury-pret",
+            "link": "shopify://collections/luxury-lawn",
             "label": "Luxury lawn",
             "label_alignment": "center",
             "label_color": "#000000",
@@ -338,13 +362,13 @@
         "subtitle_preset": "paragraph",
         "title_color": "",
         "subtitle_color": "",
-        "title_font_size_mobile": "",
+        "title_font_size_mobile": "1.25rem",
         "subtitle_font_size_mobile": "",
         "header_alignment": "center",
         "header_gap_mobile": 8,
         "header_gap_desktop": 12,
         "header_spacing_mobile": 32,
-        "header_spacing_desktop": 48,
+        "header_spacing_desktop": 44,
         "block_height_mobile": 400,
         "block_height_desktop": 520,
         "carousel_on_mobile": true,
@@ -355,10 +379,16 @@
         "carousel_autoplay_interval": 5,
         "carousel_gap": 12,
         "cards_gap": 12,
+        "show_view_all": false,
+        "view_all_label": "View all",
+        "view_all_link": "shopify://collections/all",
+        "view_all_style": "secondary",
+        "view_all_alignment": "center",
+        "view_all_spacing_top": 24,
         "section_width": "page-width",
         "color_scheme": "scheme-2",
-        "padding-block-start": 36,
-        "padding-block-end": 56,
+        "padding-block-start": 44,
+        "padding-block-end": 0,
         "padding-inline-start": 0,
         "padding-inline-end": 0
       }
@@ -449,7 +479,7 @@
       ],
       "name": "<> Trending Festive",
       "settings": {
-        "title": "TRENDING FESTIVE",
+        "title": "LUXURY EDIT",
         "title_preset": "h3",
         "subtitle": "Styles selected with you in mind. Explore the latest trends.",
         "subtitle_preset": "paragraph",
@@ -460,8 +490,8 @@
         "header_alignment": "center",
         "header_gap_mobile": 8,
         "header_gap_desktop": 12,
-        "header_spacing_mobile": 32,
-        "header_spacing_desktop": 48,
+        "header_spacing_mobile": 20,
+        "header_spacing_desktop": 24,
         "block_height_mobile": 400,
         "block_height_desktop": 520,
         "carousel_on_mobile": true,
@@ -470,15 +500,21 @@
         "carousel_per_page_mobile": 2,
         "carousel_per_page_desktop": 4,
         "carousel_arrows": false,
-        "carousel_pagination": false,
+        "carousel_pagination": true,
         "carousel_autoplay": true,
         "carousel_autoplay_interval": 10,
         "carousel_gap": 12,
         "cards_gap": 12,
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "view_all_link": "shopify://collections/luxury-lawn",
+        "view_all_style": "secondary",
+        "view_all_alignment": "center",
+        "view_all_spacing_top": 0,
         "section_width": "page-width",
         "color_scheme": "scheme-2",
-        "padding-block-start": 36,
-        "padding-block-end": 60,
+        "padding-block-start": 44,
+        "padding-block-end": 44,
         "padding-inline-start": 0,
         "padding-inline-end": 0
       }

@@ -213,6 +213,7 @@
             "divider_VJhene": {
               "type": "_divider",
               "name": "t:names.divider",
+              "disabled": true,
               "settings": {
                 "thickness": 1,
                 "corner_radius": "square",
@@ -279,7 +280,7 @@
               "type": "custom-liquid",
               "name": "t:names.custom_liquid",
               "settings": {
-                "custom_liquid": "<div class=\"delivery-text-rhnz\">\n<h6>All stitched articles required advance payment</h6>\n<p>\nAll Unstitched orders will be dispatched within 3 working days.\n</p>\n<p>All Stitched orders will be dispatched within 14–18 working days.</p>\n</div>"
+                "custom_liquid": "<div class=\"delivery-text-rhnz\">\n<h6>Note: All stitched articles required advance payment</h6>\n\n</div>"
               },
               "blocks": {}
             },
@@ -302,6 +303,45 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "accordion_row_AY6Ce3": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Delivery Timeline",
+                    "open_by_default": true,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text_icWkTJ": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>All Unstitched orders will be dispatched within 3 working days.<br/>All Stitched orders will be dispatched within 14–18 working days.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_icWkTJ"
+                  ]
+                },
                 "accordion_row_tBWimA": {
                   "type": "_accordion-row",
                   "settings": {
@@ -379,51 +419,12 @@
                   "block_order": [
                     "text_G3UzjG"
                   ]
-                },
-                "accordion_row_AY6Ce3": {
-                  "type": "_accordion-row",
-                  "settings": {
-                    "heading": "Manufacturing",
-                    "open_by_default": false,
-                    "icon": "none",
-                    "width": 20
-                  },
-                  "blocks": {
-                    "text_icWkTJ": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>Our products are manufactured both locally and globally. We carefully select our manufacturing partners to ensure our products are high quality and a fair value.</p>",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "text_icWkTJ"
-                  ]
                 }
               },
               "block_order": [
+                "accordion_row_AY6Ce3",
                 "accordion_row_tBWimA",
-                "accordion_row_wLKtft",
-                "accordion_row_AY6Ce3"
+                "accordion_row_wLKtft"
               ]
             }
           },

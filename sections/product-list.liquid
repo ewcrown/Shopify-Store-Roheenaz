@@ -18,6 +18,8 @@
   style="
     {% render 'spacing-style', settings: section.settings %}
     {% render 'gap-style', value: section.settings.gap %}
+    {% if section.settings.header_heading_font_size_mobile != blank %}--product-list-header-heading-mobile: {{ section.settings.header_heading_font_size_mobile }};{% endif %}
+    {% if section.settings.header_paragraph_font_size_mobile != blank %}--product-list-header-paragraph-mobile: {{ section.settings.header_paragraph_font_size_mobile }};{% endif %}
   "
 >
   <div class="section-resource-list__header">
@@ -79,6 +81,18 @@
     {%- content_for 'blocks' -%}
   </div>
 </div>
+
+{% stylesheet %}
+  @media screen and (max-width: 749px) {
+    [data-testid='product-list'] .section-resource-list__header :is(h1, h2, h3, h4, h5, h6) {
+      font-size: var(--product-list-header-heading-mobile, inherit);
+    }
+
+    [data-testid='product-list'] .section-resource-list__header p {
+      font-size: var(--product-list-header-paragraph-mobile, inherit);
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -170,18 +184,35 @@
     {
       "type": "select",
       "id": "mobile_card_size",
-      "label": "t:settings.mobile_columns",
+      "label": "t:settings.mobile_card_size",
+      "info": "Width of each slide on screens under 750px. “Large” shows about one full product card with a slice of the next (peek), like curated rows.",
       "options": [
         {
+          "value": "85cqw",
+          "label": "Large (1 card + peek)"
+        },
+        {
+          "value": "75cqw",
+          "label": "Medium"
+        },
+        {
+          "value": "65cqw",
+          "label": "Small peek"
+        },
+        {
           "value": "60cqw",
-          "label": "t:options.one_number"
+          "label": "Compact"
+        },
+        {
+          "value": "50cqw",
+          "label": "Two columns"
         },
         {
           "value": "44cqw",
-          "label": "t:options.two_number"
+          "label": "Narrow (2 columns)"
         }
       ],
-      "default": "60cqw",
+      "default": "85cqw",
       "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
     },
     {
@@ -316,6 +347,45 @@
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Mobile header typography"
+    },
+    {
+      "type": "paragraph",
+      "content": "Applies to the section title area (above the product grid) on screens under 750px. Does not change product card text."
+    },
+    {
+      "type": "select",
+      "id": "header_heading_font_size_mobile",
+      "label": "Heading font size (mobile)",
+      "options": [
+        { "value": "", "label": "Default" },
+        { "value": "0.75rem", "label": "12px" },
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" },
+        { "value": "1.5rem", "label": "24px" },
+        { "value": "1.75rem", "label": "28px" },
+        { "value": "2rem", "label": "32px" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "header_paragraph_font_size_mobile",
+      "label": "Paragraph font size (mobile)",
+      "options": [
+        { "value": "", "label": "Default" },
+        { "value": "0.75rem", "label": "12px" },
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" }
+      ],
+      "default": ""
     },
     {
       "type": "header",

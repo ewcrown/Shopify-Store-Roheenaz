@@ -199,8 +199,35 @@
         })();
       </script>
     {% endif %}
+
+    {% if section.settings.show_view_all and section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+      <div
+        class="ew-rhz-curated-cards__footer"
+        style="--ew-rhz-view-all-align: {{ section.settings.view_all_alignment }}; --ew-rhz-view-all-spacing-top: {{ section.settings.view_all_spacing_top }}px;"
+      >
+        <a
+          href="{{ section.settings.view_all_link }}"
+          class="ew-rhz-curated-cards__view-all button{% if section.settings.view_all_style == 'secondary' %} button-secondary{% endif %}"
+        >
+          {{ section.settings.view_all_label | escape }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 </section>
+
+{% stylesheet %}
+  .ew-rhz-curated-cards__footer {
+    display: flex;
+    justify-content: var(--ew-rhz-view-all-align, center);
+    width: 100%;
+    margin-top: var(--ew-rhz-view-all-spacing-top, 24px);
+  }
+
+  .ew-rhz-curated-cards__view-all {
+    text-decoration: none;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -268,6 +295,7 @@
       "type": "select",
       "id": "title_font_size_mobile",
       "label": "Title font size (mobile)",
+      "info": "Applies on screens under 750px. Choose Default to use the title preset size.",
       "options": [
         { "value": "", "label": "Default" },
         { "value": "0.75rem", "label": "12px" },
@@ -283,6 +311,7 @@
       "type": "select",
       "id": "subtitle_font_size_mobile",
       "label": "Subtitle font size (mobile)",
+      "info": "Applies on screens under 750px. Choose Default to use the subtitle preset size.",
       "options": [
         { "value": "", "label": "Default" },
         { "value": "0.75rem", "label": "12px" },
@@ -430,6 +459,63 @@
       "step": 4,
       "default": 8,
       "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "View all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View all button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Button label",
+      "default": "View all",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "select",
+      "id": "view_all_style",
+      "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" }
+      ],
+      "default": "secondary",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "select",
+      "id": "view_all_alignment",
+      "label": "Button alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "range",
+      "id": "view_all_spacing_top",
+      "label": "Space above button",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "visible_if": "{{ section.settings.show_view_all }}"
     },
     {
       "type": "select",

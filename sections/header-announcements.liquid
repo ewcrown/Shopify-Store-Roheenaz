@@ -94,7 +94,7 @@
           // Calculate duration based on content length & speed setting
           var halfWidth = track.scrollWidth / 2;
           var speed = {{ section.settings.speed | default: 5 }};
-          var pxPerSecond = speed * 20; // speed 2–10 → 40–200 px/s
+          var pxPerSecond = speed * 5; // speed 2–10 → 40–200 px/s
           var duration = (halfWidth / pxPerSecond).toFixed(2);
 
           track.style.setProperty('--marquee-duration', duration + 's');
@@ -112,6 +112,10 @@
 </div>
 
 {% stylesheet %}
+h2 span,h2 {
+    font-weight: 300;
+    font-size: 27px !important;
+}
   .announcement-bar {
     border-block-end: var(--border-bottom-width) solid var(--color-border);
     min-height: 2.5rem;
@@ -124,7 +128,7 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    min-height: 2.5rem;
+    min-height: 1rem;
     width: 100%;
     position: relative;
     z-index: 1;

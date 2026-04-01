@@ -80,7 +80,34 @@
       </div>
     {% endfor %}
   </div>
+
+  {% if section.settings.show_view_all and section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+    <div
+      class="ew-rhz-media-panels__footer"
+      style="--ew-rhz-view-all-align: {{ section.settings.view_all_alignment }}; --ew-rhz-view-all-spacing-top: {{ section.settings.view_all_spacing_top }}px;"
+    >
+      <a
+        href="{{ section.settings.view_all_link }}"
+        class="ew-rhz-media-panels__view-all button{% if section.settings.view_all_style == 'secondary' %} button-secondary{% endif %}"
+      >
+        {{ section.settings.view_all_label | escape }}
+      </a>
+    </div>
+  {% endif %}
 </section>
+
+{% stylesheet %}
+  .ew-rhz-media-panels__footer {
+    display: flex;
+    justify-content: var(--ew-rhz-view-all-align, center);
+    width: 100%;
+    margin-top: var(--ew-rhz-view-all-spacing-top, 24px);
+  }
+
+  .ew-rhz-media-panels__view-all {
+    text-decoration: none;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -127,6 +154,63 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "View all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View all button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Button label",
+      "default": "View all",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Link",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "select",
+      "id": "view_all_style",
+      "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" }
+      ],
+      "default": "secondary",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "select",
+      "id": "view_all_alignment",
+      "label": "Button alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.show_view_all }}"
+    },
+    {
+      "type": "range",
+      "id": "view_all_spacing_top",
+      "label": "Space above button",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "visible_if": "{{ section.settings.show_view_all }}"
     },
     {
       "type": "header",
