@@ -1381,8 +1381,9 @@ button.shopify-payment-button__button--unbranded {
 }
 
 button.shopify-payment-button__button--unbranded {
-  font-family: var(--button-font-family-primary);
-  text-transform: var(--button-text-case-primary);
+  font-family: var(--button-font-family-secondary);
+  text-transform: var(--button-text-case-secondary);
+  border-radius: var(--style-border-radius-buttons-secondary);
 }
 
 textarea,
@@ -1413,19 +1414,24 @@ input:not(:placeholder-shown)::placeholder {
   cursor: not-allowed;
 }
 
-.button,
-button.shopify-payment-button__button--unbranded {
+.button {
   --button-color: var(--color-primary-button-text);
   --button-background-color: var(--color-primary-button-background);
   --button-border-color: var(--color-primary-button-border);
   --button-border-width: var(--style-border-width-primary);
 }
 
-.button:hover,
-button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
+.button:hover {
   --button-color: var(--color-primary-button-hover-text);
   --button-background-color: var(--color-primary-button-hover-background);
   --button-border-color: var(--color-primary-button-hover-border);
+}
+
+button.shopify-payment-button__button--unbranded {
+  --button-color: var(--color-secondary-button-text);
+  --button-background-color: var(--color-secondary-button-background);
+  --button-border-color: var(--color-secondary-button-border);
+  --button-border-width: var(--style-border-width-secondary);
 }
 
 .button-secondary {
@@ -1443,6 +1449,9 @@ button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
 
 /* Needed to override the default Shopify styles */
 button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  --button-color: var(--color-secondary-button-hover-text);
+  --button-background-color: var(--color-secondary-button-hover-background);
+  --button-border-color: var(--color-secondary-button-hover-border);
   background-color: var(--button-background-color);
 }
 
@@ -1512,12 +1521,6 @@ button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
 
 shopify-accelerated-checkout,
 shopify-accelerated-checkout-cart {
-  --shopify-accelerated-checkout-button-border-radius: var(--style-border-radius-buttons-primary);
-  --shopify-accelerated-checkout-button-block-size: var(--height-buy-buttons);
-}
-
-.product-form-buttons:has(.add-to-cart-button.button-secondary)
-  :is(shopify-accelerated-checkout, shopify-accelerated-checkout-cart) {
   --shopify-accelerated-checkout-button-border-radius: var(--style-border-radius-buttons-secondary);
   --shopify-accelerated-checkout-button-block-size: var(--height-buy-buttons);
 }
@@ -1812,23 +1815,6 @@ zoom-dialog dialog {
   animation: thumbnailsSlideOutBottom var(--animation-speed) var(--animation-easing) forwards;
 }
 
-@media screen and (min-width: 750px) {
-  .dialog-thumbnails-list {
-    position: fixed;
-    flex-direction: column;
-    inset: 50% var(--margin-lg) auto auto;
-    right: 0;
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
-    animation: thumbnailsSlideInTop var(--spring-d220-b0-duration) var(--spring-d220-b0-easing) forwards;
-    animation-delay: calc(var(--spring-d220-b0-duration) * 0.5);
-  }
-
-  .dialog--closed .dialog-thumbnails-list {
-    animation: thumbnailsSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
-  }
-}
-
 .dialog-thumbnails-list__thumbnail {
   width: var(--thumbnail-width);
   height: auto;
@@ -1955,14 +1941,6 @@ slideshow-slide .shopify-model-viewer-ui__controls-area.shopify-model-viewer-ui_
     .shopify-model-viewer-ui__controls-area {
     /* Position the controls just above the counter */
     bottom: calc(var(--minimum-touch-target) + var(--padding-sm));
-  }
-
-  .dialog-zoomed-gallery .shopify-model-viewer-ui__controls-area.shopify-model-viewer-ui__controls-area {
-    /* Move the controls up to match the padding on the thumbnails */
-    bottom: var(--padding-lg);
-
-    /* Move the controls to the left of the thumbnails list on the right */
-    right: calc(var(--thumbnail-width) + var(--padding-lg) * 2);
   }
 }
 
@@ -3772,7 +3750,7 @@ fly-to-cart.fly-to-cart--sticky {
   }
 
   50% {
-    box-shadow: 0 0 0 2px #000;
+    box-shadow: 0 0 0 2px #222;
     scale: 1;
   }
 }

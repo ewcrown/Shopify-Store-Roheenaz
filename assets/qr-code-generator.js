@@ -1627,7 +1627,7 @@ export function QRCode(el, vOption) {
     width: 256,
     height: 256,
     typeNumber: 4,
-    colorDark: '#000000',
+    colorDark: '#222222',
     colorLight: '#ffffff',
     correctLevel: QRErrorCorrectLevel.H,
     useSVG: false,

@@ -18,7 +18,7 @@
   {% liquid
     assign button_background_brightness = section.settings.color_scheme.settings.foreground | color_brightness
     if button_background_brightness < 105
-      assign strikethrough_color_mix = '#000'
+      assign strikethrough_color_mix = '#222'
     else
       assign strikethrough_color_mix = '#fff'
     endif

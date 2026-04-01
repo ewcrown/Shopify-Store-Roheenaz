@@ -22,18 +22,23 @@ import { DialogCloseEvent } from '@theme/dialog';
  * @extends Component<Refs>
  */
 export class ZoomDialog extends Component {
-  requiredRefs = ['dialog', 'media', 'thumbnails'];
+  requiredRefs = ['dialog', 'media', 'thumbnails', 'zoomGallery'];
 
   #highResImagesLoaded = /** @type {Set<string>} */ (new Set());
 
+  /** @type {HTMLElement | null} */
+  #scrollTarget = null;
+
   connectedCallback() {
     super.connectedCallback();
-    this.refs.dialog.addEventListener('scroll', this.handleScroll);
+    /** Horizontal gallery `ul` is the scroll container (dialog does not scroll). */
+    this.#scrollTarget = this.refs.zoomGallery;
+    this.#scrollTarget.addEventListener('scroll', this.handleScroll, { passive: true });
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.refs.dialog.removeEventListener('scroll', this.handleScroll);
+    this.#scrollTarget?.removeEventListener('scroll', this.handleScroll);
   }
 
   /**
@@ -119,7 +124,7 @@ export class ZoomDialog extends Component {
   handleScroll = debounce(async () => {
     const { media, thumbnails } = this.refs;
 
-    const mostVisibleElement = await getMostVisibleElement(media);
+    const mostVisibleElement = await getMostVisibleElement(media, this.#scrollTarget ?? undefined);
     const activeIndex = media.indexOf(mostVisibleElement);
     const targetThumbnail = thumbnails.children[activeIndex];
 
@@ -142,7 +147,7 @@ export class ZoomDialog extends Component {
     if (!supportsViewTransitions() || isLowPowerDevice()) return this.closeDialog();
 
     // Find the most visible image using IntersectionObserver
-    const mostVisibleElement = await getMostVisibleElement(media);
+    const mostVisibleElement = await getMostVisibleElement(media, this.#scrollTarget ?? undefined);
 
     // Get the index and set up transition
     const activeIndex = media.indexOf(mostVisibleElement);
@@ -186,15 +191,35 @@ export class ZoomDialog extends Component {
   }
 
   /**
-   * Closes the dialog when the user presses the escape key.
+   * Closes the dialog on Escape; ArrowLeft/ArrowRight step the horizontal gallery.
    *
    * @param {KeyboardEvent} event - The keyboard event.
    */
   handleKeyDown(event) {
-    if (event.key !== 'Escape') return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.close();
+      return;
+    }
+
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+
+    const { media } = this.refs;
+    if (!media?.length) return;
 
     event.preventDefault();
-    this.close();
+
+    getMostVisibleElement(media, this.#scrollTarget ?? undefined).then((current) => {
+      const i = media.indexOf(/** @type {HTMLElement} */ (current));
+      if (i < 0) return;
+      const delta = event.key === 'ArrowLeft' ? -1 : 1;
+      const next = Math.max(0, Math.min(media.length - 1, i + delta));
+      if (next !== i) {
+        this.selectThumbnail(next, {
+          behavior: prefersReducedMotion() ? 'instant' : 'smooth',
+        });
+      }
+    });
   }
 
   /**
@@ -265,9 +290,10 @@ if (!customElements.get('zoom-dialog')) {
 /**
  * Get the most visible element from a list of elements.
  * @param {HTMLElement[]} elements - The elements to get the most visible element from.
+ * @param {HTMLElement} [scrollRoot] - IntersectionObserver root (e.g. horizontal gallery scroller). Defaults to viewport.
  * @returns {Promise<HTMLElement>} A promise that resolves to the most visible element.
  */
-function getMostVisibleElement(elements) {
+function getMostVisibleElement(elements, scrollRoot) {
   return new Promise((resolve) => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -278,6 +304,7 @@ function getMostVisibleElement(elements) {
         resolve(/** @type {HTMLElement} */ (mostVisible.target));
       },
       {
+        root: scrollRoot ?? null,
         threshold: Array.from({ length: 100 }, (_, i) => i / 100),
       }
     );

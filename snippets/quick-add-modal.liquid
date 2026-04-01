@@ -253,7 +253,7 @@
 
   @supports (animation-timeline: scroll(self)) {
     dialog[open] .quick-add-modal__content .product-details {
-      mask-image: linear-gradient(to bottom, transparent 0%, #000 var(--quick-add-modal-mask-start), #000 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, #222 var(--quick-add-modal-mask-start), #222 100%);
       animation: 0.3s var(--animation-timing-fade-in) 0.1s both fadeSlideIn, scrollStart 1s linear both,
         scrollEnd 1s linear both, detect-scroll 1ms linear none;
       animation-timeline: auto, scroll(self), scroll(self), scroll(self);
@@ -311,8 +311,8 @@
       background-color: inherit;
       mask-image: linear-gradient(
         to top,
-        #000 0%,
-        #000 calc(var(--gap-2xs)),
+        #222 0%,
+        #222 calc(var(--gap-2xs)),
         transparent calc(100% - var(--quick-add-modal-mask-end-progressive-enhanced)),
         transparent
       );

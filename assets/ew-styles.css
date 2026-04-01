@@ -3,7 +3,7 @@ body {
   /* or your color */
 }
 
-#MainContent .section--page-width>*{
+#MainContent .section--page-width>* {
   max-width: 100%;
 }
 
@@ -592,13 +592,15 @@ product-price {
 .ew-rhz-hero-slider .splide__slide {
   height: auto;
 }
+
 @media only screen and (max-width: 750px) {
-.product-media__drag-zoom-wrapper img {
+  .product-media__drag-zoom-wrapper img {
     object-fit: contain;
     width: 80% !important;
     height: 80% !important;
+  }
 }
-}
+
 .ew-rhz-hero-slider__slide-content {
   position: relative;
   width: 100%;
@@ -920,10 +922,11 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
     display: none !important;
   }
 
-  .quick-add-modal__content > * {
+  .quick-add-modal__content>* {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+
   #quick-add-dialog .quick-add-modal__content {
     padding: 28px !important;
   }
@@ -1416,10 +1419,12 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
   .ew-rhz-curated-cards__title span {
     font-size: 22px !important;
   }
+
   .ew-rhz-curated-cards__label-text {
     padding: 7px 23px !important;
     font-size: 1rem !important;
   }
+
   .button-secondary {
     padding: 9px 30px !important;
     font-size: 12px !important;
@@ -1435,9 +1440,39 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
   grid-column: span 20;
 }
 
+/* PDP main gallery: always show full media (contain); intrinsic aspect, bounded by column + viewport */
 .product-information__media slideshow-slides img,
 .product-information__media slideshow-slides video {
   object-fit: contain;
+  object-position: center center;
+}
+
+.product-information__media slideshow-slide .product-media-container {
+  aspect-ratio: auto;
+  max-height: none;
+}
+
+.product-information__media slideshow-slide .product-media-container.constrain-height {
+  max-height: none;
+}
+
+.product-information__media .product-media-container img.product-media__image,
+.product-information__media .product-media-container .deferred-media__poster-image {
+  aspect-ratio: auto;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(92dvh, calc(100svh - 120px));
+  object-fit: contain;
+  object-position: center center;
+}
+
+@media screen and (max-width: 749px) {
+
+  .product-information__media .product-media-container img.product-media__image,
+  .product-information__media .product-media-container .deferred-media__poster-image {
+    max-height: min(85dvh, calc(100svh - 100px));
+  }
 }
 
 .product-details .group-block {
@@ -1611,6 +1646,7 @@ summary.menu__heading.h3 {
 
 /* ── Product page gallery improvements ─────────────────────────────────── */
 @media screen and (min-width: 750px) {
+
   /* Override thumbnail width (schema cap is 72px, we need wider) */
   .product-information__media .media-gallery--carousel slideshow-controls[pagination-position='left'] {
     --thumbnail-width: 96px;
@@ -1664,7 +1700,65 @@ summary.menu__heading.h3 {
   padding: 12px 54px;
 }
 
+.button-secondary:hover,
+button.shopify-payment-button__button--unbranded:hover:not(:disabled),
+button.shopify-payment-button__button--unbranded:focus-visible:not(:disabled) {
+  background: #222;
+  color: #fff;
+}
+
+/* Selected variant = same look as .button-secondary:hover (#222 / #fff) */
+.variant-option__button-label__pill {
+  background: #222;
+}
+
+.variant-option__button-label:has(:checked) {
+  color: #fff;
+  border-color: #222;
+}
+
+.variant-option__button-label:has(:checked):hover {
+  color: #fff;
+  border-color: #222;
+}
+
+.variant-option__button-label:has(:checked):hover .variant-option__button-label__pill {
+  background-color: #222;
+}
+
+.variant-option__button-label:has(:checked):not(.variant-option__button-label--has-swatch,
+  :has([data-option-available='false']))::before {
+  border-color: #222;
+}
+
+.variant-option__button-label--has-swatch:has(:checked) {
+  --focus-outline: var(--focus-outline-width) solid #222;
+}
 
 .ew-rhz-trending-festive__carousel .splide__pagination {
-    bottom: -3.5em;
+  bottom: -3.5em;
+}
+
+/* Zoom lightbox: full image visible (contain), centered in slide */
+.dialog-zoomed-gallery__dialog img.product-media__image {
+  aspect-ratio: auto;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(88dvh, calc(100dvh - 160px));
+  object-fit: contain;
+  object-position: center center;
+  background: transparent;
+}
+
+.dialog-zoomed-gallery .product-media__drag-zoom-wrapper .product-media__image {
+  transform: none;
+}
+
+.dialog-thumbnails-list-container {
+  left: 0;
+}
+
+.dialog-zoomed-gallery :is(.product-media-container--video, .product-media-container--external_video, .product-media-container--model) .product-media .product-media__image {
+  margin: auto;
 }

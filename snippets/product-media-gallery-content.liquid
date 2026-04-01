@@ -607,6 +607,41 @@
             <span class="visually-hidden">{{ 'actions.close' | t }}</span>
             {{ 'icon-close.svg' | inline_asset_content }}
           </button>
+          <ul
+            class="dialog-zoomed-gallery list-unstyled"
+            ref="zoomGallery"
+          >
+            {%- for media in sorted_media -%}
+              <li
+                id="product-{{ media.id}}-{{ forloop.index }}"
+                class="{{ product_media_container_class | remove: 'media-fit-cover' }} product-media-container--{{ media.media_type }}{% if media.media_type == 'image' %} product-media-container--zoomable{% endif %}"
+                style="{% if block_settings.aspect_ratio == 'adapt' %} --media-preview-ratio: {{ media.preview_image.aspect_ratio | default: 1.0 }};{% endif %}"
+                ref="media[]"
+                {% if media.media_type == 'image' %}
+                  on:click="/close"
+                {% endif %}
+              >
+                {% if media.media_type == 'image' %}
+                  <drag-zoom-wrapper class="product-media__drag-zoom-wrapper">
+                    {%- render 'product-media',
+                      media: media,
+                      sizes: '100vw',
+                      loading: 'lazy',
+                      is_main_product_media: forloop.first,
+                      image_ref: 'image'
+                    -%}
+                  </drag-zoom-wrapper>
+                {% else %}
+                  {%- render 'product-media',
+                    media: media,
+                    sizes: '100vw',
+                    loading: 'lazy',
+                    is_main_product_media: forloop.first
+                  -%}
+                {% endif %}
+              </li>
+            {%- endfor -%}
+          </ul>
           <div class="dialog-thumbnails-list-container">
             <scroll-hint
               class="dialog-thumbnails-list list-unstyled"
@@ -653,40 +688,6 @@
               {% endif %}
             </scroll-hint>
           </div>
-          <ul
-            class="dialog-zoomed-gallery list-unstyled"
-          >
-            {%- for media in sorted_media -%}
-              <li
-                id="product-{{ media.id}}-{{ forloop.index }}"
-                class="{{ product_media_container_class | remove: 'media-fit-cover' }} product-media-container--{{ media.media_type }}{% if media.media_type == 'image' %} product-media-container--zoomable{% endif %}"
-                style="{% if block_settings.aspect_ratio == 'adapt' %} --media-preview-ratio: {{ media.preview_image.aspect_ratio | default: 1.0 }};{% endif %}"
-                ref="media[]"
-                {% if media.media_type == 'image' %}
-                  on:click="/close"
-                {% endif %}
-              >
-                {% if media.media_type == 'image' %}
-                  <drag-zoom-wrapper class="product-media__drag-zoom-wrapper">
-                    {%- render 'product-media',
-                      media: media,
-                      sizes: '100vw',
-                      loading: 'lazy',
-                      is_main_product_media: forloop.first,
-                      image_ref: 'image'
-                    -%}
-                  </drag-zoom-wrapper>
-                {% else %}
-                  {%- render 'product-media',
-                    media: media,
-                    sizes: '100vw',
-                    loading: 'lazy',
-                    is_main_product_media: forloop.first
-                  -%}
-                {% endif %}
-              </li>
-            {%- endfor -%}
-          </ul>
         </dialog>
       </zoom-dialog>
     {%- endif -%}
@@ -734,12 +735,211 @@
 {% endif %}
 
 {% stylesheet %}
+  /* Full-screen zoom lightbox: translucent #222 backdrop, bottom thumbnail strip */
+  zoom-dialog dialog.dialog-zoomed-gallery__dialog,
   .dialog-zoomed-gallery__dialog {
-    background-color: var(--color-background);
+    --zoom-overlay-bg: rgb(34 34 34 / 0.94);
+    --zoom-gallery-padding: clamp(16px, 3vw, 28px);
+
+    background-color: var(--zoom-overlay-bg);
+    color-scheme: dark;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    min-height: 100dvh;
+    padding: var(--zoom-gallery-padding);
+    view-transition-name: zoom-dialog-ui;
   }
 
+  .dialog-thumbnails-list-container {
+    justify-content: center;
+    align-items: flex-end;
+    padding-inline: var(--zoom-gallery-padding, clamp(16px, 3vw, 28px));
+    padding-bottom: max(var(--padding-sm), env(safe-area-inset-bottom, 0px));
+    pointer-events: none;
+    z-index: var(--layer-raised);
+  }
+
+  .dialog-thumbnails-list-container > * {
+    pointer-events: auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .dialog-thumbnails-list-container {
+      padding-inline: 0;
+    }
+
+    .dialog-zoomed-gallery__dialog .dialog-thumbnails-list {
+      margin-inline: 0;
+      max-width: 100%;
+      padding-inline: 0;
+      border-radius: 0;
+    }
+  }
+
+  .dialog-zoomed-gallery__dialog .dialog-thumbnails-list {
+    --active-thumbnail-border-color: rgb(255 255 255 / 0.55);
+
+    position: relative;
+    flex-direction: row;
+    max-height: none;
+    width: max-content;
+    max-width: min(100%, 720px);
+    margin-inline: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    inset: unset;
+    bottom: auto;
+    padding: var(--padding-sm) var(--padding-md);
+    gap: var(--gap-sm);
+    background: rgb(34 34 34 / 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--style-border-radius-inputs);
+    animation: thumbnailsSlideInBottom calc(var(--animation-speed) * 0.75) var(--animation-easing) forwards;
+    animation-delay: calc(var(--animation-speed) * 1.5);
+  }
+
+  .dialog--closed .dialog-zoomed-gallery__dialog .dialog-thumbnails-list {
+    animation: thumbnailsSlideOutBottom var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .dialog-zoomed-gallery__dialog .dialog-thumbnails-list__thumbnail {
+    border-radius: var(--media-radius);
+  }
+
+  .dialog-zoomed-gallery__dialog .dialog-thumbnails-list__thumbnail:is([aria-selected='true']) {
+    outline: 1px solid rgb(255 255 255 / 0.5);
+    outline-offset: 2px;
+    border-color: transparent;
+  }
+
+  .dialog-zoomed-gallery__dialog
+    .dialog-thumbnails-list:has(.dialog-thumbnails-list__thumbnail:is([aria-selected='true']))::after {
+    display: none;
+  }
+
+  .dialog-zoomed-gallery__dialog .dialog-thumbnails-list__thumbnail:is([aria-selected='true']) {
+    anchor-name: none;
+  }
+
+  .dialog-zoomed-gallery__close-button {
+    color: rgb(255 255 255 / 0.88);
+    z-index: var(--layer-raised);
+    background: rgb(34 34 34 / 0.55);
+    top: calc(var(--zoom-gallery-padding) + env(safe-area-inset-top, 0px));
+    right: calc(var(--zoom-gallery-padding) + env(safe-area-inset-right, 0px));
+  }
+
+  .dialog-zoomed-gallery__close-button:hover {
+    background: rgb(34 34 34 / 0.72);
+    opacity: 1;
+  }
+
+  /* Horizontal main slider (ref zoomGallery); flex fills padded dialog */
   .dialog-zoomed-gallery {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
     cursor: zoom-out;
+  }
+
+  .dialog-zoomed-gallery__dialog:has(.dialog-thumbnails-list__thumbnail) .dialog-zoomed-gallery {
+    padding-bottom: min(120px, 22vh);
+  }
+
+  .dialog-zoomed-gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dialog-zoomed-gallery > .product-media-container {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dialog-zoomed-gallery .product-media-container--image .product-media {
+    aspect-ratio: auto;
+    width: 100%;
+    max-height: 100%;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dialog-zoomed-gallery .product-media-container--video,
+  .dialog-zoomed-gallery .product-media-container--external_video {
+    align-content: center;
+  }
+
+  .dialog-zoomed-gallery
+    :is(.product-media-container--video, .product-media-container--external_video, .product-media-container--model)
+    .product-media {
+    aspect-ratio: auto;
+    align-items: center;
+    height: 100%;
+
+    .product-media__image {
+      height: 100%;
+    }
+  }
+
+  .dialog-zoomed-gallery .product-media__drag-zoom-wrapper {
+    display: flex;
+    aspect-ratio: auto;
+    width: 100%;
+    max-height: min(88dvh, calc(100dvh - 160px));
+    height: auto;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-width: none;
+    align-items: center;
+    justify-content: center;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dialog-zoomed-gallery .product-media__drag-zoom-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dialog-zoomed-gallery .product-media__drag-zoom-wrapper .product-media__image {
+    --product-media-fit: contain;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: min(88dvh, calc(100dvh - 160px));
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
+    transform: scale(var(--drag-zoom-scale))
+      translate(var(--drag-zoom-translate-x, 0), var(--drag-zoom-translate-y, 0));
   }
 
   .dialog--preloading {
@@ -755,74 +955,6 @@
   }
 
   @media screen and (max-width: 749px) {
-    .dialog-zoomed-gallery {
-      /* Prevent scroll wheel or swipe scrolling */
-      overscroll-behavior: none;
-      scrollbar-width: none;
-      display: flex;
-      scroll-snap-type: x mandatory;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-      height: 100%;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    .dialog-zoomed-gallery .product-media-container {
-      flex: 0 0 100%;
-      scroll-snap-align: start;
-      position: relative;
-    }
-
-    .dialog-zoomed-gallery .product-media-container--image .product-media {
-      aspect-ratio: auto;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .dialog-zoomed-gallery .product-media-container--video,
-    .dialog-zoomed-gallery .product-media-container--external_video {
-      align-content: center;
-    }
-
-    .dialog-zoomed-gallery
-      :is(.product-media-container--video, .product-media-container--external_video, .product-media-container--model)
-      .product-media {
-      aspect-ratio: auto;
-      align-items: center;
-      height: 100%;
-
-      .product-media__image {
-        height: 100%;
-      }
-    }
-
-    .product-media__drag-zoom-wrapper {
-      display: flex;
-      aspect-ratio: auto;
-      height: 100%;
-      width: 100%;
-      overflow: scroll;
-      scrollbar-width: none;
-      justify-content: center;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    .product-media__drag-zoom-wrapper .product-media__image {
-      --product-media-fit: contain;
-
-      object-fit: var(--product-media-fit);
-      overflow: hidden;
-      transform: scale(var(--drag-zoom-scale))
-        translate(var(--drag-zoom-translate-x, 0), var(--drag-zoom-translate-y, 0));
-    }
-
     .media-gallery--hint {
       --slideshow-gap: var(--gap-2xs);
 
@@ -835,13 +967,6 @@
       }
     }
   }
-
-  .dialog-zoomed-gallery__close-button {
-    color: #fff;
-    /* mix-blend-mode: difference; */
-    z-index: var(--layer-raised);
-    background: #000000;
-}
 
   .media-gallery__mobile-controls {
     grid-area: auto;
@@ -942,12 +1067,7 @@
   }
 
   .dialog-zoomed-gallery .product-media-container--model .product-media__image {
-    /* Make the height match the height of the model-viewer */
-    height: 100vh;
-  }
-
-  .dialog-zoomed-gallery__dialog {
-    view-transition-name: zoom-dialog-ui;
+    height: 100%;
   }
 
   :root:active-view-transition .dialog-zoomed-gallery__dialog {
@@ -968,10 +1088,8 @@
     animation-timing-function: step-end;
   }
 
-  @media screen and (min-width: 750px) {
-    :root:active-view-transition .product-media__image {
-      background-color: transparent;
-    }
+  :root:active-view-transition .product-media__image {
+    background-color: transparent;
   }
 
   ::view-transition-group(gallery-item-open),
@@ -979,34 +1097,18 @@
     z-index: var(--layer-overlay);
     border-radius: var(--gallery-media-border-radius);
     overflow: clip;
+    animation-timing-function: step-start;
+    animation-duration: 0.1s;
   }
 
-  ::view-transition-group(gallery-item-open) {
-    animation-timing-function: var(--spring-d300-b0-easing);
-    animation-duration: var(--spring-d300-b0-duration);
+  ::view-transition-new(gallery-item-open) {
+    animation: fade-in var(--spring-d180-b0-duration) var(--spring-d180-b0-easing) forwards;
+    animation-timing-function: var(--spring-d180-b0-easing);
+    animation-duration: var(--spring-d180-b0-duration);
   }
 
-  ::view-transition-group(gallery-item-close) {
-    animation-timing-function: var(--spring-d220-b0-easing);
-    animation-duration: var(--spring-d220-b0-duration);
-  }
-
-  @media screen and (max-width: 749px) {
-    ::view-transition-group(gallery-item-open),
-    ::view-transition-group(gallery-item-close) {
-      animation-timing-function: step-start;
-      animation-duration: 0.1s;
-    }
-
-    ::view-transition-new(gallery-item-open) {
-      animation: fade-in var(--spring-d180-b0-duration) var(--spring-d180-b0-easing) forwards;
-      animation-timing-function: var(--spring-d180-b0-easing);
-      animation-duration: var(--spring-d180-b0-duration);
-    }
-
-    ::view-transition-old(gallery-item-close) {
-      animation: fade-out 0.08s linear forwards;
-    }
+  ::view-transition-old(gallery-item-close) {
+    animation: fade-out 0.08s linear forwards;
   }
 
   @keyframes fade-in {
