@@ -153,23 +153,23 @@ rte-formatter {
     padding: 0;
   }
 
-  /* No sticky + no inner scroll: nested overflow + sticky caused iOS scroll-up to trap on the gallery */
   .product-information .product-information__grid:not(.product-information--media-none) .product-information__media {
     grid-column: unset;
     order: 0;
     flex: 0 0 auto;
-    min-height: auto;
-    position: relative;
-    top: auto;
+    min-height: 70vh;
+    position: sticky;
+    top: 0;
     z-index: var(--layer-flat, 1);
     width: 100%;
   }
 
-  /* Gallery: vertical stack on mobile (no horizontal carousel); page scrolls — avoid overflow-y on container */
+  /* Gallery: vertical scrollable list on mobile (no horizontal carousel) */
   .product-information__media .media-gallery--carousel slideshow-component[mobile-disabled] slideshow-container {
-    overflow-y: visible;
+    overflow-y: auto;
     overflow-x: hidden;
-    max-height: none;
+    max-height: 70vh;
+    -webkit-overflow-scrolling: touch;
   }
 
   .product-information__media .media-gallery--carousel slideshow-component[mobile-disabled] slideshow-slides {
@@ -242,8 +242,7 @@ rte-formatter {
     max-height: 60vh;
     min-height: 200px;
     visibility: visible;
-    /* Closed drawer sits above the page in z-order; without this, invisible layer blocks scroll/taps (e.g. footer) */
-    pointer-events: none;
+    pointer-events: auto;
     padding-bottom: 50px;
   }
 
@@ -264,7 +263,6 @@ rte-formatter {
 
   .product-information--size-drawer-open variant-picker {
     transform: translateY(0);
-    pointer-events: auto;
   }
 
   /* So fixed drawer is positioned relative to viewport, not a transformed ancestor */
@@ -595,6 +593,12 @@ product-price {
   height: auto;
 }
 
+@media only screen and (max-width: 480px) {
+  .ew-rhz-hero-slider__image, .ew-rhz-hero-slider__placeholder {
+    height: 100vh !important;
+    object-fit: cover;
+  }
+}
 @media only screen and (max-width: 750px) {
   .product-media__drag-zoom-wrapper img {
     object-fit: contain;
