@@ -312,6 +312,32 @@
     "ew_rhz_curated_cards_yxdDm9": {
       "type": "ew-rhz-curated-cards",
       "blocks": {
+        "card_mDWHhr": {
+          "type": "card",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/category-banner-eclat-garden_1.png",
+            "link": "",
+            "label": "Category",
+            "label_alignment": "center",
+            "label_color": "#222222",
+            "label_background_color": "#ffffff",
+            "label_background_opacity": 60
+          }
+        },
+        "card_XCqcje": {
+          "type": "card",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/category-banner-schifli.png",
+            "link": "",
+            "label": "Category",
+            "label_alignment": "center",
+            "label_color": "#222222",
+            "label_background_color": "#ffffff",
+            "label_background_opacity": 60
+          }
+        },
         "card_wnN3Gm": {
           "type": "card",
           "settings": {
@@ -350,6 +376,8 @@
         }
       },
       "block_order": [
+        "card_mDWHhr",
+        "card_XCqcje",
         "card_wnN3Gm",
         "card_TahEXD",
         "card_wcLaFz"
