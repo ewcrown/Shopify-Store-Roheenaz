@@ -240,15 +240,39 @@
 
   .resource-card__media {
     position: relative;
+    overflow: hidden;
+    border-radius: var(--resource-card-corner-radius);
   }
 
-  .resource-card__tag-badges {
+  /* Same rules as blocks/_product-card-gallery so search modal / mega-menu work without that block’s CSS */
+  .resource-card__tag-badges.product-badges {
+    --badge-inset: max(
+      var(--padding-xs),
+      calc((var(--resource-card-corner-radius, 0px) + var(--padding-xs)) * (1 - cos(45deg)))
+    );
+
+    position: absolute;
     pointer-events: none;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
+  }
+
+  .resource-card__tag-badges.product-badges--bottom-left {
+    bottom: calc(var(--badge-inset) + var(--padding-block-start));
+    left: calc(var(--badge-inset) + var(--padding-inline-start));
+  }
+
+  .resource-card__tag-badges.product-badges--top-left {
+    top: calc(var(--badge-inset) + var(--padding-block-start));
+    left: calc(var(--badge-inset) + var(--padding-inline-start));
+  }
+
+  .resource-card__tag-badges.product-badges--top-right {
+    top: calc(var(--badge-inset) + var(--padding-block-start));
+    right: calc(var(--badge-inset) + var(--padding-inline-start));
   }
 
   .resource-card__image-placeholder {

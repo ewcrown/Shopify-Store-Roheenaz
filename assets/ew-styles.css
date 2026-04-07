@@ -98,6 +98,10 @@ rte-formatter {
 /* Product page: mobile only – fixed scrollable gallery (1 col), details below (scroll to top) */
 @media screen and (max-width: 749px) {
 
+  .product-badges__badge {
+    padding: 2px 8px;
+    font-size: 8px;
+  }
   .announcement-bar {
     min-height: auto !important;
   }

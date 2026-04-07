@@ -142,9 +142,11 @@
 
     {% render 'search-modal' %}
 
-    {% if settings.quick_add or settings.mobile_quick_add %}
-      {% render 'quick-add-modal' %}
-    {% endif %}
+    {% comment %}
+      Always include quick-add modal: custom quick view (ew-rhz-quickview) uses quick-add-component and
+      needs #quick-add-dialog / #quick-add-modal-content even when theme "Quick add" is disabled.
+    {% endcomment %}
+    {% render 'quick-add-modal' %}
     {{ 'ew-custom.js' | asset_url | script_tag }}
   </body>
 </html>

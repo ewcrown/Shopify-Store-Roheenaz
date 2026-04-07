@@ -6,9 +6,14 @@
   @param {string[]} [order_ids] - array of product ids
   @param {number} [limit] - limit of products to display
   @param {string} [products_test_id] - a playwright test id, used to differentiate empty state from 'real' search results
+
+  Out-of-stock products (product.available == false) are excluded.
 {%- enddoc -%}
 {%- liquid
   assign recently_viewed_title_text = 'content.recently_viewed_products' | t
+  if products != blank
+    assign products = products | where: 'available', true
+  endif
 -%}
 <div
   id="predictive-search-products"
@@ -42,27 +47,35 @@
       >
         {% liquid
           assign limit = limit | default: 8
+          assign shown = 0
         %}
         {% comment %}
           If we're searching for recently viewed products by id, we need to reorder the products.
           The order here comes from the search terms, and we display the products in the order of the ids.
+          OOS products are already removed from `products`; skip missing ids until `limit` in-stock cards are shown.
         {% endcomment %}
         {% if order_ids != blank %}
           {% for _id in order_ids %}
+            {% if shown >= limit %}
+              {% break %}
+            {% endif %}
             {% assign int_id = _id | times: 1 %}
             {% assign product = products | find: 'id', int_id %}
-            <li
-              class="predictive-search-results__card predictive-search-results__card--product"
-              ref="recentlyViewedItems[]"
-            >
-              {% render 'resource-card',
-                resource_type: 'product',
-                resource: product,
-                image_width: 500,
-                image_hover: true,
-                image_aspect_ratio: '4 / 5'
-              %}
-            </li>
+            {% if product != blank %}
+              <li
+                class="predictive-search-results__card predictive-search-results__card--product"
+                ref="recentlyViewedItems[]"
+              >
+                {% render 'resource-card',
+                  resource_type: 'product',
+                  resource: product,
+                  image_width: 500,
+                  image_hover: true,
+                  image_aspect_ratio: '4 / 5'
+                %}
+              </li>
+              {% assign shown = shown | plus: 1 %}
+            {% endif %}
           {% endfor %}
         {% else %}
           {% for product in products limit: limit %}
