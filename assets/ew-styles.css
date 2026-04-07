@@ -7,12 +7,6 @@ body {
   max-width: 100%;
 }
 
-/* Header and body: same page width so content aligns */
-#header-group .section--page-width,
-.content-for-layout .section--page-width {
-  /* Use same grid central column; sections inherit --page-width from body */
-}
-
 #header-group .header__row.section--page-width .header__columns,
 .content-for-layout .section--page-width>* {
   max-width: var(--full-page-grid-central-column-width);
@@ -33,9 +27,13 @@ accordion-custom summary:hover {
 
 /* Product page: fixed media column, scrollable details column on desktop */
 @media screen and (min-width: 750px) {
+
+  #quick-add-dialog slideshow-controls {
+    display: none;
+  }
+
   .product-information__grid:not(.product-information--media-none) .product-information__media {
     position: sticky;
-    top: var(--sticky-header-offset, var(--header-group-height, 0));
     align-self: start;
     z-index: var(--layer-flat, 1);
   }
@@ -100,9 +98,23 @@ rte-formatter {
 /* Product page: mobile only – fixed scrollable gallery (1 col), details below (scroll to top) */
 @media screen and (max-width: 749px) {
 
+  .announcement-bar {
+    min-height: auto !important;
+  }
+  .cart-drawer__summary .cart__ctas :is(.cart__continue-shopping-button, .cart__checkout-button) {
+    font-size: 12px !important;
+    height: auto;
+    padding: 16px !important;
+  }
+
+  .announcement-bar__item {
+    padding-inline: 0 !important;
+    font-size: 10px !important;
+  }
 
   .facets.facets-controls-wrapper {
     width: 100%;
+    max-width: 100%;
     padding: 0 15px;
   }
 
@@ -283,88 +295,176 @@ rte-formatter {
     overflow: visible;
   }
 
-  /* Mobile sticky bar: Select size + Add to cart (inside product-information, above backdrop) */
+  /* Mobile sticky bar: quantity + Add to cart (real qty lives in product form; hidden on mobile, proxied here) */
+  .ew-product-information-wrapper .product-details .quantity-selector-wrapper {
+    display: none !important;
+  }
+
   .ew-product-information-wrapper .ew-mobile-product-bar {
     display: flex;
-    align-items: center;
-    gap: 0px;
+    align-items: stretch;
+    gap: 0;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    left: max(10px, env(safe-area-inset-left, 0px));
+    right: max(10px, env(safe-area-inset-right, 0px));
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    width: auto;
     padding: 0;
+    min-height: 46px;
+    max-width: none;
     background: #fff;
-    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
-    z-index: 10003;
+    border-radius: var(--style-border-radius-lg, 1rem);
+    overflow: hidden;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12);
+    z-index: 100002;
     box-sizing: border-box;
   }
 
-  .ew-mobile-product-bar__select-size {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 6px 12px;
-    background: var(--color-background-secondary, #f5f5f5);
-    border: none;
-    border-radius: 0;
-    font-size: 14px;
-    text-align: left;
-    cursor: pointer;
-    color: inherit;
-  }
-
-  .ew-mobile-product-bar__select-size-label {
-    font-size: 20px;
-    color: var(--color-foreground-secondary, #666);
-  }
-
-  .ew-mobile-product-bar__variant-name {
-    font-weight: 600;
-    margin-top: 2px;
-    display: none;
-  }
-
-  .ew-mobile-product-bar__variant-name:empty::after {
-    content: '—';
-    font-weight: 400;
-    color: var(--color-foreground-secondary, #999);
-  }
-
-  .ew-mobile-product-bar__select-size--static {
-    flex: 1;
-    min-width: 0;
-    padding: 8px 12px;
+  .ew-mobile-product-bar__quantity {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
-    font-size: 14px;
-    font-weight: 600;
-    background: none;
-    border: none;
-    cursor: default;
+    justify-content: center;
+    gap: 10px;
+    padding: 7px 10px;
+    min-width: 0;
+    background: #fff;
+    border-right: 1px solid rgb(0 0 0 / 0.08);
   }
 
-  .ew-mobile-product-bar__add-to-cart {
+  .ew-mobile-product-bar__qty-btn {
     flex-shrink: 0;
-    min-height: 35px;
-    min-width: 50%;
+    width: 32px;
+    height: 32px;
     padding: 0;
     display: inline-flex;
     align-items: center;
-    border-radius: 0;
     justify-content: center;
+    border: none;
+    border-radius: 30px;
+    background: #222;
+    color: #fff;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .ew-mobile-product-bar__cart-icon {
-    width: 100%;
-    height: var(--icon-size-md, 24px);
+  .ew-mobile-product-bar__qty-btn .svg-wrapper {
+    display: flex;
+    width: 12px;
+    height: 12px;
   }
 
-  .ew-mobile-product-bar__cart-icon svg {
+  .ew-mobile-product-bar__qty-btn .svg-wrapper svg {
     width: 100%;
     height: 100%;
+  }
+
+  .ew-mobile-product-bar__qty-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .ew-mobile-product-bar__qty-value {
+    font-size: 1rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    min-width: 1.25rem;
+    text-align: center;
+    color: var(--color-foreground, #1a1a1a);
+  }
+
+  .ew-mobile-product-bar__add-to-cart {
+    flex: 1;
+    min-width: 0;
+    min-height: 46px;
+    padding: 9px 14px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 0;
+    background: #2a2a2a;
+    color: #fff;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease, filter 0.2s ease, opacity 0.2s ease;
+  }
+
+  .ew-mobile-product-bar__add-to-cart:not(:disabled):active {
+    transform: scale(0.98);
+  }
+
+  .ew-mobile-product-bar__add-to-cart[data-loading] {
+    pointer-events: none;
+    filter: brightness(1.08);
+  }
+
+  .ew-mobile-product-bar__add-to-cart:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ew-mobile-product-bar__add-to-cart-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: inherit;
+    transition: opacity 0.2s ease;
+  }
+
+  .ew-mobile-product-bar__add-to-cart-loading {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .ew-mobile-product-bar__add-to-cart[data-loading] .ew-mobile-product-bar__add-to-cart-text {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .ew-mobile-product-bar__add-to-cart[data-loading] .ew-mobile-product-bar__add-to-cart-loading {
+    display: inline-flex;
+  }
+
+  .ew-mobile-product-bar__spinner {
+    flex-shrink: 0;
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgb(255 255 255 / 0.25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: ew-mobile-atc-spin 0.7s linear infinite;
+  }
+
+  .ew-mobile-product-bar__loading-text {
+    white-space: nowrap;
+  }
+
+  @keyframes ew-mobile-atc-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ew-mobile-product-bar__add-to-cart:not(:disabled):active {
+      transform: none;
+    }
+
+    .ew-mobile-product-bar__spinner {
+      animation: none;
+      border-color: rgb(255 255 255 / 0.45);
+      border-top-color: rgb(255 255 255 / 0.45);
+    }
   }
 
   /* Backdrop: only visible when drawer is open; when [hidden] must be fully hidden */
@@ -394,11 +494,6 @@ rte-formatter {
   /* Variant drawer and bar must sit above backdrop – use higher z so they always win */
   .ew-product-information-wrapper variant-picker {
     z-index: 100001;
-  }
-
-  .ew-product-information-wrapper .ew-mobile-product-bar {
-    z-index: 100002;
-    max-width: 100%;
   }
 
   /* Hide default sticky add to cart on mobile so only our bar shows */
@@ -528,6 +623,7 @@ rte-formatter {
 .product-grid .card-gallery .product-media-container video,
 .product-grid .card-gallery .product-media-container .deferred-media__poster-image {
   object-fit: cover;
+  object-position: top;
 }
 
 /* Product card: title and price on same row, price aligned right */
@@ -593,12 +689,6 @@ product-price {
   height: auto;
 }
 
-@media only screen and (max-width: 480px) {
-  .ew-rhz-hero-slider__image, .ew-rhz-hero-slider__placeholder {
-    height: 100vh !important;
-    object-fit: cover;
-  }
-}
 @media only screen and (max-width: 750px) {
   .product-media__drag-zoom-wrapper img {
     object-fit: contain;
@@ -610,7 +700,11 @@ product-price {
 .ew-rhz-hero-slider__slide-content {
   position: relative;
   width: 100%;
-  height: 100vh;
+}
+
+.ew-rhz-hero-slider__picture {
+  display: block;
+  width: 100%;
 }
 
 .ew-rhz-hero-slider__image,
@@ -934,7 +1028,248 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
   }
 
   #quick-add-dialog .quick-add-modal__content {
-    padding: 28px !important;
+    padding: 50px 10px 10px !important;
+  }
+
+  .quick-add-modal__close {
+    background: #fff;
+  }
+
+  #quick-add-dialog .accelerated-checkout-block {
+    display: none !important;
+  }
+}
+
+.quick-add-modal__close {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+/* Quickview (quick-add modal): always hide Buy now / accelerated checkout */
+#quick-add-dialog .accelerated-checkout-block {
+  display: none !important;
+}
+
+/* Desktop quickview: avoid overflow clipping artifacts on swatches */
+@media (min-width: 750px) {
+  #quick-add-dialog .quick-add-modal :is(.variant-option__button-label--has-swatch, .swatch) {
+    overflow: visible !important;
+  }
+
+  /* Some Safari fallbacks draw outlines with pseudo-elements; don’t clip them in quickview */
+  #quick-add-dialog .quick-add-modal .variant-option__button-label--has-swatch {
+    position: relative;
+  }
+
+  /* Prevent swatch outlines from visually overlapping quantity / ATC in quickview */
+  #quick-add-dialog .quick-add-modal .variant-option--swatches,
+  #quick-add-dialog .quick-add-modal .variant-option--buttons.variant-option--swatches {
+    padding-bottom: 8px;
+  }
+
+  #quick-add-dialog .quick-add-modal .variant-option__button-label--has-swatch {
+    /* Theme uses a fairly large outline offset; tighten it inside the modal */
+    outline-offset: 2px;
+  }
+
+  /* Ensure form controls paint above any outline pseudo-elements */
+  #quick-add-dialog .quick-add-modal :is(.quantity-selector-wrapper, .product-form-buttons) {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+/* Quickview open: prevent iOS rubber-band / page overscroll behind modal */
+html:has(#quick-add-dialog dialog[open]),
+body:has(#quick-add-dialog dialog[open]),
+html[data-quickview-open='true'],
+body[data-quickview-open='true'] {
+  overscroll-behavior-y: none;
+}
+
+/* Quickview mobile scroll: apply only when dialog is open */
+@media (max-width: 749px) {
+  #quick-add-dialog dialog.quick-add-modal[open] {
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  #quick-add-dialog dialog.quick-add-modal[open] .quick-add-modal__content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Theme adds large bottom padding; looks like empty space once form is visible */
+    padding-bottom: 12px !important;
+    /* Avoid extra blank area from grid stretching */
+    align-content: start;
+    grid-auto-rows: min-content;
+  }
+}
+
+/* Compact quickview on mobile */
+@media (max-width: 749px) {
+
+  /* Reduce overall padding (top includes close button space) */
+  #quick-add-dialog .quick-add-modal__content {
+    padding: 10px !important;
+  }
+
+  /* Tighten the injected header (title + price) */
+  #quick-add-modal-content .product-header {
+    gap: 6px;
+    padding-top: 0;
+  }
+
+  #quick-add-modal-content .product-header a:not(product-price *) {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  /* Buttons + quantity: tighter vertical rhythm */
+  #quick-add-modal-content .product-form-buttons {
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  /* Make the quantity selector and ATC slightly shorter */
+  #quick-add-modal-content .quantity-selector {
+    height: 44px;
+  }
+
+  #quick-add-modal-content .add-to-cart-button {
+    height: 44px;
+    padding-block: 12px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+
+  /* Quickview: always show slider controls for media gallery */
+  #quick-add-modal-content media-gallery :is(slideshow-controls, .media-gallery__mobile-controls) {
+    display: flex !important;
+  }
+
+  #quick-add-modal-content media-gallery .media-gallery__mobile-controls {
+    display: block !important;
+    text-align: center;
+  }
+
+  /* Quickview: hide thumbnails strip (keep dots/counter) */
+  #quick-add-modal-content media-gallery :is(.slideshow-controls__thumbnails-container,
+    .slideshow-controls__thumbnails,
+    .slideshow-controls__thumbnail,
+    .dialog-thumbnails-list-container,
+    .dialog-thumbnails-list) {
+    display: none !important;
+  }
+
+  /* Quickview: force horizontal swipe */
+  #quick-add-modal-content media-gallery slideshow-slides {
+    overflow-x: scroll !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overflow-y: hidden;
+    touch-action: pan-x;
+    flex-direction: row !important;
+  }
+
+  /* Quickview: full-width slides */
+  #quick-add-modal-content media-gallery slideshow-slide {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  #quick-add-modal-content media-gallery slideshow-slide[aria-hidden='true'] {
+    display: block !important;
+  }
+
+  /* Quickview: hide slideshow arrows (dots are enough) */
+  #quick-add-modal-content media-gallery slideshow-arrows {
+    display: none !important;
+  }
+
+  /* Quickview: JS-injected dot pagination for grid-layout products */
+  .ew-quickview-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  .ew-quickview-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: rgb(0 0 0 / 0.2);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .ew-quickview-dot:hover {
+    background: rgb(0 0 0 / 0.4);
+  }
+
+  .ew-quickview-dot--active {
+    background: rgb(0 0 0 / 0.8);
+    transform: scale(1.2);
+  }
+}
+
+/* Quickview desktop: vertical gallery scroll (mobile rules above stay horizontal — do not change max-width 749px block) */
+@media screen and (min-width: 750px) {
+  #quick-add-modal-content .product-information__media {
+    min-height: 0;
+    align-self: start;
+  }
+
+  .ew-quickview-dots {
+    display: none;
+  }
+
+  #quick-add-modal-content .media-gallery--carousel {
+    max-height: min(72vh, 550px);
+    min-height: 0;
+  }
+
+  #quick-add-modal-content .media-gallery--carousel slideshow-component {
+    min-height: 0;
+    max-height: inherit;
+  }
+
+  #quick-add-modal-content .media-gallery--carousel slideshow-container {
+    min-height: 0;
+    max-height: min(72vh, 680px);
+    overflow: hidden;
+  }
+
+  #quick-add-modal-content .media-gallery--carousel slideshow-slides {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    max-height: min(72vh, 680px);
+    min-height: 0;
+    width: 100% !important;
+    touch-action: pan-y;
+  }
+
+  #quick-add-modal-content .media-gallery--carousel slideshow-slide {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    max-width: 100%;
+    scroll-snap-align: start;
+  }
+
+  #quick-add-modal-content media-gallery slideshow-arrows {
+    display: none !important;
   }
 }
 
@@ -1129,12 +1464,20 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
   .ew-rhz-trending-festive__carousel--mobile .ew-rhz-trending-festive__card {
     width: 100%;
   }
+
+  .ew-rhz-trending-festive .splide__pagination {
+    display: none !important;
+  }
+  .ew-rhz-trending-festive__carousel {
+    padding-bottom: 0 !important;
+  }
 }
 
 @media (min-width: 750px) {
   .ew-rhz-trending-festive__carousel--desktop {
     display: block;
   }
+ 
 }
 
 .ew-rhz-trending-festive__carousel {
@@ -1435,6 +1778,10 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
     padding: 9px 30px !important;
     font-size: 12px !important;
   }
+
+  .cart-drawer__summary .cart__ctas :is(.cart__continue-shopping-button, .cart__checkout-button) {
+    line-height: 24px;
+  }
 }
 
 .menu-drawer-container .header__icon--summary {
@@ -1464,21 +1811,11 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
 
 .product-information__media .product-media-container img.product-media__image,
 .product-information__media .product-media-container .deferred-media__poster-image {
-  aspect-ratio: auto;
-  width: auto;
   max-width: 100%;
   height: auto;
-  max-height: min(92dvh, calc(100svh - 120px));
   object-fit: contain;
   object-position: center center;
-}
-
-@media screen and (max-width: 749px) {
-
-  .product-information__media .product-media-container img.product-media__image,
-  .product-information__media .product-media-container .deferred-media__poster-image {
-    max-height: min(85dvh, calc(100svh - 100px));
-  }
+  cursor: auto;
 }
 
 .product-details .group-block {
@@ -1568,6 +1905,17 @@ body[data-mobile-header-style='dark'] #header-component[data-sticky-state='activ
     display: none !important;
   }
 
+  /* Quickview uses the same product markup — but we DO want the form in the modal */
+  #quick-add-modal-content product-form-component,
+  #quick-add-modal-content .product-details product-form-component {
+    display: block !important;
+  }
+
+  #quick-add-modal-content .product-form-buttons,
+  #quick-add-modal-content .quantity-selector-wrapper {
+    display: flex !important;
+  }
+
   .product-details .group-block-content {
     gap: 0 !important;
   }
@@ -1648,6 +1996,13 @@ summary.menu__heading.h3 {
 
 .cart__ctas * {
   text-transform: uppercase;
+}
+
+/* Cart drawer: make Continue shopping + Checkout match */
+.cart-drawer__summary .cart__ctas :is(.cart__continue-shopping-button, .cart__checkout-button) {
+  font-size: 0.875rem;
+  line-height: 1;
+  padding-block: 16px;
 }
 
 /* ── Product page gallery improvements ─────────────────────────────────── */
@@ -1741,6 +2096,24 @@ button.shopify-payment-button__button--unbranded:focus-visible:not(:disabled) {
   --focus-outline: var(--focus-outline-width) solid #222;
 }
 
+/* Safari fallback (older iOS): no :has() support */
+@supports not selector(:has(*)) {
+
+  /* When input is checked, style the inner text + pill instead of the label */
+  .variant-option__button-label>input:checked~.variant-option__button-label__text {
+    color: #fff;
+  }
+
+  .variant-option__button-label>input:checked~.variant-option__button-label__pill {
+    background-color: #222;
+  }
+
+  /*
+    Do NOT outline the invisible input — iOS Safari can render it as a weird diagonal stroke
+    across swatches. The theme already handles focus/selected outlines for swatches.
+  */
+}
+
 .ew-rhz-trending-festive__carousel .splide__pagination {
   bottom: -3.5em;
 }
@@ -1767,4 +2140,56 @@ button.shopify-payment-button__button--unbranded:focus-visible:not(:disabled) {
 
 .dialog-zoomed-gallery :is(.product-media-container--video, .product-media-container--external_video, .product-media-container--model) .product-media .product-media__image {
   margin: auto;
+}
+
+@media only screen and (max-width: 480px) {
+
+  .ew-rhz-hero-slider__image,
+  .ew-rhz-hero-slider__placeholder {
+    height: 100vh !important;
+    object-fit: cover;
+  }
+
+  #quick-add-modal-content zoom-dialog {
+    display: none !important;
+  }
+
+  .quick-add-modal .variant-option+.variant-option {
+    margin-top: 10px !important;
+  }
+}
+
+span.cart-bubble__text-count {
+  font-size: 14px !important;
+}
+
+.product-information__grid {
+  overflow: hidden;
+}
+
+/* Blinking nav labels — matches theme setting "Menu item labels to blink" */
+@keyframes ew-menu-link-blink {
+  0%,
+  100% {
+    color: #d32f2f;
+    opacity: 1;
+  }
+
+  50% {
+    color: #b71c1c;
+    opacity: 0.55;
+  }
+}
+
+.ew-menu-link--blink {
+  color: #d32f2f;
+  animation: ew-menu-link-blink 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ew-menu-link--blink {
+    animation: none;
+    color: #d32f2f;
+    opacity: 1;
+  }
 }

@@ -52,7 +52,10 @@
     {{ 'ew-styles.css' | asset_url | stylesheet_tag }}
   </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+  <body
+    class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}"
+    data-page-type="{{ request.page_type }}"
+  >
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
     <div id="header-group">
       {% sections 'header-group' %}
@@ -129,7 +132,7 @@
       role="main"
       data-page-transition-enabled="{{ settings.page_transition_enabled }}"
       data-product-transition="{{ settings.transition_to_main_product }}"
-      data-template="{{ template }}"
+      data-template="{{ template.name }}"
     >
       {{ content_for_layout }}
     </main>

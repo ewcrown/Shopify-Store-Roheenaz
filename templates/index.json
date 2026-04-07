@@ -15,10 +15,10 @@
         "slide_nmjfDt": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_2_1.png",
-            "mobile_image": "shopify://shop_images/SoleilBlanc_6_18a45ba3-8bf8-4b1d-b5ed-c88aa45fca1d.jpg",
+            "image": "shopify://shop_images/main-banner.jpg",
+            "mobile_image": "shopify://shop_images/Untitled-1_1.png",
             "link": "shopify://collections/aezel-unstitched-emb-cambric",
-            "mobile_header_style": "light"
+            "mobile_header_style": "dark"
           }
         },
         "slide_xdnMAG": {
@@ -312,26 +312,24 @@
     "ew_rhz_curated_cards_yxdDm9": {
       "type": "ew-rhz-curated-cards",
       "blocks": {
-        "card_mDWHhr": {
+        "card_XCqcje": {
           "type": "card",
-          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/category-banner-eclat-garden_1.png",
-            "link": "",
-            "label": "Category",
+            "image": "shopify://shop_images/category-banner-schifli.png",
+            "link": "shopify://collections/luxury-lawn",
+            "label": "Luxury Lawn",
             "label_alignment": "center",
             "label_color": "#222222",
             "label_background_color": "#ffffff",
             "label_background_opacity": 60
           }
         },
-        "card_XCqcje": {
+        "card_mDWHhr": {
           "type": "card",
-          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/category-banner-schifli.png",
-            "link": "",
-            "label": "Category",
+            "image": "shopify://shop_images/category-banner-eclat-garden_1.png",
+            "link": "shopify://collections/printed-lawn",
+            "label": "Printed",
             "label_alignment": "center",
             "label_color": "#222222",
             "label_background_color": "#ffffff",
@@ -340,6 +338,7 @@
         },
         "card_wnN3Gm": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Rectangle_717_3.png",
             "link": "shopify://collections/printed-lawn",
@@ -352,6 +351,7 @@
         },
         "card_TahEXD": {
           "type": "card",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Rectangle_717_1.png",
             "link": "shopify://collections/luxury-lawn",
@@ -376,8 +376,8 @@
         }
       },
       "block_order": [
-        "card_mDWHhr",
         "card_XCqcje",
+        "card_mDWHhr",
         "card_wnN3Gm",
         "card_TahEXD",
         "card_wcLaFz"

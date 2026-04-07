@@ -22,32 +22,34 @@
             {% endif %}
             <div class="ew-rhz-hero-slider__slide-content">
               {% if block.settings.mobile_image != blank and block.settings.image != blank %}
-                {% comment %} Desktop image {% endcomment %}
-                <img
-                  class="ew-rhz-hero-slider__image ew-rhz-hero-slider__image--desktop"
-                  src="{{ block.settings.image | image_url: width: 1920 }}"
-                  srcset="{{ block.settings.image | image_url: width: 640 }} 640w,
-                          {{ block.settings.image | image_url: width: 1024 }} 1024w,
-                          {{ block.settings.image | image_url: width: 1920 }} 1920w"
-                  sizes="100vw"
-                  alt="{{ block.settings.image.alt | escape }}"
-                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                  width="{{ block.settings.image.width }}"
-                  height="{{ block.settings.image.height }}"
-                >
-                {% comment %} Mobile image {% endcomment %}
-                <img
-                  class="ew-rhz-hero-slider__image ew-rhz-hero-slider__image--mobile"
-                  src="{{ block.settings.mobile_image | image_url: width: 800 }}"
-                  srcset="{{ block.settings.mobile_image | image_url: width: 480 }} 480w,
-                          {{ block.settings.mobile_image | image_url: width: 750 }} 750w,
-                          {{ block.settings.mobile_image | image_url: width: 800 }} 800w"
-                  sizes="100vw"
-                  alt="{{ block.settings.mobile_image.alt | default: block.settings.image.alt | escape }}"
-                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                  width="{{ block.settings.mobile_image.width }}"
-                  height="{{ block.settings.mobile_image.height }}"
-                >
+                {% comment %}
+                  Use <picture> so iOS Safari picks the correct asset reliably.
+                  (Two <img> tags + CSS hide can still flash / stick on Safari under some caching/layout cases.)
+                {% endcomment %}
+                <picture class="ew-rhz-hero-slider__picture">
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="{{ block.settings.mobile_image | image_url: width: 480 }} 480w,
+                            {{ block.settings.mobile_image | image_url: width: 750 }} 750w,
+                            {{ block.settings.mobile_image | image_url: width: 1000 }} 1000w"
+                    sizes="100vw"
+                  >
+                  <source
+                    media="(min-width: 750px)"
+                    srcset="{{ block.settings.image | image_url: width: 640 }} 640w,
+                            {{ block.settings.image | image_url: width: 1024 }} 1024w,
+                            {{ block.settings.image | image_url: width: 1920 }} 1920w"
+                    sizes="100vw"
+                  >
+                  <img
+                    class="ew-rhz-hero-slider__image"
+                    src="{{ block.settings.image | image_url: width: 1920 }}"
+                    alt="{{ block.settings.mobile_image.alt | default: block.settings.image.alt | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                  >
+                </picture>
               {% elsif block.settings.image != blank %}
                 <img
                   class="ew-rhz-hero-slider__image"

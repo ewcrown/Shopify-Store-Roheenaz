@@ -177,7 +177,12 @@
               pagination: {{ section.settings.carousel_pagination }},
               autoplay: {{ section.settings.carousel_autoplay }},
               interval: {{ section.settings.carousel_autoplay_interval | times: 1000 }},
-              rewind: true
+              rewind: true,
+              /* Avoid skipped slides: default trimSpace can leave the track stuck between indices on peek layouts */
+              trimSpace: 'move',
+              flickMaxPages: 1,
+              flickPower: 280,
+              dragMinThreshold: { touch: 12, mouse: 4 }
             }).mount();
 
             window.addEventListener('resize', onResize);

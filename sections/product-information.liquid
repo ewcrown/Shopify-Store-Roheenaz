@@ -170,38 +170,174 @@
     assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
   %}
   {% capture mobile_bar_content %}
-    <div class="ew-size-drawer-backdrop" id="ew-size-drawer-backdrop-{{ section.id }}" data-close-size-drawer aria-hidden="true" hidden></div>
     <div class="ew-mobile-product-bar" id="ew-mobile-product-bar-{{ section.id }}" aria-hidden="true">
-      {% if product.has_only_default_variant %}
-        <span class="ew-mobile-product-bar__select-size ew-mobile-product-bar__select-size--static">{{ product.title }}</span>
-      {% else %}
-        <button type="button" class="ew-mobile-product-bar__select-size" data-open-size-drawer aria-label="{{ 'products.product.select_size' | t | default: 'Select size' }}">
-          <span class="ew-mobile-product-bar__select-size-label">{{ 'products.product.select_size' | t | default: 'Select size' }}</span>
-          <span class="ew-mobile-product-bar__variant-name" data-variant-name>{{ product.selected_or_first_available_variant.title | default: '' }}</span>
+      <div class="ew-mobile-product-bar__quantity" data-ew-qty-proxy>
+        <button
+          type="button"
+          class="ew-mobile-product-bar__qty-btn"
+          data-proxy-qty="minus"
+          aria-label="{{ 'accessibility.decrease_quantity' | t }}"
+        >
+          <span class="svg-wrapper" aria-hidden="true">{{ 'icon-minus.svg' | inline_asset_content }}</span>
         </button>
-      {% endif %}
-      <button type="submit" form="{{ product_form_id }}" class="ew-mobile-product-bar__add-to-cart button" aria-label="{% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-        <span class="svg-wrapper ew-mobile-product-bar__cart-icon" aria-hidden="true">ADD TO CART</span>
+        <span class="ew-mobile-product-bar__qty-value" data-qty-display aria-live="polite">1</span>
+        <button
+          type="button"
+          class="ew-mobile-product-bar__qty-btn"
+          data-proxy-qty="plus"
+          aria-label="{{ 'accessibility.increase_quantity' | t }}"
+        >
+          <span class="svg-wrapper" aria-hidden="true">{{ 'icon-plus.svg' | inline_asset_content }}</span>
+        </button>
+      </div>
+      <button
+        type="submit"
+        form="{{ product_form_id }}"
+        class="ew-mobile-product-bar__add-to-cart"
+        aria-label="{% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}"
+        {% unless product.selected_or_first_available_variant.available %}
+          disabled
+        {% endunless %}
+      >
+        <span class="ew-mobile-product-bar__add-to-cart-text" data-atc-label>
+          {% if product.selected_or_first_available_variant.available %}
+            {{- 'products.product.add_to_cart' | t -}}
+          {% else %}
+            {{- 'products.product.sold_out' | t -}}
+          {% endif %}
+        </span>
+        <span class="ew-mobile-product-bar__add-to-cart-loading" aria-hidden="true">
+          <span class="ew-mobile-product-bar__spinner"></span>
+          <span class="ew-mobile-product-bar__loading-text">{{ 'products.product.adding_to_cart' | t }}</span>
+        </span>
       </button>
     </div>
     <script>
-      (function() {
+      (function () {
         var sectionId = {{ section.id | json }};
+        var sectionEl = document.getElementById('product-information-' + sectionId);
         var bar = document.getElementById('ew-mobile-product-bar-' + sectionId);
-        var backdrop = document.getElementById('ew-size-drawer-backdrop-' + sectionId);
-        var productInfo = document.getElementById('product-information-' + sectionId);
-        if (!bar || !productInfo) return;
-        function openDrawer() { productInfo.classList.add('product-information--size-drawer-open'); backdrop.removeAttribute('hidden'); backdrop.setAttribute('aria-hidden', 'false'); }
-        function closeDrawer() { productInfo.classList.remove('product-information--size-drawer-open'); backdrop.setAttribute('hidden', ''); backdrop.setAttribute('aria-hidden', 'true'); }
-        bar.querySelector('[data-open-size-drawer]')?.addEventListener('click', openDrawer);
-        backdrop.addEventListener('click', closeDrawer);
-        document.addEventListener('variant:update', function(ev) {
+        if (!sectionEl || !bar) return;
+
+        var qs = sectionEl.querySelector('product-form-component quantity-selector-component');
+        var display = bar.querySelector('[data-qty-display]');
+        var minus = bar.querySelector('[data-proxy-qty="minus"]');
+        var plus = bar.querySelector('[data-proxy-qty="plus"]');
+        var addBtn = bar.querySelector('.ew-mobile-product-bar__add-to-cart');
+
+        function syncQtyDisplay() {
+          if (!display) return;
+          if (!qs) {
+            display.textContent = '1';
+            return;
+          }
+          var v = typeof qs.getValue === 'function' ? qs.getValue() : null;
+          if (v == null || v === '') {
+            var inp = qs.querySelector('[ref="quantityInput"]');
+            v = inp ? inp.value : '1';
+          }
+          display.textContent = v;
+
+          var mb = qs.querySelector('[ref="minusButton"]');
+          var pb = qs.querySelector('[ref="plusButton"]');
+          if (minus && mb) minus.disabled = !!mb.disabled;
+          if (plus && pb) plus.disabled = !!pb.disabled;
+        }
+
+        function onMinus(e) {
+          if (qs && typeof qs.decreaseQuantity === 'function') qs.decreaseQuantity(e);
+          syncQtyDisplay();
+        }
+        function onPlus(e) {
+          if (qs && typeof qs.increaseQuantity === 'function') qs.increaseQuantity(e);
+          syncQtyDisplay();
+        }
+
+        if (minus) minus.addEventListener('click', onMinus);
+        if (plus) plus.addEventListener('click', onPlus);
+
+        var qInput = qs ? qs.querySelector('[ref="quantityInput"]') : null;
+        if (qInput) {
+          qInput.addEventListener('input', syncQtyDisplay);
+          qInput.addEventListener('change', syncQtyDisplay);
+        }
+
+        document.addEventListener('variant:update', function (ev) {
           var resource = ev.detail && ev.detail.resource;
-          var display = bar.querySelector('[data-variant-name]');
-          var addBtn = bar.querySelector('.ew-mobile-product-bar__add-to-cart');
-          if (display && resource && resource.title) display.textContent = resource.title;
           if (addBtn) addBtn.disabled = !resource || !resource.available;
+          syncQtyDisplay();
         });
+
+        /* Loading / success feedback for mobile bar add to cart */
+        var form = document.getElementById('BuyButtons-ProductForm-' + sectionId);
+        var pfc = sectionEl.querySelector('product-form-component');
+        var mobileAtcLoading = false;
+        var loadingTimer;
+        var errObserver = null;
+
+        function clearMobileAtcLoading() {
+          if (!addBtn) return;
+          mobileAtcLoading = false;
+          addBtn.removeAttribute('data-loading');
+          addBtn.removeAttribute('aria-busy');
+          if (loadingTimer) {
+            clearTimeout(loadingTimer);
+            loadingTimer = null;
+          }
+          if (errObserver) {
+            errObserver.disconnect();
+            errObserver = null;
+          }
+        }
+
+        function setMobileAtcLoading() {
+          if (!addBtn || addBtn.disabled) return;
+          mobileAtcLoading = true;
+          addBtn.setAttribute('data-loading', '');
+          addBtn.setAttribute('aria-busy', 'true');
+          if (loadingTimer) clearTimeout(loadingTimer);
+          loadingTimer = setTimeout(clearMobileAtcLoading, 20000);
+
+          if (errObserver) {
+            errObserver.disconnect();
+            errObserver = null;
+          }
+          var errEl = pfc ? pfc.querySelector('[ref="addToCartTextError"]') : null;
+          if (errEl) {
+            errObserver = new MutationObserver(function () {
+              if (mobileAtcLoading && !errEl.classList.contains('hidden')) {
+                clearMobileAtcLoading();
+              }
+            });
+            errObserver.observe(errEl, { attributes: true, attributeFilter: ['class'] });
+          }
+        }
+
+        if (form && addBtn) {
+          form.addEventListener(
+            'submit',
+            function (ev) {
+              if (ev.submitter !== addBtn) return;
+              setMobileAtcLoading();
+            },
+            true
+          );
+        }
+
+        if (pfc && addBtn) {
+          pfc.addEventListener('cart:update', function (ev) {
+            if (!mobileAtcLoading) return;
+            var d = ev.detail && ev.detail.data;
+            if (!d || d.source !== 'product-form-component') return;
+            clearMobileAtcLoading();
+          });
+          pfc.addEventListener('cart:error', function () {
+            if (!mobileAtcLoading) return;
+            clearMobileAtcLoading();
+          });
+        }
+
+        syncQtyDisplay();
       })();
     </script>
   {% endcapture %}

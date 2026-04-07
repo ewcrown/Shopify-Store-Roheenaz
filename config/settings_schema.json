@@ -57,6 +57,25 @@
     ]
   },
   {
+    "name": "Blinking navigation labels",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Blinking menu items"
+      },
+      {
+        "type": "paragraph",
+        "content": "Enter navigation labels exactly as they appear in your menu. Matching items (case-insensitive) will use a subtle blink animation in the header and drawer. Separate multiple names with commas or line breaks."
+      },
+      {
+        "type": "textarea",
+        "id": "ew_blink_menu_item_names",
+        "label": "Menu item labels to blink",
+        "placeholder": "Sale, New Arrivals"
+      }
+    ]
+  },
+  {
     "name": "t:names.colors",
     "settings": [
       {

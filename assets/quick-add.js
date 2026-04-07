@@ -241,6 +241,55 @@ export class QuickAddComponent extends Component {
   }
 
   /**
+   * Removes video / external video from quickview gallery (carousel + grid) so quickview shows images only.
+   * Drops slideshow-controls so {@link #enableQuickviewSlider} can inject dots matching the remaining slide count.
+   * @param {Element} root - Cloned product grid (not cached)
+   */
+  #stripVideoMediaFromQuickview(root) {
+    const isVideoSlideClass = (el) =>
+      el.classList.contains('product-media-container--video') ||
+      el.classList.contains('product-media-container--external_video');
+
+    const videoInnerSelector = '.product-media-container--video, .product-media-container--external_video';
+
+    // Grid presentation: remove video list items
+    root.querySelectorAll('ul.media-gallery__grid > li').forEach((li) => {
+      if (isVideoSlideClass(li)) li.remove();
+    });
+
+    // Two images per frame: remove video halves, then drop empty slides
+    root.querySelectorAll('slideshow-slide.media-gallery__slide--two-per-frame').forEach((slide) => {
+      slide.querySelectorAll(videoInnerSelector).forEach((node) => node.remove());
+      const frame = slide.querySelector('.media-gallery__frame');
+      const remaining = frame?.querySelectorAll('[class*="product-media-container--"]');
+      if (!remaining?.length) slide.remove();
+    });
+
+    // One media per slide: remove entire video slides
+    root.querySelectorAll('slideshow-slide:not(.media-gallery__slide--two-per-frame)').forEach((slide) => {
+      if (isVideoSlideClass(slide)) slide.remove();
+    });
+
+    // Zoom dialog (if present): remove video slides and matching thumbnail buttons (same index)
+    const zoomGallery = root.querySelector('zoom-dialog .dialog-zoomed-gallery');
+    const zoomThumbs = root.querySelector('zoom-dialog scroll-hint.dialog-thumbnails-list');
+    if (zoomGallery && zoomThumbs) {
+      const lis = Array.from(zoomGallery.querySelectorAll(':scope > li'));
+      const thumbs = Array.from(zoomThumbs.querySelectorAll(':scope > button'));
+      const indicesToRemove = lis
+        .map((li, i) => (isVideoSlideClass(li) ? i : -1))
+        .filter((i) => i >= 0)
+        .sort((a, b) => b - a);
+      for (const i of indicesToRemove) {
+        lis[i]?.remove();
+        thumbs[i]?.remove();
+      }
+    }
+
+    root.querySelectorAll('media-gallery slideshow-controls').forEach((el) => el.remove());
+  }
+
+  /**
    * Re-renders the variant picker.
    * @param {Element} productGrid - The product grid element
    */
@@ -248,6 +297,8 @@ export class QuickAddComponent extends Component {
     const modalContent = document.getElementById('quick-add-modal-content');
 
     if (!productGrid || !modalContent) return;
+
+    this.#stripVideoMediaFromQuickview(productGrid);
 
     if (isMobileBreakpoint()) {
       const productDetails = productGrid.querySelector('.product-details');
@@ -281,7 +332,107 @@ export class QuickAddComponent extends Component {
 
     morph(modalContent, productGrid);
 
+    this.#enableQuickviewSlider(modalContent);
     this.#syncVariantSelection(modalContent);
+  }
+
+  /**
+   * Quickview: force the media gallery carousel to behave like a slider on all viewports.
+   * The theme sets `mobile-disabled` on the slideshow for carousel presentation; on this build,
+   * PDP mobile CSS converts that to a vertical list. In quickview we want a real slider.
+   * @param {Element} modalContent
+   */
+  #enableQuickviewSlider(modalContent) {
+    const slideshows = modalContent.querySelectorAll('slideshow-component');
+    if (!slideshows.length) return;
+
+    for (const el of slideshows) {
+      const clone = /** @type {HTMLElement} */ (el.cloneNode(true));
+      el.replaceWith(clone);
+
+      clone.removeAttribute('mobile-disabled');
+      clone.removeAttribute('disabled');
+      clone.setAttribute('disabled', 'false');
+      clone.setAttribute('in-viewport', '');
+
+      // If no slideshow-controls exist (grid-layout products), inject dot pagination
+      if (!clone.querySelector('slideshow-controls')) {
+        const slides = clone.querySelectorAll('slideshow-slide');
+        if (slides.length > 1) {
+          this.#injectQuickviewDots(clone, slides);
+        }
+      }
+    }
+  }
+
+  /**
+   * Creates and injects dot pagination for quickview slideshows that lack controls.
+   * @param {HTMLElement} slideshowEl - The slideshow-component element
+   * @param {NodeListOf<Element>} slides - The slide elements
+   */
+  #injectQuickviewDots(slideshowEl, slides) {
+    const dotsWrapper = document.createElement('div');
+    dotsWrapper.className = 'ew-quickview-dots';
+
+    for (let i = 0; i < slides.length; i++) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'ew-quickview-dot';
+      dot.setAttribute('aria-label', `Slide ${i + 1} of ${slides.length}`);
+      if (i === 0) dot.classList.add('ew-quickview-dot--active');
+
+      dot.addEventListener('click', () => {
+        const slide = slides[i];
+        if (slide instanceof HTMLElement) {
+          slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        }
+      });
+
+      dotsWrapper.appendChild(dot);
+    }
+
+    // Insert after slideshow-container
+    const container = slideshowEl.querySelector('slideshow-container');
+    if (container) {
+      container.after(dotsWrapper);
+    } else {
+      slideshowEl.appendChild(dotsWrapper);
+    }
+
+    // Sync dots on scroll (horizontal on mobile quickview, vertical on desktop)
+    const scroller = slideshowEl.querySelector('slideshow-slides');
+    if (scroller) {
+      let scrollTimer;
+      scroller.addEventListener('scroll', () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          const dots = dotsWrapper.querySelectorAll('.ew-quickview-dot');
+          const horizontal =
+            scroller.scrollWidth > scroller.clientWidth + 1 &&
+            scroller.scrollHeight <= scroller.clientHeight + 1;
+          let activeIndex = 0;
+          if (horizontal) {
+            const slideWidth = scroller.clientWidth;
+            activeIndex = Math.round(scroller.scrollLeft / Math.max(slideWidth, 1));
+          } else {
+            const center = scroller.scrollTop + scroller.clientHeight / 2;
+            for (let j = 0; j < slides.length; j++) {
+              const slide = slides[j];
+              if (!(slide instanceof HTMLElement)) continue;
+              const top = slide.offsetTop;
+              const bottom = top + slide.offsetHeight;
+              if (center >= top && center <= bottom) {
+                activeIndex = j;
+                break;
+              }
+              if (center > bottom) activeIndex = j;
+            }
+          }
+          activeIndex = Math.min(Math.max(activeIndex, 0), dots.length - 1);
+          dots.forEach((d, j) => d.classList.toggle('ew-quickview-dot--active', j === activeIndex));
+        }, 50);
+      }, { passive: true });
+    }
   }
 
   /**

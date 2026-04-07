@@ -34,11 +34,12 @@
             role="list"
           >
             {% for link in block_settings.menu.links %}
+              {% capture ew_blink_class %}{% render 'ew-menu-blink-class', link_title: link.title %}{% endcapture %}
               <li>
                 <a
                   href="{{ link.url }}"
                   id="MenuItem-{{ link.handle }}"
-                  class="menu-list__item"
+                  class="menu-list__item{{ ew_blink_class }}"
                   {% if link.current %}
                     aria-current="page"
                   {% endif %}
@@ -79,6 +80,7 @@
 
     {% capture children %}
       {% for link in block_settings.menu.links %}
+        {% capture ew_blink_class %}{% render 'ew-menu-blink-class', link_title: link.title %}{% endcapture %}
         <li
           role="presentation"
           class="menu-list__list-item"
@@ -90,7 +92,7 @@
           <a
             href="{{ link.url }}"
             data-skip-node-update="true"
-            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
+            class="menu-list__link{{ ew_blink_class }}{% if link.active %} menu-list__link--active{% endif %}"
             {%- if link.links != blank -%}
               aria-controls="submenu-{{ forloop.index }}"
               aria-haspopup="true"
