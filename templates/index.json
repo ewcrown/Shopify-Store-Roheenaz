@@ -12,29 +12,38 @@
     "ew_rhz_hero_slider_PVTtTQ": {
       "type": "ew-rhz-hero-slider",
       "blocks": {
-        "slide_nmjfDt": {
+        "slide_xdnMAG": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/main-banner.jpg",
-            "mobile_image": "shopify://shop_images/Untitled-1_1.png",
-            "link": "shopify://collections/aezel-unstitched-emb-cambric",
+            "image": "shopify://shop_images/main-banner-_jpg_21610e7e-9209-4b37-98e8-1a9f7e838abb.jpg",
+            "mobile_image": "shopify://shop_images/new_date_reveal.jpg",
+            "link": "#",
             "mobile_header_style": "dark"
           }
         },
-        "slide_xdnMAG": {
+        "slide_nmjfDt": {
           "type": "slide",
-          "disabled": true,
           "settings": {
-            "image": "shopify://shop_images/desktop_shopnow.jpg",
-            "mobile_image": "shopify://shop_images/mobile_shopnow.jpg",
-            "link": "shopify://collections/all",
+            "image": "shopify://shop_images/111_26b0c595-c588-407e-85b5-204853d0dceb.jpg",
+            "mobile_image": "shopify://shop_images/eclat-garden.jpg_1.jpg",
+            "link": "shopify://collections/eclat-garden-printed-lawn",
+            "mobile_header_style": "dark"
+          }
+        },
+        "slide_gFpfnE": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/shop_now_desktop_9bf3072c-fc27-42e3-94bc-017387fa5f68.jpg",
+            "mobile_image": "shopify://shop_images/veil-of-summer_jpg.jpg",
+            "link": "shopify://collections/veil-of-summer-chikankari-edit",
             "mobile_header_style": "dark"
           }
         }
       },
       "block_order": [
+        "slide_xdnMAG",
         "slide_nmjfDt",
-        "slide_xdnMAG"
+        "slide_gFpfnE"
       ],
       "name": "<> Hero Slider",
       "settings": {
@@ -259,7 +268,7 @@
           "type": "panel",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/Rectangle_704_8e3b0af3-435e-46e0-82af-5904ded7187c.png",
+            "image": "shopify://shop_images/thumbnail-left_jpg.jpg",
             "video_url": "",
             "link": "",
             "hide_on_mobile": true
@@ -269,7 +278,7 @@
           "type": "panel",
           "settings": {
             "media_type": "video",
-            "video": "shopify://files/videos/get_982a342c-80aa-4b7a-9bdf-7f02d2e1a4f6.mp4",
+            "video": "shopify://files/videos/film_770c3aad-39c6-4120-8bec-22b021812410.mp4",
             "video_url": "",
             "link": "",
             "hide_on_mobile": false
@@ -279,7 +288,7 @@
           "type": "panel",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/Rectangle_706_5d2eac97-935d-4df9-88a4-093690f311a3.png",
+            "image": "shopify://shop_images/thumbnail-right_jpg.jpg",
             "video_url": "",
             "link": "",
             "hide_on_mobile": true

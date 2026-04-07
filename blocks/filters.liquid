@@ -76,7 +76,7 @@
     if collection.metafields.custom.timer.value
       assign show_collection_timer = true
     endif
-    if section.settings.collection_countdown_start != blank or section.settings.collection_countdown_end != blank
+    if section.settings.collection_countdown_start != blank or section.settings.collection_countdown_end != blank or section.settings.collection_countdown_start_date != blank or section.settings.collection_countdown_end_date != blank
       assign show_collection_timer = true
     endif
   endif

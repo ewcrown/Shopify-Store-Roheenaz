@@ -18,7 +18,9 @@
             <div class="Featured-product__card">
                 
                 <div class="Featured-product__image-wrapper">
-                {%- if product.available == false -%}
+                {%- capture ew_cs_feat %}{% render 'ew-product-coming-soon-flag', product: product %}{% endcapture -%}
+                {%- assign ew_cs_feat = ew_cs_feat | strip -%}
+                {%- if product.available == false and ew_cs_feat != '1' -%}
                     <span class="Featured-product__badge Featured-product__badge--sold-out">Sold Out</span>
                 {%- elsif product.compare_at_price > product.price -%}
                     <span class="Featured-product__badge Featured-product__badge--sale">Best Seller</span>
@@ -44,7 +46,7 @@
                   <form id="{{ product_form_id }}-form" method="post" action="{{ routes.cart_add_url }}" data-type="add-to-cart-form" class="Featured-product__form">
                     <input type="hidden" name="id" ref="variantId" value="{{ product.selected_or_first_available_variant.id }}">
                     <add-to-cart-component ref="addToCartButtonContainer">
-                      <button type="submit" name="add" ref="addToCartButton" on:click="/handleClick" class="Featured-product__action-btn" {% unless product.available %}disabled{% endunless %}>
+                      <button type="submit" name="add" ref="addToCartButton" on:click="/handleClick" class="Featured-product__action-btn" {% if product.available == false or ew_cs_feat == '1' %}disabled{% endif %}>
                         <span class="Featured-product__action-btn-content">
                           <span class="Featured-product__add-text">ADD</span>
                           {{- 'add-to-cart-icon.svg' | inline_asset_content -}}

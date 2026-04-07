@@ -1,47 +1,76 @@
 {%- doc -%}
-  Collection header countdown. Times come from section settings (collection template) first, then
-  `custom.timer_end` metafield. `custom.timer` boolean can still be used to show the block (with filters).
-  Pass ISO 8601 strings in theme settings, e.g. 2026-12-25T18:00:00+04:00
+  Collection countdown: optional start/end date (YYYY-MM-DD) + time (HH:MM:SS), or metafield custom.timer_end when section end is completely empty.
 
   @param {object} collection - Current collection
-  @param {object} countdown_section - Parent section (main-collection) with countdown settings
+  @param {object} countdown_section - Parent section (main-collection)
 {%- enddoc -%}
 {%- liquid
-  assign start_iso = countdown_section.settings.collection_countdown_start | strip
-  assign end_iso = countdown_section.settings.collection_countdown_end | strip
+  assign merchant_date = 'now' | date: '%Y-%m-%d'
 
-  if end_iso == blank and collection.metafields.custom.timer_end.value != blank
-    assign end_iso = collection.metafields.custom.timer_end.value | date: '%Y-%m-%dT%H:%M:%S%z'
+  assign start_date_raw = countdown_section.settings.collection_countdown_start_date | strip
+  assign start_hms_raw = countdown_section.settings.collection_countdown_start | strip
+  assign end_date_raw = countdown_section.settings.collection_countdown_end_date | strip
+  assign end_hms_raw = countdown_section.settings.collection_countdown_end | strip
+
+  assign end_unix_attr = ''
+  if collection.metafields.custom.timer_end.value != blank
+    if end_date_raw == blank and end_hms_raw == blank
+      assign end_unix_attr = collection.metafields.custom.timer_end.value | date: '%s'
+    endif
   endif
+
+  assign start_date = start_date_raw
+  assign start_hms = start_hms_raw
+  assign end_date = end_date_raw
+  assign end_hms = end_hms_raw
+
+  if start_date == blank and start_hms != blank
+    assign start_date = merchant_date
+  endif
+  if start_date != blank and start_hms == blank
+    assign start_hms = '00:00:00'
+  endif
+
+  if end_date == blank and end_hms != blank and end_unix_attr == blank
+    assign end_date = merchant_date
+  endif
+  if end_date != blank and end_hms == blank and end_unix_attr == blank
+    assign end_hms = '23:59:59'
+  endif
+
+  assign countdown_heading = countdown_section.settings.collection_countdown_heading | strip
 -%}
 <div
   class="ew-collection-countdown"
   data-collection-countdown
-  {% if start_iso != blank %}data-start-iso="{{ start_iso | escape }}"{% endif %}
-  {% if end_iso != blank %}data-end-iso="{{ end_iso | escape }}"{% endif %}
+  data-merchant-date="{{ merchant_date }}"
+  {% if start_date != blank and start_hms != blank %}data-start-date="{{ start_date | escape }}" data-start-hms="{{ start_hms | escape }}"{% endif %}
+  {% if end_date != blank and end_hms != blank and end_unix_attr == blank %}data-end-date="{{ end_date | escape }}" data-end-hms="{{ end_hms | escape }}"{% endif %}
+  {% if end_unix_attr != blank %}data-end-unix="{{ end_unix_attr }}"{% endif %}
 >
   <p class="ew-collection-countdown__phase" data-ew-countdown-phase hidden></p>
-  <div class="ew-collection-countdown__units" role="timer" aria-live="polite">
-    <span class="ew-collection-countdown__block">
-      <span class="ew-collection-countdown__num" data-ew-countdown-days>—</span>
-      <span class="ew-collection-countdown__unit-label">Days</span>
-    </span>
+
+  <div class="ew-collection-countdown__grid" role="timer" aria-live="polite">
+    <span class="ew-collection-countdown__num" data-ew-countdown-days>—</span>
     <span class="ew-collection-countdown__colon" aria-hidden="true">:</span>
-    <span class="ew-collection-countdown__block">
-      <span class="ew-collection-countdown__num" data-ew-countdown-hours>—</span>
-      <span class="ew-collection-countdown__unit-label">Hrs</span>
-    </span>
+    <span class="ew-collection-countdown__num" data-ew-countdown-hours>—</span>
     <span class="ew-collection-countdown__colon" aria-hidden="true">:</span>
-    <span class="ew-collection-countdown__block">
-      <span class="ew-collection-countdown__num" data-ew-countdown-mins>—</span>
-      <span class="ew-collection-countdown__unit-label">Min</span>
-    </span>
+    <span class="ew-collection-countdown__num" data-ew-countdown-mins>—</span>
     <span class="ew-collection-countdown__colon" aria-hidden="true">:</span>
-    <span class="ew-collection-countdown__block">
-      <span class="ew-collection-countdown__num" data-ew-countdown-secs>—</span>
-      <span class="ew-collection-countdown__unit-label">Sec</span>
-    </span>
+    <span class="ew-collection-countdown__num" data-ew-countdown-secs>—</span>
+
+    <span class="ew-collection-countdown__unit-label">{{ 'sections.collection_countdown.days' | t }}</span>
+    <span class="ew-collection-countdown__colon-spacer" aria-hidden="true"></span>
+    <span class="ew-collection-countdown__unit-label">{{ 'sections.collection_countdown.hours' | t }}</span>
+    <span class="ew-collection-countdown__colon-spacer" aria-hidden="true"></span>
+    <span class="ew-collection-countdown__unit-label">{{ 'sections.collection_countdown.minutes' | t }}</span>
+    <span class="ew-collection-countdown__colon-spacer" aria-hidden="true"></span>
+    <span class="ew-collection-countdown__unit-label">{{ 'sections.collection_countdown.seconds' | t }}</span>
   </div>
+
+  {%- if countdown_heading != blank -%}
+    <p class="ew-collection-countdown__title">{{ countdown_heading | escape }}</p>
+  {%- endif -%}
 </div>
 
 <script src="{{ 'ew-collection-countdown.js' | asset_url }}" type="module" defer fetchpriority="low"></script>

@@ -22,6 +22,14 @@
   {% content_for 'blocks' %}
 {% endcapture %}
 
+{% assign ew_product_for_tag_check = product | default: closest.product %}
+{% capture ew_cs_pdp_flag %}{% render 'ew-product-coming-soon-flag', product: ew_product_for_tag_check %}{% endcapture %}
+{% assign ew_cs_pdp_flag = ew_cs_pdp_flag | strip %}
+{% assign ew_coming_soon_pdp = false %}
+{% if ew_cs_pdp_flag == '1' %}
+  {% assign ew_coming_soon_pdp = true %}
+{% endif %}
+
 {% if section.settings.enable_sticky_add_to_cart %}
   {% liquid
     assign current_variant = product.selected_or_first_available_variant
@@ -36,6 +44,7 @@
     data-current-variant-id="{{ current_variant.id }}"
     data-initial-quantity="{{ initial_quantity }}"
     data-default-variant-title="{{ 'products.product.default_title' | t }}"
+    data-ew-coming-soon="{% if ew_coming_soon_pdp %}true{% else %}false{% endif %}"
   >
     <div
       class="sticky-add-to-cart__bar color-{{ settings.popover_color_scheme }}"
@@ -119,21 +128,23 @@
         class="sticky-add-to-cart__button add-to-cart-button button"
         ref="addToCartButton"
         on:click="/handleAddToCartClick"
-        {% unless current_variant.available %}
+        {% if current_variant.available == false or ew_coming_soon_pdp %}
           disabled
-        {% endunless %}
+        {% endif %}
       >
         <span
           class="add-to-cart-text"
         >
-          {% if current_variant.available %}
+          {% if current_variant.available and ew_coming_soon_pdp == false %}
             <span class="svg-wrapper add-to-cart-icon">
               {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
             </span>
           {% endif %}
           <span class="add-to-cart-text__content">
             <span>
-              {%- if current_variant.available -%}
+              {%- if ew_coming_soon_pdp -%}
+                Coming soon
+              {%- elsif current_variant.available -%}
                 {{- 'products.product.add_to_cart' | t -}}
               {%- elsif current_variant == blank -%}
                 {{- 'products.product.unavailable' | t -}}
@@ -170,7 +181,12 @@
     assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
   %}
   {% capture mobile_bar_content %}
-    <div class="ew-mobile-product-bar" id="ew-mobile-product-bar-{{ section.id }}" aria-hidden="true">
+    <div
+      class="ew-mobile-product-bar"
+      id="ew-mobile-product-bar-{{ section.id }}"
+      aria-hidden="true"
+      data-ew-coming-soon="{% if ew_coming_soon_pdp %}true{% else %}false{% endif %}"
+    >
       <div class="ew-mobile-product-bar__quantity" data-ew-qty-proxy>
         <button
           type="button"
@@ -194,13 +210,15 @@
         type="submit"
         form="{{ product_form_id }}"
         class="ew-mobile-product-bar__add-to-cart"
-        aria-label="{% if product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}"
-        {% unless product.selected_or_first_available_variant.available %}
+        aria-label="{% if ew_coming_soon_pdp %}Coming soon{% elsif product.selected_or_first_available_variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}"
+        {% if product.selected_or_first_available_variant.available == false or ew_coming_soon_pdp %}
           disabled
-        {% endunless %}
+        {% endif %}
       >
         <span class="ew-mobile-product-bar__add-to-cart-text" data-atc-label>
-          {% if product.selected_or_first_available_variant.available %}
+          {% if ew_coming_soon_pdp %}
+            Coming soon
+          {% elsif product.selected_or_first_available_variant.available %}
             {{- 'products.product.add_to_cart' | t -}}
           {% else %}
             {{- 'products.product.sold_out' | t -}}
@@ -264,7 +282,8 @@
 
         document.addEventListener('variant:update', function (ev) {
           var resource = ev.detail && ev.detail.resource;
-          if (addBtn) addBtn.disabled = !resource || !resource.available;
+          var comingSoon = bar.getAttribute('data-ew-coming-soon') === 'true';
+          if (addBtn) addBtn.disabled = comingSoon || !resource || !resource.available;
           syncQtyDisplay();
         });
 

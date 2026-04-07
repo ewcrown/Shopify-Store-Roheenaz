@@ -1,0 +1,16 @@
+{%- doc -%}
+  Outputs the character "1" if the product has tag `coming-soon` (case-insensitive). Empty otherwise.
+  @param {object} product - Product object
+{%- enddoc -%}
+{%- if product != blank -%}
+  {%- liquid
+    assign ew_flag = false
+    for tag in product.tags
+      assign t = tag | downcase | strip
+      if t == 'coming-soon'
+        assign ew_flag = true
+      endif
+    endfor
+  -%}
+  {%- if ew_flag -%}1{%- endif -%}
+{%- endif -%}

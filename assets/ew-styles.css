@@ -756,6 +756,7 @@ product-price {
   /* #header-group provides horizontal padding */
 }
 
+
 @media (min-width: 750px) {
 
   /* Put main search (right column) in rightA, before account; keep drawer search hidden */
@@ -2063,6 +2064,7 @@ summary.menu__heading.h3 {
 .button-secondary {
   padding: 10px 40px;
   border-radius: 30px;
+  text-decoration: none !important;
 }
 
 .button-secondary:hover,
@@ -2250,54 +2252,82 @@ span.cart-bubble__text-count {
   color: #000 !important;
 }
 
-/* Collection header countdown — section settings + optional metafields */
+/* Collection header countdown — DHMS grid, serif numerals, optional heading (section setting) */
 .ew-collection-countdown {
   width: 100%;
-  max-width: 22rem;
+  max-width: min(40rem, 100%);
+  margin-inline: auto;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: rgb(var(--color-foreground-rgb, 18 18 18));
+  margin-bottom: 20px;
 }
 
 .ew-collection-countdown__phase {
-  margin: 0 0 0.35rem;
-  font-size: 0.7rem;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-body--family);
+  font-size: 0.65rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0.8;
+  text-align: center;
 }
 
-.ew-collection-countdown__units {
-  display: flex;
-  align-items: flex-end;
+.ew-collection-countdown__grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  grid-template-rows: auto auto;
   justify-content: center;
-  gap: 0.15rem;
+  justify-items: center;
+  column-gap: clamp(0.2rem, 1.5vw, 0.65rem);
+  row-gap: 0.5rem;
   font-variant-numeric: tabular-nums;
 }
 
-.ew-collection-countdown__block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  min-width: 2.25rem;
+.ew-collection-countdown__grid > .ew-collection-countdown__num {
+  grid-row: 1;
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.04em;
 }
 
-.ew-collection-countdown__num {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
+.ew-collection-countdown__grid > .ew-collection-countdown__colon {
+  grid-row: 1;
+  align-self: center;
+  font-size: clamp(1.35rem, 4vw, 2.1rem);
+  font-weight: 400;
+  line-height: 1;
+  opacity: 0.85;
+  padding-inline: 0.05em;
 }
 
-.ew-collection-countdown__unit-label {
-  font-size: 0.65rem;
+.ew-collection-countdown__grid > .ew-collection-countdown__unit-label {
+  grid-row: 2;
+  font-size: clamp(0.55rem, 1.6vw, 0.7rem);
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  opacity: 0.75;
+  line-height: 1.2;
+  opacity: 0.9;
 }
 
-.ew-collection-countdown__colon {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  font-weight: 600;
-  padding-bottom: 0.85rem;
-  opacity: 0.5;
+.ew-collection-countdown__grid > .ew-collection-countdown__colon-spacer {
+  grid-row: 2;
+  width: 100%;
+  min-width: 0.5em;
+  min-height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ew-collection-countdown__title {
+  margin: clamp(1rem, 3vw, 1.75rem) 0 0;
+  font-size: clamp(0.95rem, 2.4vw, 1.2rem);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  text-align: center;
+  color: inherit;
 }

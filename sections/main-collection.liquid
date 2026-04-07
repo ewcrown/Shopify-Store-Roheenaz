@@ -195,19 +195,42 @@
     },
     {
       "type": "paragraph",
-      "content": "Optional times for the header timer (ISO 8601 recommended, e.g. 2026-12-25T18:00:00+04:00). Section values override the collection metafield end time. The custom.timer metafield (boolean) or either time field below can show the timer."
+      "content": "Set a calendar date and time for start/end. Dates use YYYY-MM-DD (store calendar). Times use 24-hour HH:MM:SS. If you only set a time and leave the matching date empty, today’s date is used. The custom.timer metafield can still show the timer; if both end date and end time are empty, custom.timer_end (full date & time) is used."
+    },
+    {
+      "type": "text",
+      "id": "collection_countdown_start_date",
+      "label": "Start date (YYYY-MM-DD)",
+      "placeholder": "2026-12-25",
+      "info": "Optional. Leave empty to use today when a start time is set."
     },
     {
       "type": "text",
       "id": "collection_countdown_start",
-      "label": "Start time",
-      "info": "Before this moment, the timer counts down to the start. Leave empty to only count down to the end time."
+      "label": "Start time (HH:MM:SS)",
+      "placeholder": "09:00:00",
+      "info": "Optional. If you set only a start date, midnight (00:00:00) is used."
+    },
+    {
+      "type": "text",
+      "id": "collection_countdown_end_date",
+      "label": "End date (YYYY-MM-DD)",
+      "placeholder": "2026-12-31",
+      "info": "Recommended with end time. Leave empty to use today when only end time is set."
     },
     {
       "type": "text",
       "id": "collection_countdown_end",
-      "label": "End time",
-      "info": "Countdown target. Required unless you only use the collection metafield custom.timer_end."
+      "label": "End time (HH:MM:SS)",
+      "placeholder": "18:00:00",
+      "info": "If you set only an end date, end of that day (23:59:59) is used."
+    },
+    {
+      "type": "text",
+      "id": "collection_countdown_heading",
+      "label": "Countdown heading",
+      "default": "The Countdown Begins",
+      "info": "Shown centered below the timer. Leave empty to hide."
     },
     {
       "type": "header",

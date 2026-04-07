@@ -339,6 +339,14 @@
       "copied": "Link copied to clipboard!"
     }
   },
+  "sections": {
+    "collection_countdown": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    }
+  },
   "placeholders": {
     "password": "Password",
     "search": "Search",

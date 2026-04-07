@@ -34,6 +34,14 @@
     endif
   endif
 %}
+{% capture ew_cs_flag %}{% render 'ew-product-coming-soon-flag', product: product %}{% endcapture %}
+{% assign ew_cs_flag = ew_cs_flag | strip %}
+{% if ew_cs_flag == '1' and product != blank %}
+  {% liquid
+    assign can_add_to_cart = false
+    assign add_to_cart_text = 'Coming soon'
+  %}
+{% endif %}
 
 <span
   class="buy-buttons-block buy-buttons-block--{{ block.id }}"
