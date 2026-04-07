@@ -191,6 +191,26 @@
     },
     {
       "type": "header",
+      "content": "Collection countdown"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional times for the header timer (ISO 8601 recommended, e.g. 2026-12-25T18:00:00+04:00). Section values override the collection metafield end time. The custom.timer metafield (boolean) or either time field below can show the timer."
+    },
+    {
+      "type": "text",
+      "id": "collection_countdown_start",
+      "label": "Start time",
+      "info": "Before this moment, the timer counts down to the start. Leave empty to only count down to the end time."
+    },
+    {
+      "type": "text",
+      "id": "collection_countdown_end",
+      "label": "End time",
+      "info": "Countdown target. Required unless you only use the collection metafield custom.timer_end."
+    },
+    {
+      "type": "header",
       "content": "t:content.layout"
     },
     {

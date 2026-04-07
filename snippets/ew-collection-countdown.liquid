@@ -1,0 +1,47 @@
+{%- doc -%}
+  Collection header countdown. Times come from section settings (collection template) first, then
+  `custom.timer_end` metafield. `custom.timer` boolean can still be used to show the block (with filters).
+  Pass ISO 8601 strings in theme settings, e.g. 2026-12-25T18:00:00+04:00
+
+  @param {object} collection - Current collection
+  @param {object} countdown_section - Parent section (main-collection) with countdown settings
+{%- enddoc -%}
+{%- liquid
+  assign start_iso = countdown_section.settings.collection_countdown_start | strip
+  assign end_iso = countdown_section.settings.collection_countdown_end | strip
+
+  if end_iso == blank and collection.metafields.custom.timer_end.value != blank
+    assign end_iso = collection.metafields.custom.timer_end.value | date: '%Y-%m-%dT%H:%M:%S%z'
+  endif
+-%}
+<div
+  class="ew-collection-countdown"
+  data-collection-countdown
+  {% if start_iso != blank %}data-start-iso="{{ start_iso | escape }}"{% endif %}
+  {% if end_iso != blank %}data-end-iso="{{ end_iso | escape }}"{% endif %}
+>
+  <p class="ew-collection-countdown__phase" data-ew-countdown-phase hidden></p>
+  <div class="ew-collection-countdown__units" role="timer" aria-live="polite">
+    <span class="ew-collection-countdown__block">
+      <span class="ew-collection-countdown__num" data-ew-countdown-days>—</span>
+      <span class="ew-collection-countdown__unit-label">Days</span>
+    </span>
+    <span class="ew-collection-countdown__colon" aria-hidden="true">:</span>
+    <span class="ew-collection-countdown__block">
+      <span class="ew-collection-countdown__num" data-ew-countdown-hours>—</span>
+      <span class="ew-collection-countdown__unit-label">Hrs</span>
+    </span>
+    <span class="ew-collection-countdown__colon" aria-hidden="true">:</span>
+    <span class="ew-collection-countdown__block">
+      <span class="ew-collection-countdown__num" data-ew-countdown-mins>—</span>
+      <span class="ew-collection-countdown__unit-label">Min</span>
+    </span>
+    <span class="ew-collection-countdown__colon" aria-hidden="true">:</span>
+    <span class="ew-collection-countdown__block">
+      <span class="ew-collection-countdown__num" data-ew-countdown-secs>—</span>
+      <span class="ew-collection-countdown__unit-label">Sec</span>
+    </span>
+  </div>
+</div>
+
+<script src="{{ 'ew-collection-countdown.js' | asset_url }}" type="module" defer fetchpriority="low"></script>

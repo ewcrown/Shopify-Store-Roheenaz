@@ -1,0 +1,20 @@
+{%- doc -%}
+  Outputs a single class name `ew-menu-link--new` when link_title matches one of the comma- or newline-separated
+  labels in theme setting `settings.ew_new_menu_item_names` (case-insensitive, trimmed exact match).
+{%- enddoc -%}
+{%- liquid
+  assign ew_is_new = false
+  assign ew_raw = settings.ew_new_menu_item_names | default: '' | strip
+  if ew_raw != blank
+    assign ew_needle = link_title | downcase | strip
+    assign ew_with_br = ew_raw | newline_to_br | replace: ',', '<br />'
+    assign ew_parts = ew_with_br | split: '<br />'
+    for ew_part in ew_parts
+      assign ew_p = ew_part | strip | downcase
+      if ew_p != blank and ew_p == ew_needle
+        assign ew_is_new = true
+      endif
+    endfor
+  endif
+-%}
+{%- if ew_is_new -%} ew-menu-link--new{%- endif -%}

@@ -1,0 +1,29 @@
+{%- doc -%}
+  Renders optional "New" and "Coming soon" badges when the product has tags `new` (case-insensitive) or `coming-soon`.
+  @param {object} product - Product object
+{%- enddoc -%}
+{%- unless product == blank -%}
+  {%- liquid
+    assign ew_badge_new = false
+    assign ew_badge_coming_soon = false
+    for tag in product.tags
+      assign t = tag | downcase | strip
+      if t == 'new'
+        assign ew_badge_new = true
+      endif
+      if t == 'coming-soon'
+        assign ew_badge_coming_soon = true
+      endif
+    endfor
+  -%}
+  {%- if ew_badge_new -%}
+    <div class="product-badges__badge product-badges__badge--rectangle product-badges__badge--tag-new">
+      New
+    </div>
+  {%- endif -%}
+  {%- if ew_badge_coming_soon -%}
+    <div class="product-badges__badge product-badges__badge--rectangle product-badges__badge--tag-coming-soon">
+      coming-soon
+    </div>
+  {%- endif -%}
+{%- endunless -%}

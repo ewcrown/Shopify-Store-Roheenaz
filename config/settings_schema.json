@@ -72,6 +72,13 @@
         "id": "ew_blink_menu_item_names",
         "label": "Menu item labels to blink",
         "placeholder": "Sale, New Arrivals"
+      },
+      {
+        "type": "textarea",
+        "id": "ew_new_menu_item_names",
+        "label": "Menu item labels with NEW badge",
+        "info": "Matching labels will show a blinking NEW badge. Separate names with commas or line breaks.",
+        "placeholder": "New In, Just Dropped"
       }
     ]
   },

@@ -132,7 +132,8 @@
           {% render 'link-featured-image', link: link, class: 'mega-menu__link-image', sizes: collection_image_sizes %}
         {% endif %}
         {% capture ew_blink_class %}{% render 'ew-menu-blink-class', link_title: link.title %}{% endcapture %}
-        <span class="wrap-text{{ ew_blink_class }}">
+        {% capture ew_new_class %}{% render 'ew-menu-new-class', link_title: link.title %}{% endcapture %}
+        <span class="wrap-text{{ ew_blink_class }}{{ ew_new_class }}">
           {{- link.title -}}
         </span>
       </a>
@@ -155,7 +156,8 @@
                 class="mega-menu__link"
               >
                 {% capture ew_blink_class %}{% render 'ew-menu-blink-class', link_title: childLink.title %}{% endcapture %}
-                <span class="wrap-text{{ ew_blink_class }}">{{- childLink.title -}}</span>
+                {% capture ew_new_class %}{% render 'ew-menu-new-class', link_title: childLink.title %}{% endcapture %}
+                <span class="wrap-text{{ ew_blink_class }}{{ ew_new_class }}">{{- childLink.title -}}</span>
               </a>
             </li>
           {% endfor %}

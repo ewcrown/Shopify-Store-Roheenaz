@@ -122,6 +122,17 @@
           {{- resource.title | truncate: 60 -}}
         </div>
       {%- endif -%}
+      {%- if resource_type == 'product' -%}
+        <div
+          class="resource-card__tag-badges product-badges product-badges--{{ settings.badge_position }}"
+          style="
+            --badge-border-radius: {{ settings.badge_corner_radius }}px;
+            --badge-font-family: var(--font-{{ settings.badge_font_family }}--family); --badge-font-weight: var(--font-{{ settings.badge_font_family }}--weight); --badge-text-transform: {{ settings.badge_text_transform }};
+          "
+        >
+          {% render 'ew-product-card-tag-badges', product: resource %}
+        </div>
+      {%- endif -%}
     {%- elsif resource_type == 'collection' -%}
       {%- if resource.products.size > 0 -%}
         <div class="resource-card__image-wrapper">
@@ -225,6 +236,19 @@
 
   .resource-card__media:empty {
     display: none;
+  }
+
+  .resource-card__media {
+    position: relative;
+  }
+
+  .resource-card__tag-badges {
+    pointer-events: none;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .resource-card__image-placeholder {

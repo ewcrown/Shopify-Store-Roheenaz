@@ -25,6 +25,7 @@
           {%- endif -%}
         </div>
       {%- endif -%}
+      {% render 'ew-product-card-tag-badges', product: product %}
     </div>
     {% comment %} Show theme quick-add only when quickview is off, so hover shows one cart button {% endcomment %}
     {% assign show_theme_quick_add = false %}
@@ -66,6 +67,10 @@
 
     position: absolute;
     z-index: var(--layer-flat);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .product-badges--bottom-left {
@@ -85,23 +90,19 @@
 
   .product-badges__badge {
     --badge-font-size: var(--font-size--xs);
-
+    padding: 4px 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--color-foreground);
     background: var(--color-background);
-    font-size: var(--badge-font-size);
+    font-size: 12px;
     font-family: var(--badge-font-family);
     font-weight: var(--badge-font-weight);
     text-transform: var(--badge-text-transform);
     border-radius: var(--badge-border-radius);
-  }
-
-  .product-badges__badge--rectangle {
-    padding-block: var(--badge-rectangle-padding-block);
-    padding-inline: var(--badge-rectangle-padding-inline);
+    text-transform: uppercase;
   }
 {% endstylesheet %}
 

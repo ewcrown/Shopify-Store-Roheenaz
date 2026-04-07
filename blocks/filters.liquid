@@ -70,6 +70,16 @@
   if block_settings.enable_filtering == false and block_settings.enable_sorting
     assign should_use_select_on_mobile = false
   endif
+
+  assign show_collection_timer = false
+  if collection != blank
+    if collection.metafields.custom.timer.value
+      assign show_collection_timer = true
+    endif
+    if section.settings.collection_countdown_start != blank or section.settings.collection_countdown_end != blank
+      assign show_collection_timer = true
+    endif
+  endif
 -%}
 
 {% if block_settings.enable_filtering or block_settings.enable_sorting or block_settings.enable_grid_density %}
@@ -104,7 +114,10 @@
           </button>
         {% endif %}
       </div>
-      <div class="facets-collection-action-bar__center">
+      <div class="facets-collection-action-bar__center{% if show_collection_timer %} facets-collection-action-bar__center--with-timer{% endif %}">
+        {% if show_collection_timer %}
+          {% render 'ew-collection-countdown', collection: collection, countdown_section: section %}
+        {% endif %}
         <h1 class="facets-collection-action-bar__title">{{ results.title }}</h1>
       </div>
       <div class="facets-collection-action-bar__right">
@@ -745,6 +758,13 @@
     grid-area: center;
     justify-self: center;
     text-align: center;
+  }
+
+  .facets-collection-action-bar__center--with-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--padding-xs);
   }
 
   .facets-collection-action-bar__right {
