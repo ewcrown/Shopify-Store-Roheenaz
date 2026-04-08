@@ -9,10 +9,16 @@
  */
 {
   "sections": {
-    
     "lookbook_blocki_3xYG3F": {
       "type": "lookbook-gallery",
       "blocks": {
+        "image_N6FfU7": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Cover_Image_1a3b4cf7-96cf-437b-8d3a-2bec40c5fc8a.png",
+            "img_url": "https://roheenaz.com/pages/eclat-garden"
+          }
+        },
         "image_nTnHV8": {
           "type": "image",
           "settings": {
@@ -92,6 +98,7 @@
         }
       },
       "block_order": [
+        "image_N6FfU7",
         "image_nTnHV8",
         "image_NCDWDj",
         "image_LBnKCE",

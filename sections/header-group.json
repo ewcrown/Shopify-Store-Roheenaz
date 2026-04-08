@@ -13,6 +13,7 @@
   "sections": {
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
+      "disabled": true,
       "name": "t:names.announcement_bar",
       "settings": {
         "announcement_text": "Any order placed now will be delivered after Eid. - Any order placed now will be delivered after Eid.- Any order placed now will be delivered after Eid.",

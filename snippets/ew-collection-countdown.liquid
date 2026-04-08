@@ -1,5 +1,6 @@
 {%- doc -%}
-  Collection countdown: optional start/end date (YYYY-MM-DD) + time (HH:MM:SS), or metafield custom.timer_end when section end is completely empty.
+  Collection countdown: end date (YYYY-MM-DD) + optional end time (HH:MM:SS),
+  or metafield custom.timer_end when section end fields are empty.
 
   @param {object} collection - Current collection
   @param {object} countdown_section - Parent section (main-collection)
@@ -7,8 +8,6 @@
 {%- liquid
   assign merchant_date = 'now' | date: '%Y-%m-%d'
 
-  assign start_date_raw = countdown_section.settings.collection_countdown_start_date | strip
-  assign start_hms_raw = countdown_section.settings.collection_countdown_start | strip
   assign end_date_raw = countdown_section.settings.collection_countdown_end_date | strip
   assign end_hms_raw = countdown_section.settings.collection_countdown_end | strip
 
@@ -19,17 +18,8 @@
     endif
   endif
 
-  assign start_date = start_date_raw
-  assign start_hms = start_hms_raw
   assign end_date = end_date_raw
   assign end_hms = end_hms_raw
-
-  if start_date == blank and start_hms != blank
-    assign start_date = merchant_date
-  endif
-  if start_date != blank and start_hms == blank
-    assign start_hms = '00:00:00'
-  endif
 
   if end_date == blank and end_hms != blank and end_unix_attr == blank
     assign end_date = merchant_date
@@ -44,7 +34,6 @@
   class="ew-collection-countdown"
   data-collection-countdown
   data-merchant-date="{{ merchant_date }}"
-  {% if start_date != blank and start_hms != blank %}data-start-date="{{ start_date | escape }}" data-start-hms="{{ start_hms | escape }}"{% endif %}
   {% if end_date != blank and end_hms != blank and end_unix_attr == blank %}data-end-date="{{ end_date | escape }}" data-end-hms="{{ end_hms | escape }}"{% endif %}
   {% if end_unix_attr != blank %}data-end-unix="{{ end_unix_attr }}"{% endif %}
 >

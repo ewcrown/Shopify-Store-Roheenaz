@@ -13,8 +13,52 @@
     {% content_for 'blocks' %}
   </div>
 </div>
+<button
+  class="scroll-to-top"
+  aria-label="Scroll to top"
+  onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
 
 {% stylesheet %}
+.account__shortcuts{display: none;}
+footer {
+    z-index: 11111;
+}
+  .scroll-to-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 60px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .scroll-to-top.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media screen and (min-width: 750px) {
+    .scroll-to-top {
+      display: none;
+    }
+  }
+
   .utilities {
     width: 100%;
     display: flex;
@@ -87,6 +131,20 @@
     }
   }
 {% endstylesheet %}
+
+<script>
+  (function () {
+    var btn = document.querySelector('.scroll-to-top');
+    if (!btn) return;
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        btn.classList.add('is-visible');
+      } else {
+        btn.classList.remove('is-visible');
+      }
+    }, { passive: true });
+  })();
+</script>
 
 {% schema %}
 {

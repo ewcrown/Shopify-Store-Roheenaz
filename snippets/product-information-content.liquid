@@ -113,24 +113,6 @@
       {% endif %}
       {{ additional_blocks }}
     </div>
-    <script>
-      (function() {
-        var sectionId = {{ section_id | json }};
-        function maybeMoveVariantPicker() {
-          if (!window.matchMedia('(max-width: 749px)').matches) return;
-          var outer = document.getElementById('ew-variant-picker-outer-' + sectionId);
-          var grid = document.querySelector('#product-information-' + sectionId + ' .product-information__grid');
-          if (!outer || !grid) return;
-          var picker = grid.querySelector('variant-picker');
-          if (picker) outer.appendChild(picker);
-        }
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', maybeMoveVariantPicker);
-        } else {
-          maybeMoveVariantPicker();
-        }
-      })();
-    </script>
   </div>
 
   {% comment %} Overlay (backdrop + size drawer + sticky bar) outside product-information and grid {% endcomment %}

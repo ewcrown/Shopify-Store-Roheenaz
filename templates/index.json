@@ -325,7 +325,7 @@
           "type": "card",
           "settings": {
             "image": "shopify://shop_images/category-banner-schifli.png",
-            "link": "shopify://collections/luxury-lawn",
+            "link": "shopify://collections/summer-heirloom",
             "label": "Luxury Lawn",
             "label_alignment": "center",
             "label_color": "#222222",
@@ -363,7 +363,7 @@
           "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Rectangle_717_1.png",
-            "link": "shopify://collections/luxury-lawn",
+            "link": "shopify://collections/summer-heirloom",
             "label": "Luxury lawn",
             "label_alignment": "center",
             "label_color": "#222222",
@@ -516,7 +516,7 @@
       ],
       "name": "<> Trending Festive",
       "settings": {
-        "title": "LUXURY EDIT",
+        "title": "SUMMER HEIRLOOM",
         "title_preset": "h3",
         "subtitle": "Styles selected with you in mind. Explore the latest trends.",
         "subtitle_preset": "paragraph",
@@ -544,7 +544,7 @@
         "cards_gap": 12,
         "show_view_all": true,
         "view_all_label": "View all",
-        "view_all_link": "shopify://collections/luxury-lawn",
+        "view_all_link": "shopify://collections/summer-heirloom",
         "view_all_style": "secondary",
         "view_all_alignment": "center",
         "view_all_spacing_top": 0,
