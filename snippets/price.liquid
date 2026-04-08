@@ -19,6 +19,17 @@
     assign show_compare_price = true
   endif
 
+  assign ew_coming_soon = false
+  if product_resource != blank
+    for tag in product_resource.tags
+      assign t = tag | downcase | strip
+      if t == 'coming-soon'
+        assign ew_coming_soon = true
+        break
+      endif
+    endfor
+  endif
+
   if product_resource == blank
     assign price = 1999
   endif
@@ -73,7 +84,8 @@
 -%}
 
 <div ref="priceContainer">
-  {% if has_volume_pricing %}
+  {% if ew_coming_soon and template.name == 'product' %}
+  {% elsif has_volume_pricing %}
     {% comment %} Volume pricing display {% endcomment %}
     {% if show_compare_price %}
       <span role="group">

@@ -2281,6 +2281,11 @@ span.cart-bubble__text-count {
   color: #000 !important;
 }
 
+/* Coming-soon cards: keep title visible, hide only price on product cards */
+.product-grid .product-card:has(.product-badges__badge--tag-coming-soon) product-price {
+  display: none !important;
+}
+
 /* Collection header countdown — DHMS grid, serif numerals, optional heading (section setting) */
 .ew-collection-countdown {
   width: 100%;
