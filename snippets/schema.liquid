@@ -1,0 +1,245 @@
+{%- comment -%}
+  schema-rh.liquid
+  Structured data (JSON-LD) for Roheenaz:
+    - Organization schema   → all pages
+    - ItemList schema       → collection pages
+    - Product schema        → product pages
+{%- endcomment -%}
+
+{%- comment -%}── Organization Schema (all pages) ──{%- endcomment -%}
+ {% if request.page_type == 'index' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "OnlineStore"],
+      "@id": "{{ shop.url }}/#organization",
+      "name": {{ shop.name | json }},
+      "url": "{{ shop.url }}/",
+      "foundingDate": "2018",
+      "founder": {
+        "@type": "Person",
+        "name": "Hassan Ahmad"
+      },
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://roheenaz.com/cdn/shop/files/Logo.jpg?v=1623242544"
+      },
+      "description": "Roheenaz is a premium Pakistani women's clothing brand offering luxury unstitched lawn, embroidered lawn, printed lawn, luxury pret, festive chiffon, and seasonal collections crafted to blend comfort and sophistication.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "telephone": "+92-300-4926663",
+        "email": "info@roheenaz.com",
+        "availableLanguage": ["English", "Urdu"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/roheenazpk",
+        "https://www.instagram.com/roheenaz.pk/",
+        "https://www.youtube.com/@roheenaz"
+      ],
+      "areaServed": [
+        { "@type": "Country", "name": "Pakistan" },
+        { "@type": "Country", "name": "United States" },
+        { "@type": "Country", "name": "United Kingdom" },
+        { "@type": "Country", "name": "Canada" },
+        { "@type": "Country", "name": "Australia" },
+        { "@type": "Country", "name": "United Arab Emirates" },
+        { "@type": "Country", "name": "Saudi Arabia" },
+        { "@type": "Country", "name": "Qatar" },
+        { "@type": "Country", "name": "Kuwait" },
+        { "@type": "Country", "name": "Bahrain" },
+        { "@type": "Country", "name": "Oman" },
+        { "@type": "Country", "name": "Germany" },
+        { "@type": "Country", "name": "France" },
+        { "@type": "Country", "name": "Netherlands" },
+        { "@type": "Country", "name": "Sweden" },
+        { "@type": "Country", "name": "Norway" },
+        { "@type": "Country", "name": "Denmark" },
+        { "@type": "Country", "name": "Spain" },
+        { "@type": "Country", "name": "Italy" },
+        { "@type": "Country", "name": "New Zealand" },
+        { "@type": "Country", "name": "Singapore" },
+        { "@type": "Country", "name": "Malaysia" },
+        { "@type": "Country", "name": "Bangladesh" },
+        { "@type": "Country", "name": "Sri Lanka" },
+        { "@type": "Country", "name": "South Africa" }
+      ],
+      "hasMerchantReturnPolicy": {
+        "@id": "{{ shop.url }}/#returnPolicy"
+      },
+      "paymentAccepted": [
+        {
+          "@type": "PaymentMethod",
+          "name": "Local Payments (Pakistan)",
+          "description": "Debit Card, Credit Card, Visa, Mastercard, JazzCash, and all local payment modes"
+        },
+        {
+          "@type": "PaymentMethod",
+          "name": "International Payments",
+          "description": "Stripe"
+        }
+      ]
+    },
+    {
+      "@type": "OfferShippingDetails",
+      "@id": "{{ shop.url }}/#shippingPolicy",
+      "shippingDestination": [
+        {
+          "@type": "DefinedRegion",
+          "name": "International Shipping (Worldwide except India and Israel)",
+          "excludedCountry": ["IN", "IL"]
+        }
+      ],
+      "doesNotShip": false,
+      "shippingSettingsLink": "{{ shop.url }}/pages/shipping-policy"
+    },
+    {
+      "@type": "MerchantReturnPolicy",
+      "@id": "{{ shop.url }}/#returnPolicy",
+      "url": "{{ shop.url }}/pages/return-exchange",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": 7,
+      "returnMethod": "https://schema.org/ReturnByMail",
+      "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility",
+      "refundType": "https://schema.org/ExchangeRefund",
+      "applicableCountry": "PK"
+    }
+  ]
+}
+</script>
+{% endif %}
+{%- comment -%}── Collection (ItemList) Schema (collection pages only) ──{%- endcomment -%}
+{% if request.page_type == 'collection' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": {{ collection.title | json }},
+  "description": {{ collection.description | strip_html | json }},
+  "itemListOrder": "https://schema.org/ItemListOrderAscending",
+  "numberOfItems": {{ collection.products_count }},
+  "itemListElement": [
+    {%- for product in collection.products -%}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.index }},
+      "url": "{{ shop.url }}{{ product.url }}",
+      "name": {{ product.title | json }},
+      "image": {{ product.featured_image | image_url: width: 800 | prepend: "https:" | json }},
+      "offers": {
+        "@type": "Offer",
+        "price": "{{ product.price | divided_by: 100.00 }}",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+      }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- comment -%}── Product Schema (product pages only) ──{%- endcomment -%}
+{% if request.page_type == 'product' %}
+{%- liquid
+  if product.selected_or_first_available_variant.featured_media
+    assign rh_seo_media = product.selected_or_first_available_variant.featured_media
+  else
+    assign rh_seo_media = product.featured_media
+  endif
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "@id": "{{ shop.url }}{{ product.url }}/#product",
+      "name": {{ product.title | json }},
+      "url": "{{ shop.url }}{{ product.url }}",
+      {%- if product.selected_or_first_available_variant.sku != blank -%}
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      {%- endif -%}
+      "description": {{ product.description | strip_html | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      {%- if product.type != blank -%}
+      "material": {{ product.type | json }},
+      "category": {{ product.type | json }},
+      {%- endif -%}
+      {%- if product.selected_or_first_available_variant.option1 != blank -%}
+      "color": {{ product.selected_or_first_available_variant.option1 | json }},
+      {%- endif -%}
+      "image": [
+        {%- for image in product.images -%}
+          {{ image | image_url: width: image.width | prepend: "https:" | json }}{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      {%- if product.collections.first -%}
+      "isRelatedTo": {
+        "@type": "CollectionPage",
+        "name": {{ product.collections.first.title | json }},
+        "url": "{{ shop.url }}/collections/{{ product.collections.first.handle }}"
+      },
+      {%- endif -%}
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ shop.url }}{{ product.url }}",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": "{{ product.price | divided_by: 100.00 }}",
+        "priceValidUntil": "2025-12-31",
+        "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@type": "Organization",
+          "name": {{ shop.name | json }},
+          "url": "{{ shop.url }}/"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": 0,
+            "currency": "PKR"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 3,
+              "maxValue": 5,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 5,
+              "unitCode": "DAY"
+            }
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "name": "International Shipping (Worldwide except India and Israel)",
+            "excludedCountry": ["IN", "IL"]
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "url": "{{ shop.url }}/pages/return-exchange",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 7,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility",
+          "refundType": "https://schema.org/ExchangeRefund",
+          "applicableCountry": "PK"
+        }
+      }
+    }
+  ]
+}
+</script>
+{%- endif -%}

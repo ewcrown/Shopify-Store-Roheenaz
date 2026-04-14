@@ -48,7 +48,6 @@ accordion-custom summary:hover {
     position: relative;
     top: auto;
   }
-  
 }
 
 .product-information__grid {
@@ -236,15 +235,10 @@ rte-formatter {
     padding: 0;
   }
 
-  /* One image per slide on mobile when two-per-frame is on — but always show videos */
+  /* One image per slide on mobile when two-per-frame is on */
 
   .media-gallery--two-per-frame .media-gallery__frame--two>.product-media-container:not(:first-child) {
     display: none;
-  }
-
-  .media-gallery--two-per-frame .media-gallery__frame--two>.product-media-container--video:not(:first-child),
-  .media-gallery--two-per-frame .media-gallery__frame--two>.product-media-container--external_video:not(:first-child) {
-    display: block;
   }
 
   /* Variant picker in product-details shows inline on mobile */
@@ -2374,12 +2368,4 @@ span.cart-bubble__text-count {
 
 .accordion {
   margin-top: 30px !important;
-}
-
-.metafield-rich_text_field {
-  max-width:100% !important;  
-}
-
-.product-form-buttons button {
-    border-radius: 30px !important;
 }

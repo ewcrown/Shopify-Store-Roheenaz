@@ -15,9 +15,9 @@
         "slide_xdnMAG": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/main-banner-_jpg_21610e7e-9209-4b37-98e8-1a9f7e838abb.jpg",
-            "mobile_image": "shopify://shop_images/new_date_reveal.jpg",
-            "link": "#",
+            "image": "shopify://shop_images/main-banner-_jpg_8a9cdd14-f403-4752-9166-ae62bf20c939.jpg",
+            "mobile_image": "shopify://shop_images/mob-banner-_jpg.jpg",
+            "link": "shopify://collections/floral-reveire-luxury-lawn",
             "mobile_header_style": "dark"
           }
         },
@@ -268,9 +268,9 @@
           "type": "panel",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/thumbnail-left_jpg.jpg",
+            "image": "shopify://shop_images/thumbnail-LEFT.png",
             "video_url": "",
-            "link": "",
+            "link": "shopify://collections/floral-reveire-luxury-lawn",
             "hide_on_mobile": true
           }
         },
@@ -278,7 +278,7 @@
           "type": "panel",
           "settings": {
             "media_type": "video",
-            "video": "shopify://files/videos/film_770c3aad-39c6-4120-8bec-22b021812410.mp4",
+            "video": "shopify://files/videos/FILM_d15bc282-c566-4685-848e-74278f5254b7.mp4",
             "video_url": "",
             "link": "",
             "hide_on_mobile": false
@@ -288,9 +288,9 @@
           "type": "panel",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/thumbnail-right_jpg.jpg",
+            "image": "shopify://shop_images/thumbnail-right.png",
             "video_url": "",
-            "link": "",
+            "link": "shopify://collections/floral-reveire-luxury-lawn",
             "hide_on_mobile": true
           }
         }
@@ -324,8 +324,8 @@
         "card_XCqcje": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/category-banner-schifli.png",
-            "link": "shopify://collections/summer-heirloom",
+            "image": "shopify://shop_images/Luxury-Lawn.png",
+            "link": "https://roheenaz.com/collections/luxury-lawn",
             "label": "Luxury Lawn",
             "label_alignment": "center",
             "label_color": "#222222",
@@ -374,7 +374,7 @@
         "card_wcLaFz": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Rectangle_717_2.png",
+            "image": "shopify://shop_images/trending-festive.png",
             "link": "shopify://collections/festive",
             "label": "Festive",
             "label_alignment": "center",
@@ -436,9 +436,9 @@
         "card_UgcCVC": {
           "type": "card",
           "settings": {
-            "product": "ivoria",
+            "product": "dewy-mist",
             "media_source": "video",
-            "video": "shopify://files/videos/Ivoria.mp4",
+            "video": "shopify://files/videos/Dewy Mist.mp4",
             "video_url": "",
             "video_loop": true,
             "quickview_icon": "icon-plus-2",
@@ -448,21 +448,9 @@
         "card_Ac6TA3": {
           "type": "card",
           "settings": {
-            "product": "elan-bloom",
+            "product": "poppy-bloom",
             "media_source": "video",
-            "video": "shopify://files/videos/Elan Bloom.mp4",
-            "video_url": "",
-            "video_loop": true,
-            "quickview_icon": "icon-plus-2",
-            "quickview_color_scheme": ""
-          }
-        },
-        "card_dNx3EW": {
-          "type": "card",
-          "settings": {
-            "product": "floral-garden",
-            "media_source": "video",
-            "video": "shopify://files/videos/Floral Garden.mp4",
+            "video": "shopify://files/videos/Poppybloom.mp4",
             "video_url": "",
             "video_loop": true,
             "quickview_icon": "icon-plus-2",
@@ -472,9 +460,21 @@
         "card_xP6JpG": {
           "type": "card",
           "settings": {
-            "product": "blossom-drift",
+            "product": "velora-1",
             "media_source": "video",
-            "video": "shopify://files/videos/Blossom Drift.mp4",
+            "video": "shopify://files/videos/Velora.mp4",
+            "video_url": "",
+            "video_loop": true,
+            "quickview_icon": "icon-plus-2",
+            "quickview_color_scheme": ""
+          }
+        },
+        "card_dNx3EW": {
+          "type": "card",
+          "settings": {
+            "product": "lunara-1",
+            "media_source": "video",
+            "video": "shopify://files/videos/Lunara.mp4",
             "video_url": "",
             "video_loop": true,
             "quickview_icon": "icon-plus-2",
@@ -509,8 +509,8 @@
       "block_order": [
         "card_UgcCVC",
         "card_Ac6TA3",
-        "card_dNx3EW",
         "card_xP6JpG",
+        "card_dNx3EW",
         "card_bWTrbP",
         "card_bcEYiU"
       ],

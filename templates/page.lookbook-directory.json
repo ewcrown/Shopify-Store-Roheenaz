@@ -12,6 +12,13 @@
     "lookbook_blocki_3xYG3F": {
       "type": "lookbook-gallery",
       "blocks": {
+        "image_cQ8RdF": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Cover.png",
+            "img_url": "shopify://pages/floral-reverie"
+          }
+        },
         "image_N6FfU7": {
           "type": "image",
           "settings": {
@@ -98,6 +105,7 @@
         }
       },
       "block_order": [
+        "image_cQ8RdF",
         "image_N6FfU7",
         "image_nTnHV8",
         "image_NCDWDj",

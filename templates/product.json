@@ -279,6 +279,7 @@
             "custom_liquid_b7JNK6": {
               "type": "custom-liquid",
               "name": "t:names.custom_liquid",
+              "disabled": true,
               "settings": {
                 "custom_liquid": "<div class=\"delivery-text-rhnz\">\n<h6>Note: All stitched articles required advance payment</h6>\n\n</div>"
               },
@@ -312,10 +313,19 @@
                     "width": 20
                   },
                   "blocks": {
+                    "custom_liquid_dXWzEP": {
+                      "type": "custom-liquid",
+                      "name": "t:names.custom_liquid",
+                      "settings": {
+                        "custom_liquid": "{% for tag in product.tags %}\n      {% if tag contains 'TDT' %}\n      {% assign TDT = tag | split: '--' %}\n      {% assign TDT = TDT[1] | strip %}\n      {% endif %}\n      {% endfor %}\n\n      {% if TDT %}\n      <div class=\"dinfo\"> {{ TDT }}</div>\n      {% endif %} </div>"
+                      },
+                      "blocks": {}
+                    },
                     "text_icWkTJ": {
                       "type": "text",
+                      "disabled": true,
                       "settings": {
-                        "text": "<p>All Unstitched orders will be dispatched within 3 working days.<br/>All Stitched orders will be dispatched within 14–18 working days.</p>",
+                        "text": "<p>All Unstitched orders will be dispatched within 3 to 5 working days.<br/></p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -339,7 +349,48 @@
                     }
                   },
                   "block_order": [
+                    "custom_liquid_dXWzEP",
                     "text_icWkTJ"
+                  ]
+                },
+                "accordion_row_tebatw": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "Product Description",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text_EmDmFA": {
+                      "type": "text",
+                      "settings": {
+                        "text": "{{ closest.product.metafields.custom.product_description | metafield_tag }}",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#22222226",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_EmDmFA"
                   ]
                 },
                 "accordion_row_tBWimA": {
@@ -423,6 +474,7 @@
               },
               "block_order": [
                 "accordion_row_AY6Ce3",
+                "accordion_row_tebatw",
                 "accordion_row_tBWimA",
                 "accordion_row_wLKtft"
               ]
