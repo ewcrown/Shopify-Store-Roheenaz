@@ -245,7 +245,7 @@
       },
       "name": "Featured collection",
       "settings": {
-        "collection": "all",
+        "collection": "new-arrivals",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 4,
@@ -260,6 +260,8 @@
         "horizontal_alignment": "flex-start",
         "gap": 28,
         "color_scheme": "scheme-1",
+        "header_heading_font_size_mobile": "",
+        "header_paragraph_font_size_mobile": "",
         "padding-block-start": 48,
         "padding-block-end": 48
       }

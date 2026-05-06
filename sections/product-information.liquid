@@ -237,7 +237,7 @@
         var bar = document.getElementById('ew-mobile-product-bar-' + sectionId);
         if (!sectionEl || !bar) return;
 
-        var qs = sectionEl.querySelector('product-form-component quantity-selector-component');
+        var qs = null;
         var display = bar.querySelector('[data-qty-display]');
         var minus = bar.querySelector('[data-proxy-qty="minus"]');
         var plus = bar.querySelector('[data-proxy-qty="plus"]');
@@ -274,10 +274,24 @@
         if (minus) minus.addEventListener('click', onMinus);
         if (plus) plus.addEventListener('click', onPlus);
 
-        var qInput = qs ? qs.querySelector('[ref="quantityInput"]') : null;
-        if (qInput) {
-          qInput.addEventListener('input', syncQtyDisplay);
-          qInput.addEventListener('change', syncQtyDisplay);
+        /* Defer qs lookup until DOMContentLoaded — the product-form-component is
+           rendered after this script in the DOM (product_details comes later in
+           product-information-content.liquid), so querySelector returns null if
+           called synchronously here. */
+        function initQs() {
+          qs = sectionEl.querySelector('product-form-component quantity-selector-component');
+          var qInput = qs ? qs.querySelector('[ref="quantityInput"]') : null;
+          if (qInput) {
+            qInput.addEventListener('input', syncQtyDisplay);
+            qInput.addEventListener('change', syncQtyDisplay);
+          }
+          syncQtyDisplay();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initQs);
+        } else {
+          initQs();
         }
 
         document.addEventListener('variant:update', function (ev) {
@@ -356,7 +370,6 @@
           });
         }
 
-        syncQtyDisplay();
       })();
     </script>
   {% endcapture %}

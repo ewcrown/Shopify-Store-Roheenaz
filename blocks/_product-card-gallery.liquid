@@ -44,7 +44,9 @@
           {%- endif -%}
         </div>
       {%- endif -%}
-      {% render 'ew-product-card-tag-badges', product: product %}
+      {% unless show_sold_out_badge %}
+        {% render 'ew-product-card-tag-badges', product: product %}
+      {% endunless %}
     </div>
     {% comment %} Show theme quick-add only when quickview is off, so hover shows one cart button {% endcomment %}
     {% assign show_theme_quick_add = false %}

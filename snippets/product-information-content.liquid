@@ -10,6 +10,7 @@
   @param {string} media_gallery - Captured HTML for the product media gallery block
   @param {string} product_details - Captured HTML for the product details block
   @param {string} additional_blocks - Captured HTML for additional section blocks
+  @param {string} [mobile_bar_content] - Optional mobile bar + script (product-information section only)
 
   @example
   {% capture media_gallery %}
@@ -77,6 +78,20 @@
 %}
 
 <div id="product-information-{{ section_id }}" class="ew-product-information-wrapper">
+  {% comment %}
+    Mobile overlay + variant shell must come first inside this wrapper. If they render after the
+    product grid/details, a stray extra </div> in nested block HTML can close this wrapper before
+    the overlay is parsed, so the overlay becomes a sibling in the live DOM.
+  {% endcomment %}
+  {% if mobile_bar_content != blank %}
+    <div class="ew-product-mobile-overlay" aria-hidden="true">
+      <div class="ew-variant-picker-outer" id="ew-variant-picker-outer-{{ section_id }}"></div>
+      {{ mobile_bar_content }}
+    </div>
+  {% else %}
+    <div class="ew-variant-picker-outer" id="ew-variant-picker-outer-{{ section_id }}"></div>
+  {% endif %}
+
   <div class="section-background color-{{ settings.color_scheme }}"></div>
   <div
     class="product-information section section--{{ content_width }} spacing-style color-{{ settings.color_scheme }} relative"
@@ -114,16 +129,6 @@
       {{ additional_blocks }}
     </div>
   </div>
-
-  {% comment %} Overlay (backdrop + size drawer + sticky bar) outside product-information and grid {% endcomment %}
-  {% if mobile_bar_content != blank %}
-    <div class="ew-product-mobile-overlay" aria-hidden="true">
-      <div class="ew-variant-picker-outer" id="ew-variant-picker-outer-{{ section_id }}"></div>
-      {{ mobile_bar_content }}
-    </div>
-  {% else %}
-    <div class="ew-variant-picker-outer" id="ew-variant-picker-outer-{{ section_id }}"></div>
-  {% endif %}
 </div>
 
 {% stylesheet %}

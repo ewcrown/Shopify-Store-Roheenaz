@@ -17,6 +17,8 @@
   {%- liquid
     assign selected_variant = closest.product.selected_or_first_available_variant
     assign variant_sku = selected_variant.sku
+      assign qv_product = closest.product | default: product
+    assign qv_size_guide = qv_product.metafields.custom.size_guide_image.value | default: qv_product.metafields.custom.size_guide_image
   -%}
   {% capture children %}
     <div class="view-product-title">
@@ -29,7 +31,7 @@
     </div>
 
     <div class="product-details__header">
-      <h1 class="product-details__title h2">{{ closest.product.title }}</h1>
+      <h2 class="product-details__title h2">{{ closest.product.title }}</h2>
       <div class="product-details__share">
         {% render 'product-share', product: closest.product, share_id: 'product-details-share' %}
       </div>
@@ -42,19 +44,67 @@
       </div>
     {% endif %}
 
-    <div class="product-details__price">
+    <product-price
+      class="product-details__price"
+      data-block-id="{{ block.id }}-price"
+      data-product-id="{{ closest.product.id }}"
+    >
       {% render 'price', product_resource: closest.product, show_sale_price_first: true %}
-    </div>
+    </product-price>
 
     <div class="product-details__rest">
       {% content_for 'blocks' %}
     </div>
+
   {% endcapture %}
 
   {% render 'group', children: children, settings: block_settings, shopify_attributes: block.shopify_attributes %}
+
+
+{%- if qv_size_guide != blank -%}
+  <dialog-component id="ew-size-guide-{{ section.id }}" class="ew-size-guide-dialog">
+    <dialog ref="dialog" class="ew-size-guide-dialog__content dialog-modal color-scheme-1" scroll-lock="">
+      <div class="ew-size-guide-dialog__inner">
+        <img
+          src="{{ qv_size_guide | image_url: width: 1200 }}"
+          alt="Size guide"
+          class="ew-size-guide-dialog__image"
+          loading="lazy"
+        >
+      </div>
+      <button
+        ref="closeButton"
+        on:click="/closeDialog"
+        type="button"
+        class="button button-unstyled close-button ew-size-guide-dialog__close"
+        aria-label="{{ 'accessibility.close_dialog' | t }}"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12 12L2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </dialog>
+  </dialog-component>
+{%- endif -%}
+
 </div>
 
 {% stylesheet %}
+ quick-add-dialog .ew-size-guide-block,
+  #quick-add-dialog .ew-size-guide-block {
+    display: block !important;
+  }
+
+  #quick-add-dialog .accordion,
+  #quick-add-dialog accordion-custom{
+    display: none;
+  }
+
+  #quick-add-dialog .product-details__price {
+    margin-top: 0 !important;
+  }
+  
   /* Clear padding on mobile, if not full-width */
   @media screen and (max-width: 749px) {
     .product-information.section--page-width .product-details > .group-block {

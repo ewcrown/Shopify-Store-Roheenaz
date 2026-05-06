@@ -186,6 +186,16 @@
         "url": "{{ shop.url }}/collections/{{ product.collections.first.handle }}"
       },
       {%- endif -%}
+     {%- assign rating = product.metafields.reviews.rating.value | default: 0 -%}
+{%- assign rating_count = product.metafields.reviews.rating_count | default: 0 -%}
+
+    {%- if rating_count > 0 -%}
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": {{ rating }},
+      "reviewCount": {{ rating_count }}
+    },
+      {%- endif -%}
       "offers": {
         "@type": "Offer",
         "url": "{{ shop.url }}{{ product.url }}",

@@ -30,27 +30,36 @@
     {%- render 'scripts' -%}
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-schemes' -%}
-
+    
     {% if request.design_mode %}
       {%- render 'theme-editor' -%}
     {% endif %}
 
     {{ content_for_header }}
   {% render 'schema' %}
-    {% comment %} Splide {% endcomment %}
 
-    <script src="
-      https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js
-      "></script>
-      <link href="
-      https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
-      " rel="stylesheet">
+    {% comment %} Splide {% endcomment %}
+    <script src="{{ 'splide.min.js' | asset_url }}" defer></script>
+    <link rel="preload" href="{{ 'splide.min.css' | asset_url }}" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="{{ 'splide.min.css' | asset_url }}">
+    </noscript>
     {% comment %} Splide End{% endcomment %}
 
-    {{ 'ew-style-media-query.css' | asset_url | stylesheet_tag }}
-    {{ 'ew-styles.css' | asset_url | stylesheet_tag }}
+  <link rel="stylesheet" href="{{ 'ew-style-media-query.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'ew-styles.css' | asset_url }}" media="print" onload="this.media='all'">
+    
+    <noscript>
+      {{ 'ew-style-media-query.css' | asset_url | stylesheet_tag }}
+      {{ 'ew-styles.css' | asset_url | stylesheet_tag }}
+    </noscript> 
   </head>
-
+<style>
+  .video-parent-ai video {
+      max-width: 563px;
+    margin: auto;
+  }
+  </style>
   <body
     class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}"
     data-page-type="{{ request.page_type }}"
@@ -147,6 +156,6 @@
       needs #quick-add-dialog / #quick-add-modal-content even when theme "Quick add" is disabled.
     {% endcomment %}
     {% render 'quick-add-modal' %}
-    {{ 'ew-custom.js' | asset_url | script_tag }}
+     <script src="{{ 'ew-custom.js' | asset_url }}" defer></script>
   </body>
 </html>

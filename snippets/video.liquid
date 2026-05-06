@@ -115,12 +115,15 @@
         | external_video_tag: data-video-type: 'vimeo'
       }}
     {% else %}
+    <div class="video-parent-ai">
       {{ video | video_tag: image_size: '2500x', autoplay: true, loop: video_loop, muted: true, controls: controls }}
+    </div>
     {% endif %}
   {% endcapture %}
 {% endif %}
 
 {% if video != blank %}
+
   <deferred-media
     class="{{ video_class }}"
     style="{{ video_style }}"
@@ -152,7 +155,7 @@
     {% endif %}
 
     {% if disable_controls %}
-      <button
+      <button          f
         class="button button-unstyled deferred-media__poster-button video-interaction-hint hidden"
         ref="toggleMediaButton"
         type="button"
@@ -181,7 +184,9 @@
       {% if video_from_url %}
         {{ video_iframe }}
       {% else %}
+        <div>
         {{ video_tag }}
+        </div>
       {% endif %}
     {% endif %}
   </deferred-media>

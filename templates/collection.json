@@ -136,7 +136,7 @@
         "columns_mobile": "2",
         "enable_infinite_scroll": true,
         "products_per_page": 24,
-        "collection_countdown_end_date": "2026-04-10",
+        "collection_countdown_end_date": "2026-04-30",
         "collection_countdown_end": "17:00:00",
         "collection_countdown_heading": "",
         "product_grid_width": "centered",
@@ -154,7 +154,7 @@
       "type": "custom-liquid",
       "name": "t:names.custom_liquid",
       "settings": {
-        "custom_liquid": "<style >\n@media screen and (max-width: 749px) {\n    .product-badges__badge {\n        padding: 2px 7px;\n        font-size: 5px!important;\n    }\n}\n\n</style>",
+        "custom_liquid": "<style >\n@media screen and (max-width: 749px) {\n    .product-badges__badge {\n        padding: 2px 7px;\n        font-size: 10px!important;\n    }\n}\n</style>",
         "color_scheme": "",
         "section_width": "page-width",
         "padding-block-start": 0,

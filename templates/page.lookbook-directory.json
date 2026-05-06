@@ -12,6 +12,13 @@
     "lookbook_blocki_3xYG3F": {
       "type": "lookbook-gallery",
       "blocks": {
+        "image_6QYPbM": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LOOKBOOK_Cover.png",
+            "img_url": "shopify://pages/sunlit-tales-printed-lawn"
+          }
+        },
         "image_cQ8RdF": {
           "type": "image",
           "settings": {
@@ -105,6 +112,7 @@
         }
       },
       "block_order": [
+        "image_6QYPbM",
         "image_cQ8RdF",
         "image_N6FfU7",
         "image_nTnHV8",

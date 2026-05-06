@@ -58,6 +58,7 @@
     },
     "custom_liquid_YFEVq9": {
       "type": "custom-liquid",
+      "disabled": true,
       "name": "t:names.custom_liquid",
       "settings": {
         "custom_liquid": "{% render 'postex-tracking-form' %}",

@@ -4,6 +4,15 @@
   Block: image, link, text overlay (editable, alignment, colors), height (mobile/desktop)
 {% endcomment %}
 
+{%- liquid 
+  assign loading_strategy = 'lazy'
+  assign fetch_priority = 'auto'
+  if section.index < 3
+    assign loading_strategy = 'eager'
+    assign fetch_priority = 'high'
+  endif
+-%}
+
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 
 <section
@@ -60,11 +69,12 @@
               {% if block.settings.image != blank %}
                 {{
                   block.settings.image
-                  | image_url: width: 1200
+                  | image_url: width: 800
                   | image_tag:
-                    loading: 'lazy',
-                    widths: '400, 600, 800, 1000, 1200',
-                    sizes: '(min-width: 750px) calc((100vw - var(--page-margin) * 2) / 3), var(--ew-rhz-mobile-card-size, 80vw)',
+                    loading: loading_strategy,
+                    fetchpriority: fetch_priority,
+                    widths: '400, 600, 800',
+                    sizes: '(min-width: 1200px) 400px, (min-width: 750px) 33vw, 80vw',
                     class: 'ew-rhz-curated-cards__img'
                 }}
               {% else %}
@@ -110,12 +120,13 @@
                       <div class="ew-rhz-curated-cards__media">
                         {% if block.settings.image != blank %}
                           {{
-                            block.settings.image
-                            | image_url: width: 1200
+                              block.settings.image
+                            | image_url: width: 800
                             | image_tag:
-                              loading: 'lazy',
-                              widths: '400, 600, 800, 1000, 1200',
-                              sizes: 'var(--ew-rhz-mobile-card-size, 80vw)',
+                              loading: loading_strategy,
+                              fetchpriority: fetch_priority,
+                              widths: '400, 600, 800',
+                              sizes: '(max-width: 768px) 80vw, 400px',
                               class: 'ew-rhz-curated-cards__img'
                           }}
                         {% else %}

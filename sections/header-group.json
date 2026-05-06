@@ -13,10 +13,9 @@
   "sections": {
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
-      "disabled": true,
       "name": "t:names.announcement_bar",
       "settings": {
-        "announcement_text": "Any order placed now will be delivered after Eid. - Any order placed now will be delivered after Eid.- Any order placed now will be delivered after Eid.",
+        "announcement_text": "Any Stitched orders placed after 5th May will be processed after eid",
         "announcement_link": "#",
         "speed": 10,
         "enable_transparent_announcement_home": false,

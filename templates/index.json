@@ -15,6 +15,15 @@
         "slide_xdnMAG": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/main-banner-_jpg_eb5d3f19-4fba-4f98-b9d7-4e33839cdf15.jpg",
+            "mobile_image": "shopify://shop_images/mob-banner-copy_jpg_c931bfb9-6cc2-4fcf-984c-009363ae99db.jpg",
+            "link": "shopify://collections/sunlit-tales-printed-embroidered-edit",
+            "mobile_header_style": "dark"
+          }
+        },
+        "slide_ARF9jP": {
+          "type": "slide",
+          "settings": {
             "image": "shopify://shop_images/main-banner-_jpg_8a9cdd14-f403-4752-9166-ae62bf20c939.jpg",
             "mobile_image": "shopify://shop_images/mob-banner-_jpg.jpg",
             "link": "shopify://collections/floral-reveire-luxury-lawn",
@@ -42,6 +51,7 @@
       },
       "block_order": [
         "slide_xdnMAG",
+        "slide_ARF9jP",
         "slide_nmjfDt",
         "slide_gFpfnE"
       ],
@@ -268,9 +278,9 @@
           "type": "panel",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/thumbnail-LEFT.png",
+            "image": "shopify://shop_images/thumbnail-left_62947ffc-8f17-4aa2-bec3-61168492bfdc.jpg",
             "video_url": "",
-            "link": "shopify://collections/floral-reveire-luxury-lawn",
+            "link": "shopify://collections/sunlit-tales-printed-embroidered-edit",
             "hide_on_mobile": true
           }
         },
@@ -278,7 +288,7 @@
           "type": "panel",
           "settings": {
             "media_type": "video",
-            "video": "shopify://files/videos/FILM_d15bc282-c566-4685-848e-74278f5254b7.mp4",
+            "video": "shopify://files/videos/film_a6d92e8d-0fe9-4518-9a34-7be26d746895.mp4",
             "video_url": "",
             "link": "",
             "hide_on_mobile": false
@@ -288,9 +298,9 @@
           "type": "panel",
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/thumbnail-right.png",
+            "image": "shopify://shop_images/thumbnail-right_9a49bd5d-40f3-4ee8-8653-7582c98b145c.jpg",
             "video_url": "",
-            "link": "shopify://collections/floral-reveire-luxury-lawn",
+            "link": "shopify://collections/sunlit-tales-printed-embroidered-edit",
             "hide_on_mobile": true
           }
         }
@@ -324,7 +334,7 @@
         "card_XCqcje": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Luxury-Lawn.png",
+            "image": "shopify://shop_images/luxury-lawn.jpg",
             "link": "https://roheenaz.com/collections/luxury-lawn",
             "label": "Luxury Lawn",
             "label_alignment": "center",
@@ -336,9 +346,9 @@
         "card_mDWHhr": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/category-banner-eclat-garden_1.png",
+            "image": "shopify://shop_images/printed.jpg",
             "link": "shopify://collections/printed-lawn",
-            "label": "Printed",
+            "label": "Printed LAWN",
             "label_alignment": "center",
             "label_color": "#222222",
             "label_background_color": "#ffffff",
@@ -436,45 +446,9 @@
         "card_UgcCVC": {
           "type": "card",
           "settings": {
-            "product": "dewy-mist",
+            "product": "sunveil",
             "media_source": "video",
-            "video": "shopify://files/videos/Dewy Mist.mp4",
-            "video_url": "",
-            "video_loop": true,
-            "quickview_icon": "icon-plus-2",
-            "quickview_color_scheme": ""
-          }
-        },
-        "card_Ac6TA3": {
-          "type": "card",
-          "settings": {
-            "product": "poppy-bloom",
-            "media_source": "video",
-            "video": "shopify://files/videos/Poppybloom.mp4",
-            "video_url": "",
-            "video_loop": true,
-            "quickview_icon": "icon-plus-2",
-            "quickview_color_scheme": ""
-          }
-        },
-        "card_xP6JpG": {
-          "type": "card",
-          "settings": {
-            "product": "velora-1",
-            "media_source": "video",
-            "video": "shopify://files/videos/Velora.mp4",
-            "video_url": "",
-            "video_loop": true,
-            "quickview_icon": "icon-plus-2",
-            "quickview_color_scheme": ""
-          }
-        },
-        "card_dNx3EW": {
-          "type": "card",
-          "settings": {
-            "product": "lunara-1",
-            "media_source": "video",
-            "video": "shopify://files/videos/Lunara.mp4",
+            "video": "shopify://files/videos/Sunveil.mp4",
             "video_url": "",
             "video_loop": true,
             "quickview_icon": "icon-plus-2",
@@ -484,9 +458,21 @@
         "card_bWTrbP": {
           "type": "card",
           "settings": {
-            "product": "wild-peony",
+            "product": "serene-bloom",
             "media_source": "video",
-            "video": "shopify://files/videos/Wild Peony.mp4",
+            "video": "shopify://files/videos/Serene Bloom.mp4",
+            "video_url": "",
+            "video_loop": true,
+            "quickview_icon": "icon-plus-2",
+            "quickview_color_scheme": ""
+          }
+        },
+        "card_Ac6TA3": {
+          "type": "card",
+          "settings": {
+            "product": "coral-whisper",
+            "media_source": "video",
+            "video": "shopify://files/videos/Coral whisper.mp4",
             "video_url": "",
             "video_loop": true,
             "quickview_icon": "icon-plus-2",
@@ -496,9 +482,33 @@
         "card_bcEYiU": {
           "type": "card",
           "settings": {
-            "product": "whispered-veil",
+            "product": "morning-petal",
             "media_source": "video",
-            "video": "shopify://files/videos/Whispered Veil.mp4",
+            "video": "shopify://files/videos/Morning Petal.mp4",
+            "video_url": "",
+            "video_loop": true,
+            "quickview_icon": "icon-plus-2",
+            "quickview_color_scheme": ""
+          }
+        },
+        "card_xP6JpG": {
+          "type": "card",
+          "settings": {
+            "product": "sunbeam-story",
+            "media_source": "video",
+            "video": "shopify://files/videos/Sunbeam story.mp4",
+            "video_url": "",
+            "video_loop": true,
+            "quickview_icon": "icon-plus-2",
+            "quickview_color_scheme": ""
+          }
+        },
+        "card_dNx3EW": {
+          "type": "card",
+          "settings": {
+            "product": "bloomray",
+            "media_source": "video",
+            "video": "shopify://files/videos/Bloomray.mp4",
             "video_url": "",
             "video_loop": true,
             "quickview_icon": "icon-plus-2",
@@ -508,11 +518,11 @@
       },
       "block_order": [
         "card_UgcCVC",
-        "card_Ac6TA3",
-        "card_xP6JpG",
-        "card_dNx3EW",
         "card_bWTrbP",
-        "card_bcEYiU"
+        "card_Ac6TA3",
+        "card_bcEYiU",
+        "card_xP6JpG",
+        "card_dNx3EW"
       ],
       "name": "<> Trending Festive",
       "settings": {
@@ -555,6 +565,17 @@
         "padding-inline-start": 0,
         "padding-inline-end": 0
       }
+    },
+    "custom_liquid_cVRB9Y": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<style >\n@media screen and (max-width: 749px) {\n    .product-badges__badge {\n        padding: 2px 7px;\n        font-size: 12px!important;\n    }\n}\n</style>",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
@@ -562,6 +583,7 @@
     "product_list_fa6P9H",
     "ew_rhz_media_panels_i98wtN",
     "ew_rhz_curated_cards_yxdDm9",
-    "ew_rhz_trending_festive_bcihgr"
+    "ew_rhz_trending_festive_bcihgr",
+    "custom_liquid_cVRB9Y"
   ]
 }
