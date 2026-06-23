@@ -236,14 +236,16 @@ rte-formatter {
     padding: 0;
   }
 
-  /* One image per slide on mobile when two-per-frame is on — but always show videos */
-
-  .media-gallery--two-per-frame .media-gallery__frame--two>.product-media-container:not(:first-child) {
+  /*
+   * Two-per-frame carousel overlaps media across slides (slide i shows media[i] + media[i+1]).
+   * On mobile the slideshow becomes a vertical list, so hide the trailing duplicate in each
+   * slide except the last — that slide alone carries the final media item in the sequence.
+   */
+  .product-information__media .media-gallery--two-per-frame .media-gallery__frame--two > .product-media-container:not(:first-child) {
     display: none;
   }
 
-  .media-gallery--two-per-frame .media-gallery__frame--two>.product-media-container--video:not(:first-child),
-  .media-gallery--two-per-frame .media-gallery__frame--two>.product-media-container--external_video:not(:first-child) {
+  .product-information__media .media-gallery--two-per-frame slideshow-slide.media-gallery__slide--two-per-frame:last-child .media-gallery__frame--two > .product-media-container:not(:first-child) {
     display: block;
   }
 
