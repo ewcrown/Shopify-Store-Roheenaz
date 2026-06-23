@@ -83,10 +83,12 @@
       {% endfor %}
     {% endcapture %}
 
-    {% comment %} Grid: hidden when carousel on that viewport {% endcomment %}
-    <div class="ew-rhz-trending-festive__grid ew-rhz-trending-festive__grid--desktop{% if carousel_on_desktop %} ew-rhz-trending-festive__grid--hide-desktop{% endif %} ew-rhz-trending-festive__grid--mobile{% if carousel_on_mobile %} ew-rhz-trending-festive__grid--hide-mobile{% endif %}">
-      {{ cards_html }}
-    </div>
+    {% unless carousel_on_mobile and carousel_on_desktop %}
+      {% comment %} Grid: hidden when carousel on that viewport {% endcomment %}
+      <div class="ew-rhz-trending-festive__grid ew-rhz-trending-festive__grid--desktop{% if carousel_on_desktop %} ew-rhz-trending-festive__grid--hide-desktop{% endif %} ew-rhz-trending-festive__grid--mobile{% if carousel_on_mobile %} ew-rhz-trending-festive__grid--hide-mobile{% endif %}">
+        {{ cards_html }}
+      </div>
+    {% endunless %}
 
     {% if carousel_on_mobile or carousel_on_desktop %}
       <div class="ew-rhz-trending-festive__carousel{% if carousel_on_mobile %} ew-rhz-trending-festive__carousel--mobile{% endif %}{% if carousel_on_desktop %} ew-rhz-trending-festive__carousel--desktop{% endif %}" id="ew-rhz-trending-festive-splide-{{ section.id }}">
@@ -110,6 +112,7 @@
           var selector = '#ew-rhz-trending-splide-{{ section.id }}';
           var cardCount = {{ card_blocks | size }};
           var resizeTimeout;
+          var splideWaitAttempts = 0;
 
           function onResize() {
             clearTimeout(resizeTimeout);
@@ -134,7 +137,14 @@
 
           function init() {
             var el = document.querySelector(selector);
-            if (!el || cardCount === 0 || typeof Splide === 'undefined') return;
+            if (!el || cardCount === 0) return;
+            if (typeof Splide === 'undefined') {
+              if (splideWaitAttempts > 100) return;
+              splideWaitAttempts += 1;
+              window.setTimeout(init, 50);
+              return;
+            }
+            splideWaitAttempts = 0;
             window.removeEventListener('resize', onResize);
             if (splideInstance) { try { splideInstance.destroy(); } catch (_) {} splideInstance = null; }
             var perPageDesktop = {{ section.settings.carousel_per_page_desktop | default: 5 }};

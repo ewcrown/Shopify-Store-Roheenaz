@@ -247,8 +247,15 @@
         {% endform %}
       </span>
     {% endif %}
-    <div class="cart-totals__item cart-totals__tax-note cart-primary-typography">
+    <div class="cart-totals__item cart-totals__tax-note cart-primary-typography" style="    flex-direction: column;
+   
+">
       {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
+      <small class="note" style=" padding: 0.8rem;
+    border: 1px solid;
+    color: red;margin-top:10px">
+        Beware of fraudsters impersonating PostEx or Roheenaz. We never request advance payments or sensitive personal details through unofficial numbers. Always confirm any such requests before making payments or sharing information.
+      </small>
     </div>
   </div>
 </div>

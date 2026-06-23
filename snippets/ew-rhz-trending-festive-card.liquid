@@ -38,37 +38,42 @@
 
 <div class="ew-rhz-trending-festive-card">
   <a href="{{ product.url | default: '#' }}" class="ew-rhz-trending-festive-card__media-link">
-    <div class="ew-rhz-trending-festive-card__media">
+    <div class="ew-rhz-trending-festive-card__media"{% if top_media_video != blank %} data-sound-scope{% endif %}>
       {% if top_media_video != blank %}
-        {% render 'video',
-          video: top_media_video,
-          video_autoplay: true,
-          video_loop: block.settings.video_loop,
-          disable_controls: true,
-          video_class: 'ew-rhz-trending-festive-card__video',
-          section_id: section.id,
-          block: block
-        %}
+        {{
+          top_media_video
+          | video_tag:
+            autoplay: true,
+            loop: block.settings.video_loop,
+            muted: true,
+            controls: false,
+            class: 'ew-rhz-trending-festive-card__video'
+        }}
+        {% render 'ew-rhz-sound-btn' %}
       {% elsif top_media_video_url != blank %}
-        {% render 'video',
-          video_from_url: true,
-          video: top_media_video_url,
-          video_type: top_media_video_type,
-          video_autoplay: true,
-          video_loop: block.settings.video_loop,
-          disable_controls: true,
-          video_preview_image: block.settings.video_cover_image,
-          video_class: 'ew-rhz-trending-festive-card__video',
-          section_id: section.id,
-          block: block
+        {% liquid
+          if top_media_video_type == 'youtube'
+            assign ext_video_src = 'https://www.youtube.com/embed/' | append: top_media_video_url | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: top_media_video_url
+          elsif top_media_video_type == 'vimeo'
+            assign ext_video_src = 'https://player.vimeo.com/video/' | append: top_media_video_url | append: '?autoplay=1&muted=1&loop=1'
+          endif
         %}
+        {% if ext_video_src %}
+          <iframe
+            src="{{ ext_video_src }}"
+            class="ew-rhz-trending-festive-card__iframe"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            title="Video"
+          ></iframe>
+        {% endif %}
       {% elsif top_media_image != blank %}
         {{
           top_media_image
-          | image_url: width: 1200
+          | image_url: width: 800
           | image_tag:
             loading: 'lazy',
-            widths: '400, 600, 800, 1000, 1200',
+            widths: '400, 600, 800',
             sizes: '(min-width: 750px) 33vw, 80vw',
             class: 'ew-rhz-trending-festive-card__img'
         }}
@@ -84,7 +89,7 @@
         <a href="{{ product.url | default: '#' }}">
           {{
             thumb_img
-            | image_url: width: 1000
+            | image_url: width: 200
             | image_tag: loading: 'lazy', class: 'ew-rhz-trending-festive-card__thumb-img', widths: '100, 150, 200', sizes: '80px'
           }}
         </a>

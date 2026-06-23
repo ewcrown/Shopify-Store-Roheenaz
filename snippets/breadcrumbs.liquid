@@ -1,0 +1,90 @@
+<style>
+  .breadcrumbs {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #666;
+    margin-left: 40px;
+}
+  .breadcrumbs__list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .breadcrumbs__item {
+    display: inline-block;
+  }
+  .breadcrumbs__item:not(:last-child):after {
+    content: "/";
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: middle;
+    color: #ccc;
+  }
+  .breadcrumbs__link {
+    text-decoration: none;
+    color: inherit;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .breadcrumbs__link:hover {
+    text-decoration: underline;
+  }
+  .breadcrumbs__current {
+    font-weight: semibold;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+</style>
+
+<nav class="section--page-width breadcrumbs {{ section.settings.width }}" aria-label="breadcrumbs">
+  <ol class="breadcrumbs__list">
+    <li class="breadcrumbs__item">
+      <a class="breadcrumbs__link" href="/">Home</a>
+    </li>
+
+    {%- if template contains 'collection' and collection.handle -%}
+      <li class="breadcrumbs__item">
+        {%- if current_tags -%}
+          {{ collection.title | link_to: collection.url, class: 'breadcrumbs__link' }}
+          <span class="breadcrumbs__item">{{ current_tags | join: ' + ' }}</span>
+        {%- else -%}
+          <span class="breadcrumbs__current" aria-current="page">{{ collection.title }}</span>
+        {%- endif -%}
+      </li>
+
+    {%- elsif template contains 'product' -%}
+      <li class="breadcrumbs__item" id="breadcrumb-collection-link">
+        {%- if collection -%}
+          <a class="breadcrumbs__link" href="{{ collection.url }}">{{ collection.title }}</a>
+        {%- else -%}
+          {%- assign product_collection = product.collections | first -%}
+          {%- if product_collection -%}
+            <a class="breadcrumbs__link" href="{{ product_collection.url }}">{{ product_collection.title }}</a>
+          {%- endif -%}
+        {%- endif -%}
+      </li>
+      <li class="breadcrumbs__item">
+        <span class="breadcrumbs__current" aria-current="page">{{ product.title }}</span>
+      </li>
+    {%- endif -%}
+  </ol>
+</nav>
+
+<script>
+  // STEP 2: The "Getter" logic for the Product Page
+  (function() {
+    if (window.location.pathname.includes('/products/')) {
+      const savedTitle = sessionStorage.getItem('last_collection_title');
+      const savedUrl = sessionStorage.getItem('last_collection_url');
+      const breadcrumbContainer = document.getElementById('breadcrumb-collection-link');
+
+      if (savedTitle && savedUrl && breadcrumbContainer) {
+        breadcrumbContainer.innerHTML = `<a class="breadcrumbs__link" href="${savedUrl}">${savedTitle}</a>`;
+      }
+    }
+  })();
+</script>

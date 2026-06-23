@@ -76,6 +76,16 @@
   </div>
 </results-list>
 
+<script>
+  // STEP 1: The "Setter" logic for the Collection Page
+  (function() {
+    {% if template contains 'collection' %}
+      sessionStorage.setItem('last_collection_title', '{{ collection.title | escape }}');
+      sessionStorage.setItem('last_collection_url', '{{ collection.url }}');
+    {% endif %}
+  })();
+</script>
+
 {% stylesheet %}
   .main-collection-grid {
     grid-column: var(--grid-column--mobile);

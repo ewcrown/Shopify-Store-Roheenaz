@@ -23,7 +23,7 @@
         {% if block.settings.link != blank %}
           <a href="{{ block.settings.link }}" class="ew-rhz-media-panels__link">
         {% endif %}
-        <div class="ew-rhz-media-panels__media">
+        <div class="ew-rhz-media-panels__media"{% if block.settings.media_type == 'video' and block.settings.video != blank %} data-sound-scope{% endif %}>
           {% case block.settings.media_type %}
             {% when 'image' %}
               {% if block.settings.image != blank %}
@@ -42,6 +42,7 @@
             {% when 'video' %}
               {% if block.settings.video != blank %}
                 {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ew-rhz-media-panels__video' }}
+                {% render 'ew-rhz-sound-btn' %}
               {% else %}
                 {{ 'lifestyle-1' | placeholder_svg_tag: 'ew-rhz-media-panels__placeholder' }}
               {% endif %}

@@ -116,7 +116,7 @@
       }}
     {% else %}
     <div class="video-parent-ai">
-      {{ video | video_tag: image_size: '2500x', autoplay: true, loop: video_loop, muted: true, controls: controls }}
+      {{ video | video_tag: image_size: '2500x', autoplay: true, loop: video_loop, muted: false, controls: controls }}
     </div>
     {% endif %}
   {% endcapture %}

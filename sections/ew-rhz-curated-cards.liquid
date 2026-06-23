@@ -162,6 +162,7 @@
           var selector = '#ew-rhz-curated-splide-{{ section.id }}';
           var cardCount = {{ section.blocks | where: 'type', 'card' | size }};
           var resizeTimeout;
+          var splideWaitAttempts = 0;
 
           function onResize() {
             clearTimeout(resizeTimeout);
@@ -174,7 +175,14 @@
 
           function init() {
             var el = document.querySelector(selector);
-            if (!el || cardCount === 0 || typeof Splide === 'undefined') return;
+            if (!el || cardCount === 0) return;
+            if (typeof Splide === 'undefined') {
+              if (splideWaitAttempts > 100) return;
+              splideWaitAttempts += 1;
+              window.setTimeout(init, 50);
+              return;
+            }
+            splideWaitAttempts = 0;
             window.removeEventListener('resize', onResize);
             if (splideInstance) {
               try { splideInstance.destroy(); } catch (_) {}

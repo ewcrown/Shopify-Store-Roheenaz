@@ -7,6 +7,20 @@
   id="ew-rhz-hero-slider-{{ section.id }}"
   aria-label="Hero Slider"
 >
+  <style>
+    #ew-rhz-hero-slider-{{ section.id }} .splide:not(.is-initialized) {
+      visibility: visible;
+    }
+
+    #ew-rhz-hero-slider-{{ section.id }} .splide:not(.is-initialized) .splide__list {
+      display: block;
+    }
+
+    #ew-rhz-hero-slider-{{ section.id }} .splide:not(.is-initialized) .splide__slide:not(:first-child) {
+      display: none;
+    }
+  </style>
+
   <div class="ew-rhz-hero-slider__viewport">
     <div class="splide" id="ew-rhz-splide-hero-{{ section.id }}">
       <div class="splide__track">
@@ -31,21 +45,24 @@
                     media="(max-width: 749px)"
                     srcset="{{ block.settings.mobile_image | image_url: width: 480 }} 480w,
                             {{ block.settings.mobile_image | image_url: width: 750 }} 750w,
-                            {{ block.settings.mobile_image | image_url: width: 1000 }} 1000w"
+                            {{ block.settings.mobile_image | image_url: width: 900 }} 900w"
                     sizes="100vw"
                   >
                   <source
                     media="(min-width: 750px)"
-                    srcset="{{ block.settings.image | image_url: width: 640 }} 640w,
-                            {{ block.settings.image | image_url: width: 1024 }} 1024w,
+                    srcset="{{ block.settings.image | image_url: width: 960 }} 960w,
+                            {{ block.settings.image | image_url: width: 1366 }} 1366w,
+                            {{ block.settings.image | image_url: width: 1600 }} 1600w,
                             {{ block.settings.image | image_url: width: 1920 }} 1920w"
                     sizes="100vw"
                   >
                   <img
                     class="ew-rhz-hero-slider__image"
-                    src="{{ block.settings.image | image_url: width: 1920 }}"
+                    src="{{ block.settings.image | image_url: width: 1600 }}"
                     alt="{{ block.settings.mobile_image.alt | default: block.settings.image.alt | escape }}"
                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}"
+                    decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
                     width="{{ block.settings.image.width }}"
                     height="{{ block.settings.image.height }}"
                   >
@@ -53,26 +70,31 @@
               {% elsif block.settings.image != blank %}
                 <img
                   class="ew-rhz-hero-slider__image"
-                  src="{{ block.settings.image | image_url: width: 1920 }}"
-                  srcset="{{ block.settings.image | image_url: width: 640 }} 640w,
-                          {{ block.settings.image | image_url: width: 1024 }} 1024w,
+                  src="{{ block.settings.image | image_url: width: 1600 }}"
+                  srcset="{{ block.settings.image | image_url: width: 960 }} 960w,
+                          {{ block.settings.image | image_url: width: 1366 }} 1366w,
+                          {{ block.settings.image | image_url: width: 1600 }} 1600w,
                           {{ block.settings.image | image_url: width: 1920 }} 1920w"
                   sizes="100vw"
                   alt="{{ block.settings.image.alt | escape }}"
                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}"
+                  decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                 >
               {% elsif block.settings.mobile_image != blank %}
                 <img
                   class="ew-rhz-hero-slider__image"
-                  src="{{ block.settings.mobile_image | image_url: width: 800 }}"
+                  src="{{ block.settings.mobile_image | image_url: width: 750 }}"
                   srcset="{{ block.settings.mobile_image | image_url: width: 480 }} 480w,
                           {{ block.settings.mobile_image | image_url: width: 750 }} 750w,
-                          {{ block.settings.mobile_image | image_url: width: 800 }} 800w"
+                          {{ block.settings.mobile_image | image_url: width: 900 }} 900w"
                   sizes="100vw"
                   alt="{{ block.settings.mobile_image.alt | escape }}"
                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}"
+                  decoding="{% if forloop.first %}sync{% else %}async{% endif %}"
                   width="{{ block.settings.mobile_image.width }}"
                   height="{{ block.settings.mobile_image.height }}"
                 >
@@ -97,6 +119,7 @@
     var numSlides = {{ section.blocks.size }};
     var mounted = null;
     var lastMobile = null;
+    var splideWaitAttempts = 0;
 
     function isMobile() {
       return window.innerWidth <= 749;
@@ -168,7 +191,14 @@
 
     function run() {
       var el = document.getElementById(splideId);
-      if (!el || numSlides === 0 || typeof Splide === 'undefined') return;
+      if (!el || numSlides === 0) return;
+      if (typeof Splide === 'undefined') {
+        if (splideWaitAttempts > 100) return;
+        splideWaitAttempts += 1;
+        window.setTimeout(run, 50);
+        return;
+      }
+      splideWaitAttempts = 0;
 
       if (mounted) {
         mounted.destroy();

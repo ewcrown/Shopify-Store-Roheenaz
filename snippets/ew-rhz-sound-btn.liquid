@@ -1,0 +1,66 @@
+{% comment %}
+  Mute/unmute toggle button for autoplay videos.
+  Place inside a container that has position:relative and data-sound-scope.
+  The button queries <video> elements in the nearest [data-sound-scope] ancestor.
+  Icon visibility is controlled by CSS via data-muted attribute (not the hidden attribute).
+{% endcomment %}
+<button
+  class="ew-rhz-sound-btn"
+  type="button"
+  aria-label="Unmute video"
+  data-muted="true"
+>
+  <span class="ew-rhz-sound-btn__icon" data-state="muted">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+  </span>
+  <span class="ew-rhz-sound-btn__icon" data-state="sound">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+  </span>
+</button>
+
+<script>
+  (function () {
+    if (window.__ewRhzSoundBtnInit) return;
+    window.__ewRhzSoundBtnInit = true;
+
+    function initBtn(btn) {
+      if (btn.dataset.soundInit) return;
+      btn.dataset.soundInit = '1';
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var scope = btn.closest('[data-sound-scope]') || btn.parentElement;
+        var videos = scope.querySelectorAll('video');
+        if (!videos.length) return;
+        var nowMuted = btn.dataset.muted === 'true';
+        var newMuted = !nowMuted;
+        videos.forEach(function (v) {
+          v.muted = newMuted;
+          if (!newMuted) v.play().catch(function () {});
+        });
+        btn.dataset.muted = String(newMuted);
+        btn.setAttribute('aria-label', newMuted ? 'Unmute video' : 'Mute video');
+      });
+    }
+
+    function initAllBtns() {
+      document.querySelectorAll('.ew-rhz-sound-btn').forEach(initBtn);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAllBtns);
+    } else {
+      initAllBtns();
+    }
+
+    document.addEventListener('shopify:section:load', initAllBtns);
+  })();
+</script>

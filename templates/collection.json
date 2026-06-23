@@ -160,10 +160,22 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "custom_liquid_BQrfcx": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<style>\n@media screen and (max-width: 768px) {\n  .breadcrumbs__list {\n    font-size: 7px;\n    gap: 0px;\nmargin-left: -21px;\n  }\n}\n\n</style>",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
     "main",
-    "custom_liquid_VM9ny7"
+    "custom_liquid_VM9ny7",
+    "custom_liquid_BQrfcx"
   ]
 }

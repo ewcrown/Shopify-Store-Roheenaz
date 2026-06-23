@@ -514,6 +514,7 @@
       class="hero__media-grid"
       style="--hero-media-count: {{ media_count }};--hero-media-count-mobile: {{ media_count_mobile }};{%- if section.settings.image_1 != blank -%} --hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }};{% endif %}"
       data-testid="hero-media-wrapper"
+      {% if media_1 == 'video' or media_2 == 'video' or media_1_mobile == 'video' or media_2_mobile == 'video' %}data-sound-scope{% endif %}
     >
       {% liquid
         if section.settings.toggle_overlay
@@ -521,6 +522,9 @@
         endif
       %}
       {{ media }}
+      {% if media_1 == 'video' or media_2 == 'video' or media_1_mobile == 'video' or media_2_mobile == 'video' %}
+        {% render 'ew-rhz-sound-btn' %}
+      {% endif %}
     </div>
     <div
       class="

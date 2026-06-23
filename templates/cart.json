@@ -9,6 +9,17 @@
  */
 {
   "sections": {
+    "custom_liquid_JgUqyb": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"warning-box\">\n  <strong>⚠ Important Notice</strong>\n  <p><b>Pickups and deliveries are temporarily unavailable in Muzafarabad, Bagh, Rawalkot, Kotly, Dadayal, Mirpur and Bhimber due to the current law and order situation. Services will resume once conditions improve.<b></p>\n</div>\n\n<style>\n.warning-box {\n  background: #fff8e1;\n  border: 1px solid #f0c14b;\n  border-left: 4px solid #f0a500;\n  padding: 15px;\n  border-radius: 6px;\n  margin: 20px 0;\n  color: #333;\n}\n\n.warning-box strong {\n  display: block;\n  margin-bottom: 5px;\n  font-size: 16px;\n}\n\n.warning-box p {\n  margin: 0;\n  font-size: 14px;\n}\n</style>",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "cart-section": {
       "type": "main-cart",
       "blocks": {
@@ -268,6 +279,7 @@
     }
   },
   "order": [
+    "custom_liquid_JgUqyb",
     "cart-section",
     "product_list_NNFgcy"
   ]

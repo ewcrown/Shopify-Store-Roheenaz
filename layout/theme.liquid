@@ -30,13 +30,13 @@
     {%- render 'scripts' -%}
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-schemes' -%}
-    
+
     {% if request.design_mode %}
       {%- render 'theme-editor' -%}
     {% endif %}
 
     {{ content_for_header }}
-  {% render 'schema' %}
+    {% render 'schema' %}
 
     {% comment %} Splide {% endcomment %}
     <script src="{{ 'splide.min.js' | asset_url }}" defer></script>
@@ -46,19 +46,19 @@
     </noscript>
     {% comment %} Splide End{% endcomment %}
 
-  <link rel="stylesheet" href="{{ 'ew-style-media-query.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'ew-style-media-query.css' | asset_url }}" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="{{ 'ew-styles.css' | asset_url }}" media="print" onload="this.media='all'">
-    
+
     <noscript>
       {{ 'ew-style-media-query.css' | asset_url | stylesheet_tag }}
       {{ 'ew-styles.css' | asset_url | stylesheet_tag }}
-    </noscript> 
+    </noscript>
   </head>
-<style>
-  .video-parent-ai video {
-      max-width: 563px;
-    margin: auto;
-  }
+  <style>
+    .video-parent-ai video {
+        max-width: 563px;
+      margin: auto;
+    }
   </style>
   <body
     class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}"
@@ -142,6 +142,11 @@
       data-product-transition="{{ settings.transition_to_main_product }}"
       data-template="{{ template.name }}"
     >
+      {%- unless template == 'index' -%}
+        <div class="page-width">
+          {% render 'breadcrumbs' %}
+        </div>
+      {%- endunless -%}
       {{ content_for_layout }}
     </main>
 
@@ -156,6 +161,7 @@
       needs #quick-add-dialog / #quick-add-modal-content even when theme "Quick add" is disabled.
     {% endcomment %}
     {% render 'quick-add-modal' %}
-     <script src="{{ 'ew-custom.js' | asset_url }}" defer></script>
+    <script src="{{ 'ew-custom.js' | asset_url }}" defer></script>
+
   </body>
 </html>

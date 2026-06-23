@@ -247,7 +247,7 @@ export class QuickAddComponent extends Component {
    * @param {Element} root - Cloned product grid (not cached)
    */
   #stripVideoMediaFromQuickview(root) {
-    const isVideoSlideClass = (/** @type {Element} */ el) =>
+    const isVideoSlideClass = (el) =>
       el.classList.contains('product-media-container--video') ||
       el.classList.contains('product-media-container--external_video');
 
@@ -296,50 +296,28 @@ export class QuickAddComponent extends Component {
    * @param {Element} root - Cloned product grid (not cached)
    */
   #flattenTwoPerFrameSlides(root) {
-    const twoPerSlides = root.querySelectorAll('slideshow-slide.media-gallery__slide--two-per-frame');
-    if (!twoPerSlides.length) return;
+    const mediaGalleries = root.querySelectorAll('media-gallery.media-gallery--two-per-frame');
+    if (!mediaGalleries.length) return;
 
-    for (const slide of twoPerSlides) {
-      const frame = slide.querySelector('.media-gallery__frame--two');
-      if (!frame) continue;
+    for (const gallery of mediaGalleries) {
+      const slideshows = gallery.querySelectorAll('slideshow-component');
+      for (const slideshow of slideshows) {
+        const twoPerSlides = slideshow.querySelectorAll('slideshow-slide.media-gallery__slide--two-per-frame');
+        for (const slide of twoPerSlides) {
+          const frame = slide.querySelector('.media-gallery__frame--two');
+          if (!frame) continue;
 
-      const containers = Array.from(frame.querySelectorAll(':scope > .product-media-container'));
-      if (!containers.length) continue;
+          const containers = Array.from(frame.querySelectorAll(':scope > .product-media-container'));
+          if (!containers.length) continue;
 
-      const firstSlideMedia = containers[0];
-      if (!firstSlideMedia) continue;
-      const firstContainer = /** @type {HTMLElement} */ (firstSlideMedia.cloneNode(true));
-      slide.innerHTML = '';
-      slide.appendChild(firstContainer);
-      slide.classList.remove('media-gallery__slide--two-per-frame');
-    }
-
-    root.querySelectorAll('media-gallery.media-gallery--two-per-frame').forEach((gallery) => {
-      gallery.classList.remove('media-gallery--two-per-frame');
-    });
-  }
-
-  /**
-   * Removes duplicate slideshow slides by product media id.
-   * @param {Element} root - Cloned product grid (not cached)
-   */
-  #dedupeSlidesByMediaId(root) {
-    const slideLists = root.querySelectorAll('slideshow-component slideshow-slides');
-    for (const slideList of slideLists) {
-      const seenMediaIds = new Set();
-      const slides = Array.from(slideList.querySelectorAll(':scope > slideshow-slide'));
-
-      for (const slide of slides) {
-        const mediaNode = slide.querySelector('.product-media[data-media-id]');
-        const mediaId = mediaNode?.getAttribute('data-media-id');
-        if (!mediaId) continue;
-
-        if (seenMediaIds.has(mediaId)) {
-          slide.remove();
-          continue;
+          const firstContainer = /** @type {HTMLElement} */ (containers[0].cloneNode(true));
+          slide.innerHTML = '';
+          slide.appendChild(firstContainer);
+          slide.classList.remove('media-gallery__slide--two-per-frame');
         }
-        seenMediaIds.add(mediaId);
       }
+
+      gallery.classList.remove('media-gallery--two-per-frame');
     }
   }
 
@@ -354,7 +332,6 @@ export class QuickAddComponent extends Component {
 
     this.#stripVideoMediaFromQuickview(productGrid);
     this.#flattenTwoPerFrameSlides(productGrid);
-    this.#dedupeSlidesByMediaId(productGrid);
 
     if (isMobileBreakpoint()) {
       const productDetails = productGrid.querySelector('.product-details');
@@ -458,7 +435,6 @@ export class QuickAddComponent extends Component {
     // Sync dots on scroll (horizontal on mobile quickview, vertical on desktop)
     const scroller = slideshowEl.querySelector('slideshow-slides');
     if (scroller) {
-      /** @type {ReturnType<typeof setTimeout> | undefined} */
       let scrollTimer;
       scroller.addEventListener('scroll', () => {
         clearTimeout(scrollTimer);

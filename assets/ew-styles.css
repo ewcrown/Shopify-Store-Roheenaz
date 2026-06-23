@@ -115,7 +115,7 @@ rte-formatter {
 
   .announcement-bar__item {
     padding-inline: 0 !important;
-    font-size: 10px !important;
+    font-size: 12px !important;
   }
 
   .facets.facets-controls-wrapper {
@@ -1598,15 +1598,14 @@ body[data-quickview-open='true'] {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.ew-rhz-trending-festive-card__video deferred-media,
-.ew-rhz-trending-festive-card__video .deferred-media__poster-button,
-.ew-rhz-trending-festive-card__video iframe,
-.ew-rhz-trending-festive-card__video video {
+.ew-rhz-trending-festive-card__iframe {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  display: block;
+  border: none;
 }
 
 .ew-rhz-trending-festive-card__info {
@@ -2273,7 +2272,7 @@ span.cart-bubble__text-count {
 /* Product card badges from tags: `new` (any case), `coming-soon` */
 .product-badges__badge--tag-new {
   color: #fff !important;
-  background: #ae1c1c !important;
+  background: #222222 !important;
 }
 
 /* Keep NEW badge group pinned to left on product cards/search cards */
@@ -2383,3 +2382,50 @@ span.cart-bubble__text-count {
 .product-form-buttons button {
     border-radius: 30px !important;
 }
+
+/* ── Sound toggle button ──────────────────────────────────────────────────── */
+.ew-rhz-sound-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.ew-rhz-sound-btn:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.ew-rhz-sound-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Show only the muted icon by default; swap when unmuted */
+.ew-rhz-sound-btn [data-state="sound"] {
+  display: none !important;
+}
+
+.ew-rhz-sound-btn[data-muted="false"] [data-state="muted"] {
+  display: none !important;
+}
+
+.ew-rhz-sound-btn[data-muted="false"] [data-state="sound"] {
+  display: flex !important;
+}
+/* ────────────────────────────────────────────────────────────────────────── */

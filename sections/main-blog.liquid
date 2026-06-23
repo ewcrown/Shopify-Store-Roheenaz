@@ -1,5 +1,3 @@
-
-
 <script
   src="{{ 'blog-posts-list.js' | asset_url }}"
   type="module"
@@ -34,7 +32,9 @@
           assign col_span = 2
           assign scale = 0.6
           assign is_horizontal = false
+        %}
 
+        {% comment %} {% liquid
           case items_on_page
             when 1
               # Single post: full width hero
@@ -83,7 +83,8 @@
                 assign scale = 0.6
               endif
           endcase
-        %}
+        %} {% endcomment %}
+
         {% style %}
           [data-blog-index="{{ section.id }}-{{ forloop.index }}"] {
             --col-span: {{ col_span }};
